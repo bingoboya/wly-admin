@@ -3,7 +3,7 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView}" class="main-container">
-      
+
       <div :class="{'fixed-header':fixedHeader}">
         <el-tabs v-model="activeName" style="margin-bottom: -14px;" @tab-click="handleClick">
           <el-tab-pane label="用户管理" name="7" />
@@ -44,20 +44,14 @@ export default {
   mixins: [ResizeMixin],
   data() {
     return {
-      activeName: '7', // 设置顶部页签的当前的选中项
+      activeName: this.currentActiveName // 设置顶部页签的当前的选中项
     }
   },
-  watch: {
-    currentActiveName(newValue, oldValue) {
-      //设置顶部页签的当前的选中项
-      this.activeName = newValue.toString()
-      //切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
-      this.$store.dispatch('tagsView/changeCurrentSidebarRouter', newValue)
-    }
-  },
+
   computed: {
     ...mapGetters([
-      'currentActiveName',//设置顶部页签的当前的选中项
+      'visitedViews',
+      'currentActiveName'// 设置顶部页签的当前的选中项
     ]),
     ...mapState({
       sidebar: state => state.app.sidebar,
@@ -75,7 +69,18 @@ export default {
       }
     }
   },
+  watch: {
+    currentActiveName(newValue, oldval) {
+      // 设置顶部页签的当前的选中项
+      this.activeName = newValue.toString()
+    },
+    visitedViews(newValue, oldval) {
+      // tags页签变化时，修改顶部导航
+      this.setActiveName()
+    }
+  },
   mounted() {
+    this.setActiveName()
     if (Cookies.get('theme')) {
       this.$refs.theme.theme = Cookies.get('theme')
       this.$store.dispatch('settings/changeSetting', {
@@ -85,10 +90,21 @@ export default {
     }
   },
   methods: {
+    setActiveName() {
+      // 刷新页面后，根据tags页签，根据最后一个页签的meta.activeName设置当前激活的的页签所在的顶部导航
+      const curVisitedViews = this.$store.state.tagsView.visitedViews
+      const aa = curVisitedViews[curVisitedViews.length - 1].meta
+      const curVisitedView = aa.activeName ? aa.activeName : '7'
+      // 设置顶部页签的当前的选中项
+      this.activeName = curVisitedView.toString()
+      // 切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
+      this.$store.dispatch('tagsView/changeCurrentSidebarRouter', curVisitedView)
+    },
     handleClick(tab, event) {
-      //切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
-      console.log('handleClick', tab.name, tab);
+      // 切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
+      // console.log('handleClick', tab.name, tab);
       this.$store.dispatch('tagsView/changeCurrentSidebarRouter', tab.name)
+      this.$store.dispatch('tagsView/changeCurrentActiveName', tab.name)
     },
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
@@ -109,8 +125,6 @@ export default {
       margin: 10px 10px;
     }
   }
-
-
 
   .app-wrapper {
     @include clearfix;
@@ -135,6 +149,7 @@ export default {
   }
 
   .fixed-header {
+    background: #fff;
     position: fixed;
     top: 0;
     right: 0;

@@ -69,11 +69,9 @@ export default {
     this.addTags()
   },
   methods: {
-    clickRouterLinkItem(tag){
-      console.log('tag', tag.meta.activeName);
+    clickRouterLinkItem(tag) {
       // 设置顶部页签的当前的选中项
-      if(tag.meta.activeName)
-        this.$store.dispatch('tagsView/changeCurrentActiveName', tag.meta.activeName.toString())
+      if (tag.meta.activeName) { this.$store.dispatch('tagsView/changeCurrentActiveName', tag.meta.activeName.toString()) }
     },
     isActive(route) {
       return route.path === this.$route.path
@@ -83,6 +81,7 @@ export default {
       routes.forEach(route => {
         if (route.meta && route.meta.affix) {
           const tagPath = path.resolve(basePath, route.path)
+          // console.log(4, tagPath);
           tags.push({
             fullPath: tagPath,
             path: tagPath,
@@ -101,6 +100,7 @@ export default {
     },
     initTags() {
       const affixTags = this.affixTags = this.filterAffixTags(this.routes)
+      // console.log('初始化tags', affixTags);
       for (const tag of affixTags) {
         // Must have tag name
         if (tag.name) {
@@ -178,7 +178,7 @@ export default {
       }
     },
     openMenu(tag, e) {
-      //鼠标右键弹出菜单列表
+      // 鼠标右键弹出菜单列表
       const menuMinWidth = 105
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       const offsetWidth = this.$el.offsetWidth // container width

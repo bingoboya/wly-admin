@@ -1,8 +1,8 @@
 const state = {
   visitedViews: [],
   cachedViews: [],
-  currentSidebarRouter: 7, //切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
-  currentActiveName: 7, //设置顶部页签的当前的选中项
+  currentSidebarRouter: 7, // 切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
+  currentActiveName: 7 // 设置顶部页签的当前的选中项
 }
 
 const mutations = {
@@ -72,28 +72,27 @@ const mutations = {
       }
     }
   },
-  //切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
+  // 切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
   CHANGE_CURRENTSIDEBAROUTER: (state, view) => {
     state.currentSidebarRouter = view
-    console.log('CHANGE_CURRENTSIDEBAROUTER', state.currentSidebarRouter, view);
+    // console.log('CHANGE_CURRENTSIDEBAROUTER1', state.currentSidebarRouter, view);
   },
-  //设置顶部页签的当前的选中项
+  // 设置顶部页签的当前的选中项
   CHANGE_CURRENTACTIVENAME: (state, view) => {
     state.currentActiveName = view
-    console.log('CHANGE_CURRENTACTIVENAME', state.currentActiveName, view);
-  },
+  }
 }
 
 const actions = {
-  //切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
-  changeCurrentSidebarRouter({commit}, view){
-    console.log('CHANGE_CURRENTSIDEBAROUTER', view);
+  // 切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
+  changeCurrentSidebarRouter({ commit }, view) {
+    // console.log('CHANGE_CURRENTSIDEBAROUTER2', view);
     commit('CHANGE_CURRENTSIDEBAROUTER', view)
   },
   // 设置顶部页签的当前的选中项
-  changeCurrentActiveName({commit}, view){
-    console.log('CHANGE_CURRENTACTIVENAME', view);
+  changeCurrentActiveName({ commit }, view) {
     commit('CHANGE_CURRENTACTIVENAME', view)
+    commit('CHANGE_CURRENTSIDEBAROUTER', view)
   },
   //
   addView({ dispatch }, view) {

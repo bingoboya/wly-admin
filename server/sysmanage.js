@@ -2043,8 +2043,8 @@ const apiRoles = {
     }
   ],
   totalElements: 2
-}
-const rolesLevel = { level: 1 }
+};
+const rolesLevel = { level: 1 };
 const menusLazy = [
   {
     cache: false,
@@ -2147,7 +2147,7 @@ const menusLazy = [
     title: "运维管理",
     type: 1
   }
-]
+];
 // 菜单管理
 const apiMenus = {
   content: [
@@ -2254,16 +2254,256 @@ const apiMenus = {
     }
   ],
   totalElements: 6
-}
+};
 
 // 部门管理
 //岗位管理
-const apiJob ={"content":[{"createTime":"2019-03-31 13:39:30","enabled":true,"id":11,"jobSort":2,"name":"全栈开发","updateTime":"2020-05-05 11:33:43"},{"createTime":"2019-03-29 14:52:28","enabled":true,"id":8,"jobSort":3,"name":"人事专员"},{"createTime":"2019-03-29 14:55:51","enabled":true,"id":10,"jobSort":4,"name":"产品经理"},{"createTime":"2019-03-31 13:39:43","enabled":true,"id":12,"jobSort":5,"name":"软件测试","updateTime":"2020-05-10 19:56:26"}],"totalElements":4}
+const apiJob = {
+  content: [
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发1",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发2",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发3",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发4",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发5",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发6",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发7",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发8",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发9",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-31 13:39:30",
+      enabled: true,
+      id: 11,
+      jobSort: 2,
+      name: "全栈开发10",
+      updateTime: "2020-05-05 11:33:43"
+    },
+    {
+      createTime: "2019-03-29 14:52:28",
+      enabled: true,
+      id: 8,
+      jobSort: 3,
+      name: "人事专员"
+    },
+    {
+      createTime: "2019-03-29 14:55:51",
+      enabled: true,
+      id: 10,
+      jobSort: 4,
+      name: "产品经理"
+    },
+    {
+      createTime: "2019-03-31 13:39:43",
+      enabled: true,
+      id: 12,
+      jobSort: 5,
+      name: "软件测试",
+      updateTime: "2020-05-10 19:56:26"
+    }
+  ],
+  totalElements: 4
+};
 
 // 字典管理
-const apiDict = {"content":[{"createTime":"2019-10-27 20:31:36","description":"岗位状态","dictDetails":[{"dict":{"id":5},"dictSort":1,"id":5,"label":"启用","value":"true"},{"createTime":"2019-10-27 20:31:36","dict":{"id":5},"dictSort":2,"id":6,"label":"停用","value":"false"}],"id":5,"name":"job_status"},{"createTime":"2019-10-27 20:31:36","description":"部门状态","dictDetails":[{"dict":{"id":4},"dictSort":1,"id":3,"label":"启用","value":"true"},{"createTime":"2019-10-27 20:31:36","dict":{"id":4},"dictSort":2,"id":4,"label":"停用","value":"false"}],"id":4,"name":"dept_status"},{"createTime":"2019-10-27 20:31:36","description":"用户状态","dictDetails":[{"createTime":"2019-10-27 20:31:36","dict":{"id":1},"dictSort":1,"id":1,"label":"激活","value":"true"},{"dict":{"id":1},"dictSort":2,"id":2,"label":"禁用","value":"false"}],"id":1,"name":"user_status"}],"totalElements":3}
+const apiDict = {
+  content: [
+    {
+      createTime: "2019-10-27 20:31:36",
+      description: "岗位状态",
+      dictDetails: [
+        { dict: { id: 5 }, dictSort: 1, id: 5, label: "启用", value: "true" },
+        {
+          createTime: "2019-10-27 20:31:36",
+          dict: { id: 5 },
+          dictSort: 2,
+          id: 6,
+          label: "停用",
+          value: "false"
+        }
+      ],
+      id: 5,
+      name: "job_status"
+    },
+    {
+      createTime: "2019-10-27 20:31:36",
+      description: "部门状态",
+      dictDetails: [
+        { dict: { id: 4 }, dictSort: 1, id: 3, label: "启用", value: "true" },
+        {
+          createTime: "2019-10-27 20:31:36",
+          dict: { id: 4 },
+          dictSort: 2,
+          id: 4,
+          label: "停用",
+          value: "false"
+        }
+      ],
+      id: 4,
+      name: "dept_status"
+    },
+    {
+      createTime: "2019-10-27 20:31:36",
+      description: "用户状态",
+      dictDetails: [
+        {
+          createTime: "2019-10-27 20:31:36",
+          dict: { id: 1 },
+          dictSort: 1,
+          id: 1,
+          label: "激活",
+          value: "true"
+        },
+        { dict: { id: 1 }, dictSort: 2, id: 2, label: "禁用", value: "false" }
+      ],
+      id: 1,
+      name: "user_status"
+    }
+  ],
+  totalElements: 3
+};
 // 任务调度
-const apiJobs = {"content":[{"beanName":"testTask","createBy":"admin","createTime":"2020-05-05 20:35:41","cronExpression":"0/5 * * * * ?","description":"mmt","email":"1","id":6,"isPause":true,"jobName":"CQ","methodName":"run2","params":"111","pauseAfterFailure":true,"personInCharge":"33","subTask":"2,3","updateBy":"admin","updateTime":"2021-04-12 15:17:52"},{"beanName":"test","createBy":"admin","createTime":"2020-05-05 20:32:41","cronExpression":"0/5 * * * * ?","description":"测试","email":"","id":5,"isPause":true,"jobName":"任务告警测试","methodName":"run","params":"1","pauseAfterFailure":false,"personInCharge":"test2","updateBy":"admin","updateTime":"2021-04-09 10:11:59"},{"beanName":"testTask","createTime":"2019-09-26 16:44:39","cronExpression":"0/5 * * * * ?","description":"不带参测试","email":"","id":3,"isPause":true,"jobName":"测试","methodName":"run","params":"","pauseAfterFailure":false,"personInCharge":"Zheng Jie","subTask":"5,6","updateBy":"admin","updateTime":"2021-03-30 15:27:30"},{"beanName":"testTask","createTime":"2019-08-22 14:08:29","cronExpression":"0/5 1 * * * ?","description":"带参测试，多参使用jsonSDSDFDSFDFDSFDF","id":2,"isPause":true,"jobName":"测试3","methodName":"run1","params":"testasd969","pauseAfterFailure":true,"personInCharge":"测试3","updateBy":"admin","updateTime":"2021-03-30 11:45:22"}],"totalElements":4}
+const apiJobs = {
+  content: [
+    {
+      beanName: "testTask",
+      createBy: "admin",
+      createTime: "2020-05-05 20:35:41",
+      cronExpression: "0/5 * * * * ?",
+      description: "mmt",
+      email: "1",
+      id: 6,
+      isPause: true,
+      jobName: "CQ",
+      methodName: "run2",
+      params: "111",
+      pauseAfterFailure: true,
+      personInCharge: "33",
+      subTask: "2,3",
+      updateBy: "admin",
+      updateTime: "2021-04-12 15:17:52"
+    },
+    {
+      beanName: "test",
+      createBy: "admin",
+      createTime: "2020-05-05 20:32:41",
+      cronExpression: "0/5 * * * * ?",
+      description: "测试",
+      email: "",
+      id: 5,
+      isPause: true,
+      jobName: "任务告警测试",
+      methodName: "run",
+      params: "1",
+      pauseAfterFailure: false,
+      personInCharge: "test2",
+      updateBy: "admin",
+      updateTime: "2021-04-09 10:11:59"
+    },
+    {
+      beanName: "testTask",
+      createTime: "2019-09-26 16:44:39",
+      cronExpression: "0/5 * * * * ?",
+      description: "不带参测试",
+      email: "",
+      id: 3,
+      isPause: true,
+      jobName: "测试",
+      methodName: "run",
+      params: "",
+      pauseAfterFailure: false,
+      personInCharge: "Zheng Jie",
+      subTask: "5,6",
+      updateBy: "admin",
+      updateTime: "2021-03-30 15:27:30"
+    },
+    {
+      beanName: "testTask",
+      createTime: "2019-08-22 14:08:29",
+      cronExpression: "0/5 1 * * * ?",
+      description: "带参测试，多参使用jsonSDSDFDSFDFDSFDF",
+      id: 2,
+      isPause: true,
+      jobName: "测试3",
+      methodName: "run1",
+      params: "testasd969",
+      pauseAfterFailure: true,
+      personInCharge: "测试3",
+      updateBy: "admin",
+      updateTime: "2021-03-30 11:45:22"
+    }
+  ],
+  totalElements: 4
+};
 module.exports = {
   dictDetail,
   users,

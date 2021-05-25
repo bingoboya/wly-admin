@@ -2,7 +2,7 @@
   <div class="login" :style="'background-image:url('+ Background +');'">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
       <h3 class="title">
-        万里31扬4 电力管理系统
+        万里扬1 电力管理系统
       </h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
@@ -139,11 +139,13 @@ export default {
             Cookies.remove('password')
             Cookies.remove('rememberMe')
           }
-          // console.log(333, user.password, encrypt(user.password))
+          console.log(333, user.password, encrypt(user.password))
           this.$store.dispatch('Login', user).then(() => {
             this.loading = false
+            console.log('this.redirect:--', this.redirect)
             this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
+          }).catch((e) => {
+            console.log(111, e)
             this.loading = false
             // this.getCode()
           })

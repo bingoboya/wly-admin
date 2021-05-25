@@ -1,55 +1,50 @@
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <!-- <div style="display: flex;">
-      <div @click="changeRoutes(7)" style="margin: 0 10px;background: pink;padding: 0 6px;font-size:16px">1</div>
-      <div @click="changeRoutes(8)" style="margin: 0 10px;background: pink;padding: 0 6px;font-size:16px">2</div>
-      <div @click="changeRoutes(9)" style="margin: 0 10px;background: pink;padding: 0 6px;font-size:16px">3</div>
-    </div> -->
-      <el-scrollbar v-show="currentSidebarRouter==7" wrap-class="scrollbar-wrapper">
-        <el-menu
-          :default-active="activeMenu"
-          :collapse="isCollapse"
-          :background-color="variables.menuBg"
-          :text-color="variables.menuText"
-          :unique-opened="$store.state.settings.uniqueOpened"
-          :active-text-color="variables.menuActiveText"
-          :collapse-transition="false"
-          mode="vertical"
-        >
-          <!-- <sidebar-item v-for="route in sidebarRouters" :key="route.path" :item="route" :base-path="route.path" /> -->
-          <sidebar-item v-for="route in sidebarRouters.slice(0,7)" :key="route.path" :item="route" :base-path="route.path" />
-        </el-menu>
-      </el-scrollbar>
-      <el-scrollbar v-show="currentSidebarRouter==8" wrap-class="scrollbar-wrapper">
-        <el-menu
-          :default-active="activeMenu"
-          :collapse="isCollapse"
-          :background-color="variables.menuBg"
-          :text-color="variables.menuText"
-          :unique-opened="!$store.state.settings.uniqueOpened"
-          :active-text-color="variables.menuActiveText"
-          :collapse-transition="false"
-          mode="vertical"
-        >
-          <sidebar-item v-for="route in sidebarRouters.slice(7,8)" :key="route.path" :item="route" :base-path="route.path" />
-        </el-menu>
-      </el-scrollbar>
-      <el-scrollbar v-show="currentSidebarRouter==9" wrap-class="scrollbar-wrapper">
-        <el-menu
-          :default-active="activeMenu"
-          :collapse="isCollapse"
-          :background-color="variables.menuBg"
-          :text-color="variables.menuText"
-          :unique-opened="$store.state.settings.uniqueOpened"
-          :active-text-color="variables.menuActiveText"
-          :collapse-transition="false"
-          mode="vertical"
-        >
-          <sidebar-item v-for="route in sidebarRouters.slice(8,10)" :key="route.path" :item="route" :base-path="route.path" />
-        </el-menu>
-      </el-scrollbar>
-      
+    <el-scrollbar v-show="currentSidebarRouter==7" wrap-class="scrollbar-wrapper">
+      <el-menu
+        :default-active="activeMenu"
+        :collapse="isCollapse"
+        :background-color="variables.menuBg"
+        :text-color="variables.menuText"
+        :unique-opened="$store.state.settings.uniqueOpened"
+        :active-text-color="variables.menuActiveText"
+        :collapse-transition="false"
+        mode="vertical"
+      >
+        <!-- <sidebar-item v-for="route in sidebarRouters" :key="route.path" :item="route" :base-path="route.path" /> -->
+        <sidebar-item v-for="route in filterSidebarRoute(7)" :key="route.path" :item="route" :base-path="route.path" />
+      </el-menu>
+    </el-scrollbar>
+    <el-scrollbar v-show="currentSidebarRouter==8" wrap-class="scrollbar-wrapper">
+      <el-menu
+        :default-active="activeMenu"
+        :collapse="isCollapse"
+        :background-color="variables.menuBg"
+        :text-color="variables.menuText"
+        :unique-opened="!$store.state.settings.uniqueOpened"
+        :active-text-color="variables.menuActiveText"
+        :collapse-transition="false"
+        mode="vertical"
+      >
+        <sidebar-item v-for="route in filterSidebarRoute(8)" :key="route.path" :item="route" :base-path="route.path" />
+      </el-menu>
+    </el-scrollbar>
+    <el-scrollbar v-show="currentSidebarRouter==9" wrap-class="scrollbar-wrapper">
+      <el-menu
+        :default-active="activeMenu"
+        :collapse="isCollapse"
+        :background-color="variables.menuBg"
+        :text-color="variables.menuText"
+        :unique-opened="$store.state.settings.uniqueOpened"
+        :active-text-color="variables.menuActiveText"
+        :collapse-transition="false"
+        mode="vertical"
+      >
+        <sidebar-item v-for="route in filterSidebarRoute(9)" :key="route.path" :item="route" :base-path="route.path" />
+      </el-menu>
+    </el-scrollbar>
+
   </div>
 </template>
 
@@ -62,29 +57,12 @@ import variables from '@/assets/styles/variables.scss'
 export default {
   components: { SidebarItem, Logo },
   data() {
-    return {
-      chooseRoutes: 7
-    }
+    return {}
   },
-  created () {
-    console.log(66, this.sidebarRouters.slice(7,8));
-  },
-  methods: {
-    changeRoutes(val) {
-      console.log(val);
-      this.chooseRoutes = val
-      // 设置顶部页签的当前的选中项
-      this.$store.dispatch('tagsView/changeCurrentActiveName', val)
-    }
-  },
-  watch: {
-    currentSidebarRouter: (newValue, oldValue)=>{
-      console.log(5678,newValue);
-    },
-  },
+
   computed: {
     ...mapGetters([
-      'currentSidebarRouter', //切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
+      'currentSidebarRouter', // 切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
       'sidebarRouters',
       'sidebar'
     ]),
@@ -107,6 +85,12 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  methods: {
+    filterSidebarRoute(num) {
+      return this.sidebarRouters.filter(item => item.meta.activeName == num)
+    }
   }
+
 }
 </script>

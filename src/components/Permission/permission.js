@@ -4,7 +4,7 @@ export default {
   inserted(el, binding) {
     const { value } = binding
     const roles = store.getters && store.getters.roles
-    console.log('自定义指令逻辑v-permission:---', value, roles);
+    // console.log('自定义指令逻辑v-permission:---', value, roles);
     if (value && value instanceof Array) {
       if (value.length > 0) {
         const permissionRoles = value

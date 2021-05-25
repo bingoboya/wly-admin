@@ -76,7 +76,7 @@ function CRUD(options) {
         }
         throw new Error('wrong crud\'s cu status')
       },
-      // 标题
+      // 弹出框的标题
       get title() {
         return this.add > CRUD.STATUS.NORMAL ? `新增${crud.title}` : this.edit > CRUD.STATUS.NORMAL ? `编辑${crud.title}` : crud.title
       }
@@ -132,6 +132,7 @@ function CRUD(options) {
         crud.loading = true
         // 请求数据
         initData(crud.url, crud.getQueryParams()).then(data => {
+          console.log('表格-请求数据的参数:', crud.getQueryParams())
           const table = crud.getTable()
           if (table && table.lazy) { // 懒加载子节点数据，清掉已加载的数据
             table.store.states.treeData = {}
@@ -702,6 +703,7 @@ function header() {
     data() {
       return {
         crud: this.crud,
+        // 头部的查询条件
         query: this.crud.query
       }
     },
