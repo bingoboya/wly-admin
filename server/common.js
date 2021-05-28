@@ -64,22 +64,22 @@ const authLogin = {
 const authLogout = null; // 登出这个是delete接口,返回null
 const menusBuild = [
   userManageRouter,
-  //配置管理
-  configManageRouter,
-  //角色管理
-  roleManageRouter,
-  // 系统管理
-  systemManageRouter,
-  //权限管理
-  permissionManageRouter,
-  // 系统监控
-  monitor,
-  //运维管理
-  mntManageRouter,
-  // 系统工具
-  sysToolsManageRouter,
-  // 组件管理
-  componentsManageRouter
+  // //配置管理
+  // configManageRouter,
+  // //角色管理
+  // roleManageRouter,
+  // // 系统管理
+  // systemManageRouter,
+  // //权限管理
+  // permissionManageRouter,
+  // // 系统监控
+  // monitor,
+  // //运维管理
+  // mntManageRouter,
+  // // 系统工具
+  // sysToolsManageRouter,
+  // // 组件管理
+  // componentsManageRouter
 ];
 
 module.exports = {

@@ -14,7 +14,6 @@
     "svgo": "svgo -f src/assets/icons/svg --config=src/assets/icons/svgo.yml",
     "new": "plop"
   },
-  
   "lint-staged": {
     "src/**/*.{js,vue}": [
       "eslint --fix",

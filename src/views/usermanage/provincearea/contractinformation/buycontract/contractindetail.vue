@@ -114,7 +114,7 @@
             <el-option label="四川典型年度分解方案" value="sichuan" />
             <el-option label="新增自定义方案" value="xinzeng" />
           </el-select>
-          <el-button type="primary" @click="dialogFormVisible = true">查询/编辑/另存</el-button>
+          <el-button type="primary" @click="showDialogFormVisible.toggle = true">查询/编辑/另存</el-button>
         </el-form-item>
         <el-form-item label="创建时间（灰色）">
           <el-select
@@ -149,7 +149,7 @@
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
-          <el-button type="primary" @click="dialogFormVisible = true">查询/编辑/另存</el-button>
+          <el-button type="primary" @click="dialogYearToMouth.toggle = true">查询/编辑/另存</el-button>
         </el-form-item>
         <el-form-item label="月到日分解方案">
           <el-select
@@ -159,7 +159,7 @@
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
-          <el-button type="primary" @click="dialogFormVisible = true">查询/编辑/另存</el-button>
+          <el-button type="primary" @click="dialogMouthToDayBase.toggle = true">查询/编辑/另存</el-button>
         </el-form-item>
         <el-form-item label="日分时分解方案">
           <el-select
@@ -169,103 +169,51 @@
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
-          <el-button type="primary" @click="dialogFormVisible = true">查询/编辑/另存</el-button>
+          <el-button type="primary" @click="dialogDayToHourBase.toggle = true">查询/编辑/另存</el-button>
         </el-form-item>
-        <!-- <el-form-item>
-          <el-button type="primary" @click="onSubmit">查询</el-button>
-        </el-form-item> -->
       </el-form>
     </div>
 
-    <template>
-      <!-- 分时方案详情页面弹窗 -->
-      <!-- <el-button type="text" @click="dialogFormVisible = true"
-        >打开分时方案详情页面弹窗 Dialog</el-button > -->
-      <el-dialog title="购电合同分时方案" :visible.sync="dialogFormVisible">
-        <el-form :model="timesasingSchemeDetial">
-          <el-form-item
-            label="方案名称"
-            :label-width="formLabelWidth"
-            prop="name"
-            :rules="[
-              { required: true, message: '请输入方案名称', trigger: 'blur' },
-            ]"
-          >
-            <el-input v-model="timesasingSchemeDetial.name" autocomplete="off" />
-          </el-form-item>
-          <el-form-item
-            label="分时时段数"
-            :label-width="formLabelWidth"
-            prop="shiduanCount"
-            :rules="[
-              { required: true, message: '请输入方案名称', trigger: 'change' },
-            ]"
-          >
-            <el-select v-model="timesasingSchemeDetial.shiduanCount" clearable placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai" />
-              <el-option label="区域二" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="时段名称"
-            :label-width="formLabelWidth"
-            prop="shiduanName"
-            :rules="[
-              { required: true, message: '请输入时段名称', trigger: 'change' },
-            ]"
-          >
-            <el-select v-model="timesasingSchemeDetial.shiduanName" clearable placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai" />
-              <el-option label="区域二" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="起止时间*"
-            :label-width="formLabelWidth"
-            prop="startTime"
-            :rules="[
-              { required: true, message: '请输入起止时间*', trigger: 'change' },
-            ]"
-          >
-            <el-select v-model="timesasingSchemeDetial.startTime" clearable placeholder="请选择起止时间">
-              <el-option label="区域一" value="shanghai" />
-              <el-option label="区域二" value="beijing" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button
-            type="primary"
-            @click="dialogFormVisible = false"
-          >确 定</el-button>
-        </div>
-      </el-dialog>
-    </template>
+    <timesAsingScheme :showDialogFormVisible="showDialogFormVisible"></timesAsingScheme>
+    <yearToMouth  :dialogYearToMouth='dialogYearToMouth'></yearToMouth>
+    <mouthToDayBase  :dialogMouthToDayBase='dialogMouthToDayBase'></mouthToDayBase>
+    <dayToHourBase  :dialogDayToHourBase='dialogDayToHourBase'></dayToHourBase>
   </div>
 </template>
 <script>
+import timesAsingScheme from './module/timesasingscheme'
+import yearToMouth from './module/yeartomouth'
+import mouthToDayBase from './module/mouthToDayBase'
+import dayToHourBase from './module/dayToHourBase'
 export default {
+  components: {timesAsingScheme, yearToMouth,mouthToDayBase, dayToHourBase},
+   methods: {
+    changeDialogYearToMouth(val){
+      this.dialogYearToMouth.toggle = false
+    },
+    changeDialogMouthToDayBase(val){
+      this.dialogMouthToDayBase.toggle = false
+    },
+    changeDialogDayToHourBase(val){
+      this.dialogDayToHourBase.toggle = false
+    },
+    changeDialogForm(val){
+      this.showDialogFormVisible.toggle = false
+    },
+    onSubmit() {
+      console.log('submit!')
+    }
+  },
   data() {
     return {
-      timesasingSchemeDetial: {
-        name: '',
-        shiduanName: '',
-        shiduanCount: ''
-      },
       // 分时方案详情页面 -- 弹窗表单
-      dialogFormVisible: false,
-      timesasingSchemeDetial: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      formLabelWidth: '120px',
+      showDialogFormVisible: {toggle:false},
+      // 年到月分时方案详情页面 -- 弹窗表单
+      dialogYearToMouth: {toggle:false},
+      // 月到日分时方案基础页面 -- 弹窗表单
+      dialogMouthToDayBase: {toggle:false},
+      // 日分时分时方案基础页面 -- 弹窗表单
+      dialogDayToHourBase: {toggle:false},
       //
       buycontractinfo: {
         curveValid: '', // 是否有分解曲线
@@ -311,10 +259,6 @@ export default {
       }
     }
   },
-  methods: {
-    onSubmit() {
-      console.log('submit!')
-    }
-  }
+ 
 }
 </script>
