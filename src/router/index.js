@@ -54,7 +54,97 @@ router.beforeEach((to, from, next) => {
 })
 
 export const loadMenus = (next, to) => {
+  const menusBuild1 = [
+    {
+      path: '/usermanage',
+      component: 'Layout',
+      redirect: 'noredirect',
+      name: 'usermanage',
+      meta: { activeName: 7, title: '数据管理',icon: 'menu'},
+      children: [
+        {
+          path: 'peddingapproval',
+          name: 'peddingapproval',
+          // 组件要写成字符串
+          component: "usermanage/peddingapproval/index",
+          // component: (resolve) => require(['@/views/usermanage/peddingapproval/index'], resolve),
+          meta: { activeName: 7, icon: 'menu', title: '待办审批' }
+        },
+        //合同信息
+        {
+          path: 'contractinformation',
+          component: "usermanage/provincearea/contractinformation",
+          name: 'provincearea-contractinformation',
+          redirect: 'noredirect',
+          meta: { activeName: 7, icon: 'menu', title: '合同信息' },
+          children: [
+            {
+              path: 'salecontract',
+              component: "usermanage/provincearea/contractinformation/salecontract",
+              name: 'contractinformation-salecontract',
+              meta: { activeName: 7, icon: 'menu', title: '售电合同' }
+            },
+            {
+              path: 'buycontract',
+              component: "usermanage/provincearea/contractinformation/buycontract",
+              name: 'buycontract',
+              meta: { activeName: 7, icon: 'menu', title: '购电合同' },
+            },
+            {
+              path: 'contractindetail',
+              // hidden: true,
+              component: "usermanage/provincearea/contractinformation/buycontract/contractindetail",
+              name: 'contractinformation-contractindetail',
+              meta: { activeName: 7, icon: 'menu', title: '合同详情' }
+            },
+          ]
+        },
+        {
+          path: 'curvemanagement',
+          component: "usermanage/curvemanagement",
+          name: 'provincearea-commoncurvemanagement',
+          redirect: 'noredirect',
+          meta: { activeName: 7, icon: 'menu', title: '常用曲线管理' },
+          children: [
+            {
+              path: 'curvemanagementsearch',
+              component: "usermanage/curvemanagement/curvemanagementsearch",
+              name: 'curvemanagement-curvemanagementsearch',
+              meta: { activeName: 7, icon: 'menu', title: '常用曲线查询' }
+            },
+            {
+              path: 'mycurvemanagement',
+              component: "usermanage/curvemanagement/mycurvemanagement",
+              name: 'curvemanagement-mycurvemanagement',
+              meta: { activeName: 7, icon: 'menu', title: '我的常用曲线' },
+            },
+          ]
+        },
+        {
+          path: 'institutionalinformation',
+          component: "usermanage/provincearea/institutionalinformation",
+          name: 'provincearea-institutionalinformation',
+          meta: { activeName: 7, icon: 'menu', title: '机构信息' }
+        },
+        {
+          path: 'intersogueinformation',
+          component: "usermanage/provincearea/intersogueinformation",
+          name: 'provincearea-intersogueinformation',
+          meta: { activeName: 7, icon: 'menu', title: '居间人信息' }
+        },
+        {
+          path: 'marketruleinformation',
+          component: "usermanage/provincearea/marketruleinformation",
+          name: 'provincearea-marketruleinformation',
+          meta: { activeName: 7, icon: 'menu', title: '市场规则信息' }
+        },
+        
+      ]
+    }
+  ]
   buildMenus().then(res => {
+    //TODO 临时写死路由
+    res = menusBuild1
     const sdata = JSON.parse(JSON.stringify(res))
     const rdata = JSON.parse(JSON.stringify(res))
     const rewriteRoutes = filterAsyncRouter(rdata, true)

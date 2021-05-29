@@ -72,7 +72,7 @@ import eHeader from './module/header'
 import eForm from './module/form'
 import CRUD, { presenter } from '@crud/crud'
 import crudOperation from '@crud/CRUD.operation'
-import crudFile from '@/api/tools/localStorage'
+import crudFile from '@/api/tools/buy'
 import pagination from '@crud/Pagination'
 import udOperation from '@crud/UD.operation'
 export default {
@@ -82,10 +82,10 @@ export default {
     return CRUD({
       title: '岗位1',
       // url: 'api/job', // 接口url
-      url: 'api/localStorage', // 接口url
+      url: 'api/buy', // 接口url
       crudMethod: { ...crudFile },
       // crudMethod: { ...crudJob },
-      sort: ['jobSort,asc', 'id,desc']
+      // sort: ['jobSort,asc', 'id,desc']
     })
   },
   mixins: [presenter()],
@@ -103,7 +103,7 @@ export default {
   methods: {
     gotoRouter(params) {
       console.log(11, params)
-      this.$router.push('/usermanage/provincearea/contractinformation/contractindetail')
+      this.$router.push('/usermanage/contractinformation/contractindetail')
     },
     // 改变状态
     changeEnabled(data, val) {

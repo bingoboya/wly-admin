@@ -104,7 +104,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
-import crudFile from '@/api/tools/localStorage'
+import crudFile from '@/api/tools/buy'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -115,7 +115,7 @@ const defaultForm = { id: null, name: '' }
 export default {
   components: { pagination, crudOperation, rrOperation, DateRangePicker },
   cruds() {
-    return CRUD({ title: '文件', url: 'api/localStorage', crudMethod: { ...crudFile }})
+    return CRUD({ title: '文件', url: 'api/buy', crudMethod: { ...crudFile }})
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

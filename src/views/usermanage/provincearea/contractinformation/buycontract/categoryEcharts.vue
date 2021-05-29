@@ -104,7 +104,7 @@ export default {
                 itemStyle:{
 					normal:{
 						color:function(params){
-                            console.log(333, params);
+                            // console.log('echarts-params--', params);
                             return params.data.color ? params.data.color : params.color
 
 							// if(params.value >0 && params.value <100){

@@ -57,7 +57,7 @@ app.get("/api/menus/build", (req, res) => {
       component: 'Layout',
       redirect: 'noredirect',
       name: 'usermanage',
-      meta: { activeName: 7, title: ' 用户管理',icon: 'menu'},
+      meta: { activeName: 7, title: '数据管理',icon: 'menu'},
       children: [
         {
           path: 'peddingapproval',
@@ -186,9 +186,7 @@ app.get("/api/menus/build", (req, res) => {
   // res.json(menusBuild);
 });
 
-app.get("/api/dictDetail", (req, res) => {
-  res.json(dictDetail);
-});
+
 app.get("/api/users", (req, res) => {
   res.json(users);
 });
@@ -217,8 +215,12 @@ app.get("/api/dict", (req, res) => {
 app.get("/api/jobs", (req, res) => {
   res.json(apiJobs);
 });
+//
+app.get("/api/dictDetail", (req, res) => {
+  res.json(dictDetail);
+});
 //系统工具-存储管理-本地存储
-app.get("/api/localStorage", (req, res) => {
+app.get("/api/buy", (req, res) => {
   console.log(req.query, apiLocalStorage[`content${req.query.page}`]);
   const result = {
     content: apiLocalStorage[`content${req.query.page}`],

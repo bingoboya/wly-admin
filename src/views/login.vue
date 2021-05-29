@@ -139,7 +139,7 @@ export default {
             Cookies.remove('password')
             Cookies.remove('rememberMe')
           }
-          console.log(333, user.password, encrypt(user.password))
+          console.log('handleLogin-user.password-', user.password, encrypt(user.password))
           this.$store.dispatch('Login', user).then(() => {
             this.loading = false
             console.log('this.redirect:--', this.redirect)
