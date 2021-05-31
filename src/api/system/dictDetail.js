@@ -5,7 +5,7 @@ export function get(dictName) {
     dictName,
     page: 0,
     size: 9999
-  }
+ }
   return request({
     url: 'api/dictDetail',
     method: 'get',

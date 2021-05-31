@@ -1,32 +1,32 @@
 <template>
   <div class="app-container">
     <!--工具栏-->
-    <div class="head-container">
+    <!-- <div class="head-container">
       <eHeader :dict="dict" :permission="permission" />
       <crudOperation :permission="permission" />
-    </div>
+    </div> -->
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column type="index" width="50" label="序号" />
-      <el-table-column :show-overflow-tooltip="true" prop="Name" label="合同名称">
+      <el-table-column :show-overflow-tooltip="true" prop="agencyName" label="合同名称">
         <template slot-scope="scope">
           <div
             slot="reference"
             class="el-link--primary"
             style="cursor:pointer;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
-            @click="gotoRouter(scope.row.Name)"
+            @click="gotoRouter(scope.row.agencyName)"
           >
-            {{ scope.row.Name }}-{{ scope.row.name }}
+            {{ scope.row.agencyName }}-{{ scope.row.name }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="TypeID" label="合同类型" />
-      <el-table-column prop="MeterID" label="用户名称" />
-      <el-table-column prop="StartDate" label="合同年度" />
-      <el-table-column prop="TotalElectricity" label="合同电量" />
-      <el-table-column prop="RecStatusID" label="审批状态" />
-      <el-table-column prop="UserID" label="提报人" />
+      <el-table-column prop="contractType" label="合同类型" />
+      <el-table-column prop="name" label="用户名称" />
+      <el-table-column prop="year" label="合同年度" />
+      <el-table-column prop="totalElectricity" label="合同电量" />
+      <el-table-column prop="status" label="审批状态" />
+      <el-table-column prop="presenter" label="提报人" />
       <!-- <el-table-column prop="jobSort" label="排序">
         <template slot-scope="scope">
           {{ scope.row.jobSort }}
@@ -62,7 +62,7 @@
     <!--分页组件-->
     <pagination />
     <!--表单渲染  操作按钮（新增/删除）-->
-    <eForm :job-status="dict.job_status" />
+    <!-- <eForm :job-status="dict.job_status" /> -->
   </div>
 </template>
 
@@ -81,8 +81,7 @@ export default {
   cruds() {
     return CRUD({
       title: '岗位1',
-      // url: 'api/job', // 接口url
-      url: 'api/buy', // 接口url
+      url: '/buy', // 接口url
       crudMethod: { ...crudFile },
       // crudMethod: { ...crudJob },
       // sort: ['jobSort,asc', 'id,desc']
@@ -90,7 +89,7 @@ export default {
   },
   mixins: [presenter()],
   // 数据字典
-  dicts: ['job_status'],
+  // dicts: ['job_status'],
   data() {
     return {
       permission: {

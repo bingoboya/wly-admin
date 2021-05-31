@@ -11,7 +11,7 @@ const dictDetail = {
     },
     { dict: { id: 1 }, dictSort: 2, id: 2, label: "禁用", value: "false" }
   ],
-  totalElements: 2
+  totalCount: 2
 };
 const users = {
   content: [
@@ -49,7 +49,7 @@ const users = {
       username: "admin"
     }
   ],
-  totalElements: 2
+  totalCount: 2
 };
 const dept = {
   content: [
@@ -80,7 +80,7 @@ const dept = {
       updateTime: "2020-05-14 12:54:00"
     }
   ],
-  totalElements: 2
+  totalCount: 2
 };
 // 角色管理
 const apiRoles = {
@@ -2042,7 +2042,7 @@ const apiRoles = {
       updateTime: "2020-09-05 10:45:12"
     }
   ],
-  totalElements: 2
+  totalCount: 2
 };
 const rolesLevel = { level: 1 };
 const menusLazy = [
@@ -2253,7 +2253,7 @@ const apiMenus = {
       updateTime: "2020-06-21 17:27:35"
     }
   ],
-  totalElements: 6
+  totalCount: 6
 };
 
 // 部门管理
@@ -2371,7 +2371,7 @@ const apiJob = {
       updateTime: "2020-05-10 19:56:26"
     }
   ],
-  totalElements: 4
+  totalCount: 4
 };
 
 // 字典管理
@@ -2429,7 +2429,7 @@ const apiDict = {
       name: "user_status"
     }
   ],
-  totalElements: 3
+  totalCount: 3
 };
 // 任务调度
 const apiJobs = {
@@ -2502,7 +2502,7 @@ const apiJobs = {
       updateTime: "2021-03-30 11:45:22"
     }
   ],
-  totalElements: 4
+  totalCount: 4
 };
 module.exports = {
   dictDetail,

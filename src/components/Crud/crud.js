@@ -132,13 +132,13 @@ function CRUD(options) {
         crud.loading = true
         // 请求数据
         initData(crud.url, crud.getQueryParams()).then(data => {
-          console.log('表格-请求数据的参数:', crud.getQueryParams())
+          console.log('表格-请求数据的参数:',data, crud.getQueryParams())
           const table = crud.getTable()
           if (table && table.lazy) { // 懒加载子节点数据，清掉已加载的数据
             table.store.states.treeData = {}
             table.store.states.lazyTreeNodeMap = {}
           }
-          crud.page.total = data.totalElements
+          crud.page.total = data.totalCount
           crud.data = data.content
           crud.resetDataStatus()
           // time 毫秒后显示表格

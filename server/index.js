@@ -220,11 +220,12 @@ app.get("/api/dictDetail", (req, res) => {
   res.json(dictDetail);
 });
 //系统工具-存储管理-本地存储
-app.get("/api/buy", (req, res) => {
-  console.log(req.query, apiLocalStorage[`content${req.query.page}`]);
+app.get("/buy", (req, res) => {
+  // console.log(req.query, apiLocalStorage[`content${req.query.page}`]);
   const result = {
     content: apiLocalStorage[`content${req.query.page}`],
-    totalElements: 35
+    // content: [{a: 2}],
+    totalCount: 35
   }
   res.json(result);
 });
@@ -232,7 +233,7 @@ app.get("/api/buy", (req, res) => {
 app.get("/api/qiNiuContent", (req, res) => {
   const result = {
     content: apiLocalStorage[`content${req.query.page}`],
-    totalElements: 35
+    totalCount: 35
   }
   res.json(result);
 });

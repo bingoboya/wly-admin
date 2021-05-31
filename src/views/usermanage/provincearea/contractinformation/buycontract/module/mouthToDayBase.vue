@@ -1,7 +1,7 @@
 <template>
   <!-- 分时方案详情页面弹窗 -->
   <!-- 打开分时方案详情页面弹窗 Dialog -->
-  <el-dialog title="购电合同-月到日分时方案基础页" :visible.sync="dialogMouthToDayBase.toggle">
+  <el-dialog title="购电合同-月到日分时方案基础页" @open="openDialog" :visible.sync="dialogMouthToDayBase.toggle">
     <div>月到日分解方案基础页</div>
     <el-form :model="timesasingSchemeDetial">
       <el-form-item
@@ -301,6 +301,7 @@
 </template>
 <script>
 import mouthToDayDetial from './mouthToDayDetial'
+import request from '@/utils/request'
 
 export default {
   components:{mouthToDayDetial},
@@ -309,19 +310,13 @@ export default {
       type: Object,
     }
   },
-  methods: {
-      // changeDialogFormVisible() {
-      //     this.$emit('changeDialogMouthToDayBase', false)
-      // }
-  },
+  
   data() {
     return {
       dialogMouthToDayDetial: {toggle: false},
       // 分时方案详情页面 -- 弹窗表单
       timesasingSchemeDetial: {
         name: "",
-        shiduanName: "",
-        shiduanCount: ""
       },
       formLabelWidth: "120px",
       rules: {
@@ -335,6 +330,30 @@ export default {
       }
     };
   },
-  
+  created () {
+    console.log('oooo');
+    // this.getMouthToDayBasic();
+  },
+  methods: {
+    openDialog(){
+      console.log('打开月到日基础页面');
+      this.getMouthToDayBasic();
+    },
+    getMouthToDayBasic(){
+      //获取机构名称列表
+      let id = 1
+      request({
+        // id是在  /buy  接口处获取到的
+        url: `/buy/mtod/${id}/basic`,
+        method: 'get'
+      }).then(res => {
+        console.log(5555, res);
+        this.timesasingSchemeDetial = res
+      })
+    },
+      // changeDialogFormVisible() {
+      //     this.$emit('changeDialogMouthToDayBase', false)
+      // }
+  },
 };
 </script>

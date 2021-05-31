@@ -60,7 +60,7 @@ export const loadMenus = (next, to) => {
       component: 'Layout',
       redirect: 'noredirect',
       name: 'usermanage',
-      meta: { activeName: 7, title: '数据管理',icon: 'menu'},
+      meta: { activeName: 7, title: '数据是理',icon: 'menu'},
       children: [
         {
           path: 'peddingapproval',
