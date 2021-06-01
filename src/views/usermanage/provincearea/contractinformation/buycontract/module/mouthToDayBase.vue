@@ -28,122 +28,122 @@
       <el-form-item
         label="1月份电量"
         :label-width="formLabelWidth"
-        prop="oneElic"
+        prop="m01"
         :rules="[
           { required: false, message: '请输入1月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.oneElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m01" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="2月份电量"
         :label-width="formLabelWidth"
-        prop="twoElic"
+        prop="m02"
         :rules="[
           { required: false, message: '请输入2月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.twoElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m02" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="3月份电量"
         :label-width="formLabelWidth"
-        prop="threeElic"
+        prop="m03"
         :rules="[
           { required: false, message: '请输入3月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.threeElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m03" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="4月份电量"
         :label-width="formLabelWidth"
-        prop="fourElic"
+        prop="m04"
         :rules="[
           { required: false, message: '请输入4月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.fourElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m04" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="5月份电量"
         :label-width="formLabelWidth"
-        prop="fiveElic"
+        prop="m05"
         :rules="[
           { required: false, message: '请输入5月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.fiveElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m05" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="6月份电量"
         :label-width="formLabelWidth"
-        prop="sixElic"
+        prop="m06"
         :rules="[
           { required: false, message: '请输入6月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.sixElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m06" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="7月份电量"
         :label-width="formLabelWidth"
-        prop="sevenElic"
+        prop="m07"
         :rules="[
           { required: false, message: '请输入7月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.sevenElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m07" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="8月份电量"
         :label-width="formLabelWidth"
-        prop="eightElic"
+        prop="m08"
         :rules="[
           { required: false, message: '请输入8月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.eightElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m08" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="9月份电量"
         :label-width="formLabelWidth"
-        prop="nineElic"
+        prop="m09"
         :rules="[
           { required: false, message: '请输入9月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.nineElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m09" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="10月份电量"
         :label-width="formLabelWidth"
-        prop="tenElic"
+        prop="m10"
         :rules="[
           { required: false, message: '请输入10月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.tenElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m10" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="11月份电量"
         :label-width="formLabelWidth"
-        prop="elevenElic"
+        prop="m11"
         :rules="[
           { required: false, message: '请输入11月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.elevenElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m11" autocomplete="off" />
       </el-form-item>
       <el-form-item
         label="12月份电量"
         :label-width="formLabelWidth"
-        prop="twelveElic"
+        prop="m12"
         :rules="[
           { required: false, message: '请输入12月份电量', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="timesasingSchemeDetial.twelveElic" autocomplete="off" />
+        <el-input v-model="timesasingSchemeDetial.m12" autocomplete="off" />
       </el-form-item>
       <!-- 请选择输入方式 -->
       <el-form-item 
@@ -330,10 +330,7 @@ export default {
       }
     };
   },
-  created () {
-    console.log('oooo');
-    // this.getMouthToDayBasic();
-  },
+  
   methods: {
     openDialog(){
       console.log('打开月到日基础页面');
@@ -351,9 +348,6 @@ export default {
         this.timesasingSchemeDetial = res
       })
     },
-      // changeDialogFormVisible() {
-      //     this.$emit('changeDialogMouthToDayBase', false)
-      // }
   },
 };
 </script>

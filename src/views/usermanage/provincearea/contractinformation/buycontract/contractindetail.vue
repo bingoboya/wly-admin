@@ -272,11 +272,11 @@ export default {
     };
   },
   created() {
-    this.getMenusTree();
-    this.getMenusTree();
+    this.getAgencyAll();
+    this.getGridList();
   },
   methods: {
-    getMenusTree() {
+    getAgencyAll() {
       //获取机构名称列表
       request({
         url: "/buy/agencyAll",
@@ -285,7 +285,7 @@ export default {
         this.orgName = res;
       });
     },
-    getMenusTree() {
+    getGridList() {
       //获取所属区域列表
       request({
         url: "/buy/gridList",

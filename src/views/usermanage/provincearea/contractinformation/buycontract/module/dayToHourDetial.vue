@@ -1,11 +1,11 @@
 <template>
   <!-- 分时方案详情页面弹窗 -->
   <!-- 打开分时方案详情页面弹窗 Dialog -->
-  <el-dialog title="购电合同-日分时详情页面" :visible.sync="dialogDayToHourDetial.toggle">
-    <div>日分时详情页面</div>
+  <el-dialog append-to-body title="购电合同-日分时详情页面" :visible.sync="dialogDayToHourDetial.toggle">
+    <div>日分时分解方案 1 月</div>
     <el-form :model="timesasingSchemeDetial">
       <el-form-item
-        label="年到月分时方案方案名称"
+        label="方案名称:"
         :label-width="formLabelWidth"
         prop="name"
         :rules="[
@@ -14,57 +14,42 @@
       >
         <el-input v-model="timesasingSchemeDetial.name" autocomplete="off" />
       </el-form-item>
-      <el-form-item
-        label="分时时段数"
-        :label-width="formLabelWidth"
-        prop="shiduanCount"
-        :rules="[
-          { required: true, message: '请输入方案名称', trigger: 'change' }
-        ]"
-      >
-        <el-select
-          v-model="timesasingSchemeDetial.shiduanCount"
-          clearable
-          placeholder="请选择活动区域"
-        >
+      <el-form-item label="工作日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
+        <el-select v-model="timesasingSchemeDetial.shiduanCount" clearable placeholder="请选择活动区域">
           <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
+          <el-option label="自定义" value="zidingyi" />
         </el-select>
+        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
       </el-form-item>
-      <el-form-item
-        label="时段名称"
-        :label-width="formLabelWidth"
-        prop="shiduanName"
-        :rules="[
-          { required: true, message: '请输入时段名称', trigger: 'change' }
-        ]"
-      >
-        <el-select
-          v-model="timesasingSchemeDetial.shiduanName"
-          clearable
-          placeholder="请选择活动区域"
-        >
+      <el-form-item label="周六曲线:" :label-width="formLabelWidth" prop="shiduanCount">
+        <el-select v-model="timesasingSchemeDetial.shiduanCount" clearable placeholder="请选择活动区域">
           <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
+          <el-option label="自定义" value="zidingyi" />
         </el-select>
+        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
       </el-form-item>
-      <el-form-item
-        label="起止时间*"
-        :label-width="formLabelWidth"
-        prop="startTime"
-        :rules="[
-          { required: true, message: '请输入起止时间*', trigger: 'change' }
-        ]"
-      >
-        <el-select
-          v-model="timesasingSchemeDetial.startTime"
-          clearable
-          placeholder="请选择起止时间"
-        >
+      <el-form-item label="周日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
+        <el-select v-model="timesasingSchemeDetial.shiduanCount" clearable placeholder="请选择活动区域">
           <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
+          <el-option label="自定义" value="zidingyi" />
         </el-select>
+        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
       </el-form-item>
+      <el-form-item label="法定节假日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
+        <el-select v-model="timesasingSchemeDetial.shiduanCount" clearable placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai" />
+          <el-option label="自定义" value="zidingyi" />
+        </el-select>
+        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
+      </el-form-item>
+      <el-form-item label="调休节假日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
+        <el-select v-model="timesasingSchemeDetial.shiduanCount" clearable placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai" />
+          <el-option label="自定义" value="zidingyi" />
+        </el-select>
+        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
+      </el-form-item>
+      
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogDayToHourDetial.toggle = false">取 消</el-button>
@@ -72,10 +57,13 @@
         >确 定</el-button
       >
     </div>
+    <dayToHourCurve :dialogDayToHourCurve='dialogDayToHourCurve' />
   </el-dialog>
 </template>
 <script>
+import dayToHourCurve from './dayToHourCurve'
 export default {
+  components:{dayToHourCurve},
   props: {
     dialogDayToHourDetial: {
       type: Object,
@@ -86,6 +74,7 @@ export default {
   },
   data() {
     return {
+      dialogDayToHourCurve: {toggle: false},
       // 分时方案详情页面 -- 弹窗表单
       timesasingSchemeDetial: {
         name: "",

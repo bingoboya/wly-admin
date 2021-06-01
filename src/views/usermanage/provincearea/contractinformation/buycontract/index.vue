@@ -22,7 +22,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="contractType" label="合同类型" />
-      <el-table-column prop="name" label="用户名称" />
+      <el-table-column prop="name" label="机构名称" />
       <el-table-column prop="year" label="合同年度" />
       <el-table-column prop="totalElectricity" label="合同电量" />
       <el-table-column prop="status" label="审批状态" />
