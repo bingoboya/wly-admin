@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="crud.props.searchToggle"
-  >
+  <div v-if="crud.props.searchToggle">
     <!-- <el-input v-model="query.name" clearable size="small" placeholder="输入岗位名称搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" /> -->
     <!-- <DateRangePicker v-model="query.createTime" class="date-item" /> -->
     <el-select v-model="query.enabled" clearable size="small" placeholder="状态" class="filter-item" style="width: 90px" @change="crud.toQuery">

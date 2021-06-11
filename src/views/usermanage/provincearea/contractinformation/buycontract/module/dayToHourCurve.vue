@@ -1,62 +1,80 @@
 <template>
   <!-- 日分时曲线编辑 -->
   <el-dialog
+    width="80%"
+    @open="openDialog"
+    @closed="showFormDom = false"
     append-to-body
     title="日分时曲线编辑"
     :visible.sync="dialogDayToHourCurve.toggle"
   >
-    <el-form :model="timesasingSchemeDetial">
+    <el-form :model="dayToHourDivisionData"
+      ref="ruleForm"
+      :inline="true"
+      :rules="rules"
+      label-width="120px"
+    >
       <div>
-        <div>日分时曲线编辑</div>
-        <div>
-          <el-form-item label="输入方式选择*">
-            <el-switch
-              active-text="24点"
-              inactive-text="12点"
-              :width="60"
-              v-model="timesasingSchemeDetial.chooseStyle"
-            />
-          </el-form-item>
-        </div>
-        <div>
-          <el-form-item
-            label="曲线名称"
-            :label-width="formLabelWidth"
-            prop="name"
-            :rules="[
-              { required: true, message: '请输入曲线名称', trigger: 'blur' },
-            ]"
-          >
-            <el-input
-              v-model="timesasingSchemeDetial.name"
-              autocomplete="off"
-            />
-          </el-form-item>
-        </div>
+        <el-form-item label="输入方式选择*">
+          <el-switch
+            active-text="24点"
+            inactive-text="96点"
+            active-color="#409EFF"
+            inactive-color="red"
+            :active-value="1"
+            :inactive-value="0"
+            :width="60"
+            v-model="dayToHourDivisionData.dataType"
+          />
+        </el-form-item>
+      </div>
+      <div>
+        <el-form-item
+          label="曲线名称"
+          :label-width="formLabelWidth"
+          prop="name"
+          :rules="[
+            { required: true, message: '请输入曲线名称', trigger: 'blur' },
+          ]"
+        >
+          <el-input v-model="dayToHourDivisionData.name" autocomplete="off" />
+        </el-form-item>
       </div>
     </el-form>
     <!-- 图表模块 -->
-    <div>
-      <div>
-        <el-table :data="tableData" border style="width: 100%">
-          <el-table-column prop="dateType" label="日期类型" />
-          <el-table-column prop="weight" label="权重" />
+    <div v-if="showFormDom">
+      <div style="display: flex;">
+        <el-table :data="rest.slice(0,rest.length/2)" border style="width: 100%">
+          <el-table-column prop="name" label="键" width="60px"/>
+          <el-table-column prop="value" label="值" />
+        </el-table>
+        <el-table :data="rest.slice(rest.length/2)" border style="width: 100%">
+          <el-table-column prop="name" label="键" width="60px"/>
+          <el-table-column prop="value" label="值" />
         </el-table>
       </div>
+      
       <div>
         <el-row
           style="background: #fff; padding: 16px 16px 0; margin-bottom: 32px"
         >
           <div class="chart-wrapper">
-            <dayToHourCurveEcharts />
+            <dayToHourCurveEcharts :rest="rest" />
           </div>
         </el-row>
       </div>
+    </div>
+    <div>
+      <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
     </div>
   </el-dialog>
 </template>
 <script>
 import dayToHourCurveEcharts from "./dayToHourCurveEcharts";
+import request from "@/utils/request";
 
 export default {
   components: { dayToHourCurveEcharts },
@@ -65,9 +83,48 @@ export default {
       type: Object,
     },
   },
-  methods: {},
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log("dayToHourDivisionData", this.dayToHourDivisionData);
+          // alert('submit!');
+        } else {
+          console.log("error submit!!");
+          console.log("dayToHourDivisionData", this.dayToHourDivisionData);
+          return false;
+        }
+      });
+    },
+    ///buy/dtop/{id}/division 获取日分时分解曲线-96点
+    getDayToHourDivision() {
+      //  获取日分时分解曲线方案详情页
+      let id = 2;
+      request({
+        // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
+        url: `/buy/dtop/${id}/division`,
+        method: "get",
+      }).then((res) => {
+        this.dayToHourDivisionData = res;
+        this.rest = []
+        for(let item in res){
+          if(item.indexOf('p') == 0){
+            this.rest.push({[item]: res[item], name: `${item}`, value: res[item]})
+          }
+        }
+        console.log(this.rest);
+        this.showFormDom = true;
+      });
+    },
+    openDialog() {
+      this.getDayToHourDivision();
+    },
+  },
   data() {
     return {
+      rest: [],
+      showFormDom: false, //接口数据拿到之后再渲染表单的dom结构，防止报错
+      dayToHourDivisionData: {},
       tableData: [
         {
           dateType: "节假日",
@@ -90,16 +147,17 @@ export default {
           weight: "0.75",
         },
       ],
-      // 分时方案详情页面 -- 弹窗表单
-      timesasingSchemeDetial: {
-        name: "",
-      },
       formLabelWidth: "120px",
+      rules:{}
     };
   },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+::v-deep .el-dialog__body {
+  max-height: 500px;
+  overflow: auto;
+}
 .chart-wrapper {
   background: #fff;
   padding: 16px 16px 0;
