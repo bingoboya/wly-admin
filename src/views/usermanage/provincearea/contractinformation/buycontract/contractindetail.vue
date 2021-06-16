@@ -37,8 +37,8 @@
                 style="width: 220px"
               >
                 <el-option
-                  v-for="item in meterNameList"
-                  :key="item.id"
+                  v-for="(item, index) in meterNameList"
+                  :key="`${item.id}${index}`"
                   style="width: 220px"
                   :label="item.name"
                   :value="item.id"
@@ -56,8 +56,8 @@
                 placeholder="所属区域"
               >
                 <el-option
-                  v-for="item in gridList"
-                  :key="item.id"
+                  v-for="(item, index) in gridList"
+                  :key="`${item.id}${index}`"
                   :label="item.name"
                   :value="item.id"
                 />
@@ -111,8 +111,8 @@
                 style="width: 220px"
               >
                 <el-option
-                  v-for="item in buycontractinfo.contracttypeinfoList"
-                  :key="item.id"
+                  v-for="(item, index) in buycontractinfo.contracttypeinfoList"
+                  :key="`${item.id}${index}`"
                   :label="item.name"
                   :value="item.id"
                 />
@@ -215,8 +215,8 @@
                 style="width: 220px"
               >
                 <el-option
-                  v-for="item in periodList"
-                  :key="item.id"
+                  v-for="(item, index) in periodList"
+                  :key="`${item.id}${index}`"
                   :label="item.name"
                   :value="item.id"
                 />
@@ -250,8 +250,8 @@
               placeholder="年到月分解方案"
             >
               <el-option
-                v-for="item in yearToMonthPlan"
-                :key="item.id"
+                v-for="(item, index) in yearToMonthPlan"
+                :key="`${item.id}${index}`"
                 :label="item.name"
                 :value="item.id"
               />
@@ -268,8 +268,8 @@
               placeholder="月到日分解方案"
             >
               <el-option
-                v-for="item in monthToDayPlan"
-                :key="item.id"
+                v-for="(item, index) in monthToDayPlan"
+                :key="`${item.id}${index}`"
                 :label="item.name"
                 :value="item.id"
               />
@@ -288,8 +288,8 @@
               placeholder="日分时分解方案"
             >
               <el-option
-                v-for="item in dayToHourPlan"
-                :key="item.id"
+                v-for="(item, index) in dayToHourPlan"
+                :key="`${item.id}${index}`"
                 :label="item.name"
                 :value="item.id"
               />

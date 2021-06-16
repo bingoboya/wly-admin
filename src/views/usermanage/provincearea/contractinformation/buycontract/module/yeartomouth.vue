@@ -3,6 +3,7 @@
   <!-- 打开分时方案详情页面弹窗 Dialog -->
   <div>
     <el-dialog
+      v-el-drag-dialog
       @open="openDialogYtoM"
       title="购电合同-年到月分解方案页"
       :visible.sync="dialogYearToMouth.toggle"
@@ -279,7 +280,9 @@
 </template>
 <script>
 import request from "@/utils/request";
+import elDragDialog from '@/components/Directive/el-drag-dialog'
 export default {
+  directives: { elDragDialog },
   props: {
     dialogYearToMouth: {
       type: Object,

@@ -4,51 +4,49 @@
   <el-dialog
     title="购电合同-月到日分时方案基本页"
     width="80%"
+    v-el-drag-dialog
     @open="openDialog"
     :visible.sync="dialogMouthToDayBase.toggle"
   >
-    <el-form :model="mouthToDayBaseDetail"
-        ref="ruleForm"
-        :rules="rules"
-        label-width="120px"
-        class="demo-form-inline"
+    <el-form
+      :model="mouthToDayBaseDetail"
+      ref="ruleForm"
+      :rules="rules"
+      label-width="120px"
+      class="demo-form-inline"
     >
-        <!-- #region -->
-
       <el-row :gutter="5">
         <el-col :span="8">
           <el-form-item
-        label="方案名称"
-        :label-width="formLabelWidth"
-        prop="name"
-        :rules="[
-          { required: true, message: '请输入方案名称', trigger: 'blur' },
-        ]"
-      >
-        <el-input v-model="mouthToDayBaseDetail.name" autocomplete="off" />
-      </el-form-item>
+            label="方案名称"
+            :label-width="formLabelWidth"
+            prop="name"
+            :rules="[
+              { required: true, message: '请输入方案名称', trigger: 'blur' },
+            ]"
+          >
+            <el-input v-model="mouthToDayBaseDetail.name" autocomplete="off" />
+          </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item
-        label="总电量(MWh)"
-        :label-width="formLabelWidth"
-        prop="totalElectricity"
-        :rules="[
-          { required: true, message: '请输入总电量（MWh）', trigger: 'blur' },
-        ]"
-      >
-        <el-input disabled
-          v-model="totalElectricity"
-          autocomplete="off"
-        />
-      </el-form-item>
+            label="总电量(MWh)"
+            :label-width="formLabelWidth"
+            prop="totalElectricity"
+            :rules="[
+              {
+                required: true,
+                message: '请输入总电量（MWh）',
+                trigger: 'blur',
+              },
+            ]"
+          >
+            <el-input disabled v-model="totalElectricity" autocomplete="off" />
+          </el-form-item>
         </el-col>
       </el-row>
-      <!--  -->
 
-
-      
-      
+      <!-- #region -->
       <el-row :gutter="5">
         <el-col :span="8">
           <el-form-item
@@ -213,6 +211,8 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <!-- #endregion -->
+
       <el-row>
         <el-col>
           <el-form-item
@@ -227,7 +227,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      
+
       <el-form-item label="全年统一方案：">
         <el-select
           :disabled="chooseEntyType == 1"
@@ -239,14 +239,43 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 1" type="primary" @click="showDialogMToDay()"
+        <el-button
+          :disabled="chooseEntyType == 1"
+          type="primary"
+          @click="showDialogMToDay()"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
+
+      <!-- <div v-for="(item,index) in mouthToDayBaseDetail.planDTOList" :key="`${index}${item.id}`">
+        <el-form-item :label="index == 0 ? '全年统一方案:' : `${index}月份方案:`">
+          <el-select
+            :disabled="index == 0 ? chooseEntyType == 1 : index == 0"
+            v-model="item.planId"
+            :placeholder="`${index}月份方案:`"
+          >
+            <el-option
+              v-for="val in decompositionScheme"
+              :key="val.id"
+              :label="val.name"
+              :value="val.id"
+            />
+            <el-option label="新增自定义方案" :value="5" />
+          </el-select>
+          <el-button
+            :disabled="index == 0 ? chooseEntyType == 1 : index == 0"
+            type="primary"
+            @click="showDialogMToDay(index)"
+            >查询/编辑/另存</el-button
+          >
+        </el-form-item>
+      </div> -->
+
+      <!-- #region -->
       <el-form-item label="1月份方案：">
         <el-select
           :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[0].planId"
+          v-model="mouthToDayBaseDetail.planDTOList[1].planId"
           placeholder="1月份方案："
         >
           <el-option
@@ -257,13 +286,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(1)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(1)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="2月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[1].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[2].planId"
           placeholder="2月份方案："
         >
           <el-option
@@ -274,13 +307,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(2)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(2)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="3月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[2].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[3].planId"
           placeholder="3月份方案："
         >
           <el-option
@@ -291,13 +328,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(3)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(3)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="4月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[3].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[4].planId"
           placeholder="4月份方案："
         >
           <el-option
@@ -308,13 +349,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(4)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(4)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="5月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[4].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[5].planId"
           placeholder="5月份方案："
         >
           <el-option
@@ -325,13 +370,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(5)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(5)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="6月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[5].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[6].planId"
           placeholder="6月份方案："
         >
           <el-option
@@ -342,13 +391,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(6)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(6)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="7月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[6].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[7].planId"
           placeholder="7月份方案："
         >
           <el-option
@@ -359,13 +412,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(7)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(7)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="8月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[7].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[8].planId"
           placeholder="8月份方案："
         >
           <el-option
@@ -376,13 +433,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(8)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(8)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="9月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[8].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[9].planId"
           placeholder="9月份方案："
         >
           <el-option
@@ -393,13 +454,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(9)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(9)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="10月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[9].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[10].planId"
           placeholder="10月份方案："
         >
           <el-option
@@ -410,13 +475,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(10)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(10)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="11月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[10].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[11].planId"
           placeholder="11月份方案："
         >
           <el-option
@@ -427,13 +496,17 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(11)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(11)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="12月份方案：">
-        <el-select :disabled="chooseEntyType == 0"
-          v-model="mouthToDayBaseDetail.planDTOList[11].planId"
+        <el-select
+          :disabled="chooseEntyType == 0"
+          v-model="mouthToDayBaseDetail.planDTOList[12].planId"
           placeholder="12月份方案："
         >
           <el-option
@@ -444,40 +517,55 @@
           />
           <el-option label="新增自定义方案" :value="999" />
         </el-select>
-        <el-button :disabled="chooseEntyType == 0" type="primary" @click="showDialogMToDay(12)"
+        <el-button
+          :disabled="chooseEntyType == 0"
+          type="primary"
+          @click="showDialogMToDay(12)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <!-- #endregion -->
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm', 'add')"
+        >另存</el-button
+      >
       <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
-      <el-button type="primary" @click="dialogMouthToDayBase.toggle = false">取 消</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm', 'save')"
+        >保存</el-button
+      >
+      <el-button type="primary" @click="submitForm('ruleForm')"
+        >保存并选择</el-button
+      >
+      <el-button type="primary" @click="dialogMouthToDayBase.toggle = false"
+        >取 消</el-button
+      >
       <!-- <el-button type="primary" @click="dialogMouthToDayBase.toggle = false"
         >确 定</el-button
       > -->
     </div>
-    <mouthToDayDetial :month='month'
-      :formDataDetial='formDataDetial'
-      :dayPropetieList='dayPropetieList'
-      :tableData='tableData'
-      :yearToMonPercentage1='yearToMonPercentage1'
-      :yearToMonPercentage2='yearToMonPercentage2'
-     :dialogMouthToDayDetial="dialogMouthToDayDetial" />
+    <mouthToDayDetial
+      :month="month"
+      :formDataDetial="formDataDetial"
+      :dayPropetieList="dayPropetieList"
+      :tableData="tableData"
+      :yearToMonPercentage1="yearToMonPercentage1"
+      :yearToMonPercentage2="yearToMonPercentage2"
+      :dialogMouthToDayDetial="dialogMouthToDayDetial"
+    />
   </el-dialog>
 </template>
 <script>
 import mouthToDayDetial from "./mouthToDayDetial";
 import request from "@/utils/request";
+import elDragDialog from '@/components/Directive/el-drag-dialog'
 
 export default {
+  directives: { elDragDialog },
   components: { mouthToDayDetial },
   props: {
-    totalElectricity:{
-      type: [String,Number]
+    totalElectricity: {
+      type: [String, Number],
     },
     dialogMouthToDayBase: {
       type: Object,
@@ -488,7 +576,7 @@ export default {
   },
   data() {
     return {
-      month: '', //当前点击的是哪个月份后面的按钮
+      month: "", //当前点击的是哪个月份后面的按钮
       chooseEntyType: "0",
       dialogMouthToDayDetial: { toggle: false },
       // 分时方案详情页面 -- 弹窗表单
@@ -509,18 +597,19 @@ export default {
         m12: "",
         name: "",
         planDTOList: [
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
-          { month: "", planId: "", planName: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
+          { month: "", planId: "" },
         ],
       },
       formLabelWidth: "120px",
@@ -535,7 +624,8 @@ export default {
       },
       formDataDetial: {},
       dayPropetieList: [],
-      tableData: [{
+      tableData: [
+        {
           dateTypeEnName: "holiWeight",
           dateType: "节假日",
           weight: "",
@@ -559,7 +649,8 @@ export default {
           dateTypeEnName: "holiworkweight",
           dateType: "调休节假日",
           weight: "",
-        }],
+        },
+      ],
       yearToMonPercentage1: {
         //年到月比例
         persent: [
@@ -596,37 +687,51 @@ export default {
     };
   },
   methods: {
-    saveMouthToDayBaseDetail(val){
+    saveMouthToDayBaseDetail(val) {
       request({
         url: "/buy/mtod/basic/save",
         method: "post",
-        data: val
-      }).then(res=>{
-        this.$message({
-          message: '保存成功',
-          type: 'success'
-        })
-      }).catch((error) => {
-        console.log(error);
-        this.$message.error('保存失败');
+        data: val,
       })
+        .then((res) => {
+          this.$message({
+            message: "保存成功",
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("保存失败");
+        });
     },
-    submitForm(formName) {
+    submitForm(formName, type) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.mouthToDayBaseDetail.mtodId = 1
-          console.log('mouthToDayBaseDetail:', this.mouthToDayBaseDetail);
-          this.saveMouthToDayBaseDetail(this.mouthToDayBaseDetail)
+          console.log("mouthToDayBaseDetail:", this.mouthToDayBaseDetail);
+          //新增时不传mtodId, 保存时传mtodId
+          //TODO: planDTOList 改成 monthPlanDTOList
+          let ar = JSON.parse(JSON.stringify(this.mouthToDayBaseDetail));
+          let res = {
+            name: ar.name,
+            monthPlanDTOList: ar.planDTOList,
+          };
+          if (type === "add") {
+            this.saveMouthToDayBaseDetail(res);
+          } else if (type === "save") {
+            // this.mouthToDayBaseDetail.mtodId = 1
+            res.mtodId = 1;
+            this.saveMouthToDayBaseDetail(res);
+          }
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
     },
-    async showDialogMToDay(month= 1){
-      this.month = month
-      await this.getMouthToDayDetail(month)
-      await console.log('await 2');
+    async showDialogMToDay(month = 1) {
+      this.month = month;
+      await this.getMouthToDayDetail(month);
+      await console.log("await 2");
       // this.dialogMouthToDayDetial.toggle = true
     },
     getMouthToDayDetail(month) {
@@ -637,28 +742,30 @@ export default {
         // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
         url: `/buy/${month}/${mtodId}/detail?month=${month}`,
         method: "get",
-      }).then((res) => {
-        console.log("获取月到日分解曲线方案详情页-");
-        this.formDataDetial = res.weightMtod;
-        this.dayPropetieList = res.dayPropetieList;
-        console.log('await 1', this.dayPropetieList.length);
-        this.yearToMonPercentage1.persent[0].list.forEach(
-          (item) => (item.persentVal = res.curveytom[item.key])
-        );
-        this.yearToMonPercentage2.persent[0].list.forEach(
-          (item) => (item.persentVal = res.curveytom[item.key])
-        );
-        this.tableData.forEach((item) => {
-          return (item.weight = res.weightMtod[item.dateTypeEnName]);
+      })
+        .then((res) => {
+          console.log("获取月到日分解曲线方案详情页-");
+          this.formDataDetial = res.weightMtod;
+          this.dayPropetieList = res.dayPropetieList;
+          console.log("await 1", this.dayPropetieList.length);
+          this.yearToMonPercentage1.persent[0].list.forEach(
+            (item) => (item.persentVal = res.curveytom[item.key])
+          );
+          this.yearToMonPercentage2.persent[0].list.forEach(
+            (item) => (item.persentVal = res.curveytom[item.key])
+          );
+          this.tableData.forEach((item) => {
+            return (item.weight = res.weightMtod[item.dateTypeEnName]);
+          });
+        })
+        .then(() => {
+          console.log("await 3", this.dayPropetieList.length);
+          this.dialogMouthToDayDetial.toggle = true;
         });
-      }).then(()=>{
-        console.log('await 3', this.dayPropetieList.length);
-        this.dialogMouthToDayDetial.toggle = true
-      });
     },
     openDialog() {
       console.log("打开月到日基础页面");
-      this.getMouthToDayBasic()
+      this.getMouthToDayBasic();
     },
     getMouthToDayBasic() {
       //获取月到日分解曲线方案基本页
@@ -669,9 +776,13 @@ export default {
         method: "get",
       }).then((res) => {
         console.log(5555, res);
+        res.planDTOList.forEach((item) => delete item.planName);
         this.mouthToDayBaseDetail = res;
-        this.$set(this.mouthToDayBaseDetail, 'totalElectricity', this.totalElectricity)
-
+        this.$set(
+          this.mouthToDayBaseDetail,
+          "totalElectricity",
+          this.totalElectricity
+        );
       });
     },
   },

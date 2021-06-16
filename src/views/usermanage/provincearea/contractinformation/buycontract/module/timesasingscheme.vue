@@ -3,6 +3,7 @@
   <!-- 打开分时方案详情页面弹窗 Dialog -->
   <el-dialog
     width="80%"
+    v-el-drag-dialog
     custom-class="bingo"
     @open="openDialog"
     @closed="showFormDom = false"
@@ -123,7 +124,9 @@
 </template>
 <script>
 import request from "@/utils/request";
+import elDragDialog from '@/components/Directive/el-drag-dialog'
 export default {
+  directives: { elDragDialog },
   props: {
     showDialogFormVisible: {
       type: Object,

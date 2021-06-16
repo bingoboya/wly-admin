@@ -3,6 +3,7 @@
   <el-dialog
     width="80%"
     destroy-on-close
+    v-el-drag-dialog
     @open="openDialog"
     append-to-body
     :title="`购电合同-月到日分解方案-${month}月详情页`"
@@ -156,7 +157,10 @@
 <script>
 import request from "@/utils/request";
 import categoryEcharts from "../categoryEcharts";
+import elDragDialog from '@/components/Directive/el-drag-dialog'
+
 export default {
+  directives: { elDragDialog },
   methods: {
     saveFormDataDetial(val){
       request({
