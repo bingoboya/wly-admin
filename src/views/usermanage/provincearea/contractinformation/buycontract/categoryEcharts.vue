@@ -110,7 +110,6 @@ export default {
         // "30日",
         // "31日",
       ];
-      console.log(999999999999);
       return Array.from({ length: this.dayPropetieList.length }).map(
         (v, k) => `${k + 1}日`
       );

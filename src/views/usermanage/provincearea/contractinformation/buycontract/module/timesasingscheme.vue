@@ -62,10 +62,7 @@
             </el-form-item>
           </div>
           <div style="flex: 7; margin-left: 20px; margin-bottom: 20px">
-            <el-form-item label="起止时间"
-              v-for="(timeItem, nums) in items.periodTimeList"
-              :key="nums"
-            >
+            <el-form-item label="起止时间" v-for="(timeItem, nums) in items.periodTimeList" :key="nums">
               <div>
                 <el-time-select
                   placeholder="起始时间"
@@ -95,16 +92,13 @@
               <el-button
                 @click="removeEnvironmentForm(index)"
                 v-if="items.periodTimeList.length > 1"
-                size="mini"
                 type="primary"
                 icon="el-icon-delete"
               />
               <el-button
                 @click="addEnvironmentForm(index)"
-                size="mini"
                 class="el-icon-plus"
               />
-              <!-- <i @click="removeEnvironmentForm(index)" v-if="items.periodTimeList.length > 1" style="font-size:28px;cursor:pointer;" class="el-icon-delete"></i> -->
             </div>
           </div>
         </div>
@@ -149,8 +143,29 @@ export default {
     };
   },
   methods: {
+    //添加表单项事件
+    addEnvironmentForm(index) {
+      this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
+        index
+      ].periodTimeList.push({
+        startTime: "00:00",
+        endTime: "00:00",
+      });
+    },
+    //移除表单项事件
+    removeEnvironmentForm(index) {
+      this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
+        index
+      ].periodTimeList.pop();
+    },
     bingo(timeItem) {
-      console.log(this.timesasingSchemeDetial);
+      const list = this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList
+      let arr = []
+      list.forEach(item =>{
+        arr.push(...item.periodTimeList)
+      })
+      console.log(111, timeItem.startTime, timeItem.endTime);
+      console.log(222, arr);
     },
     saveTimesasingSchemeDetial(val){
       //保存 购电合同-分时方案 页面信息
@@ -247,22 +262,7 @@ export default {
         this.showFormDom = true; //接口数据拿到之后再渲染表单的dom结构，防止报错
       });
     },
-    //添加表单项事件
-    addEnvironmentForm(index) {
-      this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
-        index
-      ].periodTimeList.push({
-        startTime: "2000-1-01 10:00:00",
-        endTime: "2111-1-02 20:00:00",
-      });
-    },
-    //移除表单项事件
-    removeEnvironmentForm(index) {
-      this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
-        index
-      ].periodTimeList.pop();
-      // this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[index].periodTimeList = aa
-    },
+    
     openDialog() {
       this.getTpcfgDetial();
     },
