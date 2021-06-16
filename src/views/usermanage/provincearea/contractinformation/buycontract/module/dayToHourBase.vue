@@ -1,29 +1,47 @@
 <template>
   <!-- 分时方案详情页面弹窗 -->
   <!-- 打开分时方案详情页面弹窗 Dialog -->
-  <el-dialog width="80%" @open="openDialog" title="购电合同-日分时分解方案基础页" :visible.sync="dialogDayToHourBase.toggle">
-    <el-form :model="timesasingSchemeDetial">
-      <el-form-item
-        label="方案名称"
-        :label-width="formLabelWidth"
-        prop="name"
-        :rules="[
-          { required: true, message: '请输入方案名称', trigger: 'blur' }
-        ]"
-      >
-        <el-input v-model="timesasingSchemeDetial.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item
-        label="总电量(MWh)"
-        :label-width="formLabelWidth"
-        prop="totalElic"
-        :rules="[
-          { required: true, message: '请输入总电量（MWh）', trigger: 'blur' }
-        ]"
-      >
-        <el-input disabled v-model="totalElectricity" autocomplete="off" />
-      </el-form-item>
-      
+  <el-dialog
+    width="80%"
+    @open="openDialog"
+    title="购电合同-日分时分解方案基础页"
+    :visible.sync="dialogDayToHourBase.toggle"
+  >
+    <el-form :model="timesasingSchemeDetial" label-width="120px">
+      <el-row :gutter="5">
+        <el-col :span="8">
+          <el-form-item
+            label="方案名称"
+            :label-width="formLabelWidth"
+            prop="name"
+            :rules="[
+              { required: true, message: '请输入方案名称', trigger: 'blur' },
+            ]"
+          >
+            <el-input
+              v-model="timesasingSchemeDetial.name"
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item
+            label="总电量(MWh)"
+            :label-width="formLabelWidth"
+            prop="totalElic"
+            :rules="[
+              {
+                required: true,
+                message: '请输入总电量（MWh）',
+                trigger: 'blur',
+              },
+            ]"
+          >
+            <el-input disabled v-model="totalElectricity" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-row :gutter="5">
         <el-col :span="8">
           <el-form-item
@@ -31,7 +49,11 @@
             :label-width="formLabelWidth"
             prop="m01"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m01" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m01"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -40,7 +62,11 @@
             :label-width="formLabelWidth"
             prop="m02"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m02" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m02"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -49,7 +75,11 @@
             :label-width="formLabelWidth"
             prop="m03"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m03" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m03"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -61,7 +91,11 @@
             :label-width="formLabelWidth"
             prop="m04"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m04" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m04"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -70,7 +104,11 @@
             :label-width="formLabelWidth"
             prop="m05"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m05" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m05"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -79,7 +117,11 @@
             :label-width="formLabelWidth"
             prop="m06"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m06" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m06"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -91,7 +133,11 @@
             :label-width="formLabelWidth"
             prop="m07"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m07" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m07"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -100,7 +146,11 @@
             :label-width="formLabelWidth"
             prop="m08"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m08" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m08"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -109,7 +159,11 @@
             :label-width="formLabelWidth"
             prop="m09"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m09" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m09"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -121,7 +175,11 @@
             :label-width="formLabelWidth"
             prop="m10"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m10" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m10"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -130,7 +188,11 @@
             :label-width="formLabelWidth"
             prop="m11"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m11" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m11"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -139,12 +201,17 @@
             :label-width="formLabelWidth"
             prop="m12"
           >
-            <el-input disabled v-model="timesasingSchemeDetial.m12" autocomplete="off" />
+            <el-input
+              disabled
+              v-model="timesasingSchemeDetial.m12"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <!-- 请选择输入方式 -->
-      <el-form-item label="输入方式选择"
+      <el-form-item
+        label="输入方式选择"
         :label-width="formLabelWidth"
         prop="chooseEntyType"
         :rules="[
@@ -346,93 +413,91 @@
         >确 定</el-button
       >
     </div>
-    <dayToHourDetial :dialogDayToHourDetial='dialogDayToHourDetial' />
+    <dayToHourDetial :dialogDayToHourDetial="dialogDayToHourDetial" />
   </el-dialog>
 </template>
 <script>
-import dayToHourDetial from './dayToHourDetial'
-import request from '@/utils/request'
+import dayToHourDetial from "./dayToHourDetial";
+import request from "@/utils/request";
 export default {
-  components:{dayToHourDetial},
+  components: { dayToHourDetial },
   props: {
     dialogDayToHourBase: {
       type: Object,
     },
-    totalElectricity:{
-      type: [String,Number]
+    totalElectricity: {
+      type: [String, Number],
     },
   },
-  created () {
-    console.log('日到时基本页');;
+  created() {
+    console.log("日到时基本页");
   },
   data() {
     return {
-      chooseEntyType: '0',
-      dialogDayToHourDetial: {toggle: false},
+      chooseEntyType: "0",
+      dialogDayToHourDetial: { toggle: false },
       // 分时方案详情页面 -- 弹窗表单
       timesasingSchemeDetial: {
-        dataType: '',
-        id: '',
-        m01: '',
-        m02: '',
-        m03: '',
-        m04: '',
-        m05: '',
-        m06: '',
-        m07: '',
-        m08: '',
-        m09: '',
-        m10: '',
-        m11: '',
-        m12: '',
+        dataType: "",
+        id: "",
+        m01: "",
+        m02: "",
+        m03: "",
+        m04: "",
+        m05: "",
+        m06: "",
+        m07: "",
+        m08: "",
+        m09: "",
+        m10: "",
+        m11: "",
+        m12: "",
         name: "",
         planDTOList: [
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month: '', planId: '', planName: "" },
-          { month:  '', planId: '', planName: "" },
-          { month:  '', planId: '', planName: "" },
-          { month:  '', planId: '', planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
+          { month: "", planId: "", planName: "" },
         ],
       },
       formLabelWidth: "120px",
       rules: {
         contractName: [
           { required: true, message: "请输入合同名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
         startDate: [
-          { required: true, message: "请输入起始时间", trigger: "change" }
-        ]
-      }
+          { required: true, message: "请输入起始时间", trigger: "change" },
+        ],
+      },
     };
   },
   methods: {
-      openDialog(){
-        console.log('打开日分时基础页面');
-        this.getMouthToDayBasic();
-      },
-    getMouthToDayBasic(){
+    openDialog() {
+      console.log("打开日分时基础页面");
+      this.getMouthToDayBasic();
+    },
+    getMouthToDayBasic() {
       //获取机构名称列表
-      let id = 1
+      let id = 1;
       request({
         // id是在  /buy  接口处获取到的
         url: `/buy/dtop/${id}/basic`,
-        method: 'get'
-      }).then(res => {
+        method: "get",
+      }).then((res) => {
         console.log(5555, res);
-        this.timesasingSchemeDetial = res
-      })
+        this.timesasingSchemeDetial = res;
+      });
     },
   },
-  
-  
 };
 </script>
 <style lang="scss" scoped>

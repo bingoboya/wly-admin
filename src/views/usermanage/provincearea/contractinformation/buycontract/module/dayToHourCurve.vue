@@ -10,11 +10,11 @@
   >
     <el-form :model="dayToHourDivisionData"
       ref="ruleForm"
-      :inline="true"
       :rules="rules"
       label-width="120px"
     >
-      <div>
+    <el-row :gutter="5">
+      <el-col :span='8'>
         <el-form-item label="输入方式选择*">
           <el-switch
             active-text="24点"
@@ -27,8 +27,8 @@
             v-model="dayToHourDivisionData.dataType"
           />
         </el-form-item>
-      </div>
-      <div>
+      </el-col>
+      <el-col :span='8'>
         <el-form-item
           label="曲线名称"
           :label-width="formLabelWidth"
@@ -39,7 +39,14 @@
         >
           <el-input v-model="dayToHourDivisionData.name" autocomplete="off" />
         </el-form-item>
-      </div>
+      </el-col>
+    </el-row>
+      <!-- <div> -->
+        
+      <!-- </div> -->
+      <!-- <div> -->
+        
+      <!-- </div> -->
     </el-form>
     <!-- 图表模块 -->
     <div v-if="showFormDom">
@@ -65,11 +72,21 @@
       </div>
     </div>
     <div>
-      <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
+      <!-- <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button> -->
+    </div>
+    <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
-    </div>
+        <el-button type="primary" @click="dialogYearToMouth.toggle = false">取 消</el-button>
+        <!-- <el-button type="primary" @click="dialogYearToMouth.toggle = false"
+          >确 定</el-button
+        > -->
+      </div>
   </el-dialog>
 </template>
 <script>

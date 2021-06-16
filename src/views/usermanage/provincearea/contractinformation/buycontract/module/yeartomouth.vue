@@ -10,37 +10,48 @@
     >
       <el-form :model="yearToMonthDetail"
         ref="ruleForm"
-        :inline="true"
         :rules="rules"
-        class="demo-form-inline"
+        label-width="120px"
       >
         <!-- #region -->
-        <el-form-item label="方案名称"
-          :label-width="formLabelWidth"
-          prop="name"
-          :rules="[
-            { required: true, message: '请输入方案名称', trigger: 'blur' },
-          ]"
-        >
-          <el-input v-model="yearToMonthDetail.name" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="总电量(MWh)"
-          :label-width="formLabelWidth"
-          prop="totalElectricity"
-          :rules="[
-            { required: true, message: '请输入总电量（MWh）', trigger: 'blur' },
-          ]"
-        >
-          <el-input disabled v-model="totalElectricity" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="输入方式选择">
-          <el-switch
-            active-text="电量"
-            inactive-text="比例"
-            :width="60"
-            v-model="chooseStyle"
-          />
-        </el-form-item>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="方案名称"
+              :label-width="formLabelWidth"
+              prop="name"
+              :rules="[
+                { required: true, message: '请输入方案名称', trigger: 'blur' },
+              ]"
+            >
+              <el-input v-model="yearToMonthDetail.name" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="总电量(MWh)"
+            :label-width="formLabelWidth"
+            prop="totalElectricity"
+            :rules="[
+              { required: true, message: '请输入总电量（MWh）', trigger: 'blur' },
+            ]"
+          >
+            <el-input disabled v-model="totalElectricity" autocomplete="off" />
+          </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="输入方式选择">
+            <el-switch
+              active-text="电量"
+              inactive-text="比例"
+              :width="60"
+              v-model="chooseStyle"
+            />
+          </el-form-item>
+          </el-col>
+        
+          
+          
+          
+        </el-row>
 
         <el-row :gutter="5">
           <el-col :span="8">
@@ -248,16 +259,20 @@
           <!-- #endregion -->
       </el-form>
       <div>
-          <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
+          <!-- <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
           <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
           <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button> -->
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogYearToMouth.toggle = false">取 消</el-button>
-        <el-button type="primary" @click="dialogYearToMouth.toggle = false"
+        <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
+        <el-button type="primary" @click="dialogYearToMouth.toggle = false">取 消</el-button>
+        <!-- <el-button type="primary" @click="dialogYearToMouth.toggle = false"
           >确 定</el-button
-        >
+        > -->
       </div>
     </el-dialog>
   </div>
@@ -290,12 +305,29 @@ export default {
       },
     };
   },
+  
   methods: {
+    saveYearToMonthDetail(val){
+      request({
+        url: "/buy/ytom/save",
+        method: "post",
+        data: val
+      }).then(res=>{
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+      }).catch((error) => {
+        console.log(error);
+        this.$message.error('保存失败');
+      })
+    },
     submitForm(formName) {
+      let that = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('yearToMonthDetail', this.yearToMonthDetail);
-          // alert('submit!');
+          console.log('yearToMonthDetail', that.yearToMonthDetail);
+          that.saveYearToMonthDetail(that.yearToMonthDetail)
         } else {
           console.log('error submit!!');
           return false;

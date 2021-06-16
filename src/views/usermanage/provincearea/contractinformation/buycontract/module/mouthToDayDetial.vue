@@ -11,7 +11,6 @@
     <el-form
       :model="formDataDetial"
       ref="ruleForm"
-      :inline="true"
       :rules="rules"
       label-width="120px"
     >
@@ -133,12 +132,24 @@
       </div>
     </div>
     <div>
+      <!-- <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')"
+        >保存并选择</el-button
+      > -->
+    </div>
+    <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')"
         >保存并选择</el-button
       >
+      <el-button type="primary" @click="dialogMouthToDayBase.toggle = false">取 消</el-button>
+      <!-- <el-button type="primary" @click="dialogMouthToDayBase.toggle = false"
+        >确 定</el-button
+      > -->
     </div>
   </el-dialog>
 </template>
@@ -147,14 +158,28 @@ import request from "@/utils/request";
 import categoryEcharts from "../categoryEcharts";
 export default {
   methods: {
+    saveFormDataDetial(val){
+      request({
+        url: "/buy/mtod/detail/save",
+        method: "post",
+        data: val
+      }).then(res=>{
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+      }).catch((error) => {
+        console.log(error);
+        this.$message.error('保存失败');
+      })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log("formDataDetial", this.formDataDetial);
-          // alert('submit!');
+          this.saveFormDataDetial(this.formDataDetial)
         } else {
           console.log("error submit!!");
-          console.log("formDataDetial", this.formDataDetial);
           return false;
         }
       });
@@ -266,6 +291,7 @@ export default {
       },
     };
   },
+  
   components: {
     categoryEcharts,
   },

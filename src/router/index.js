@@ -144,7 +144,7 @@ export const loadMenus = (next, to) => {
   ]
   buildMenus().then(res => {
     //TODO 临时写死路由
-    res = menusBuild1
+    // res = menusBuild1
     const sdata = JSON.parse(JSON.stringify(res))
     const rdata = JSON.parse(JSON.stringify(res))
     const rewriteRoutes = filterAsyncRouter(rdata, true)

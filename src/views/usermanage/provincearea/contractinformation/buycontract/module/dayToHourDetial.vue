@@ -1,11 +1,10 @@
 <template>
   <!-- 分时方案详情页面弹窗 -->
   <!-- 打开分时方案详情页面弹窗 Dialog -->
-  <el-dialog width="80%" @open="openDialog" append-to-body title="购电合同-日分时详情页面" :visible.sync="dialogDayToHourDetial.toggle">
-    <div>日分时分解方案 1 月</div>
+  <el-dialog width="80%" @open="openDialog" append-to-body title="购电合同-日分时分解方案 1 月" :visible.sync="dialogDayToHourDetial.toggle">
+    <!-- <div>日分时分解方案 1 月</div> -->
     <el-form :model="dayToHourDetail"
       ref="ruleForm"
-      :inline="true"
       :rules="rules"
       label-width="120px"
     >
@@ -17,7 +16,7 @@
           { required: true, message: '请输入方案名称', trigger: 'blur' }
         ]"
       >
-        <el-input v-model="dayToHourDetail.name" autocomplete="off" />
+        <el-input style="width: 194px" v-model="dayToHourDetail.name" autocomplete="off" />
       </el-form-item>
       <el-form-item label="工作日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
         <el-select v-model="dayToHourDetail.friCurID" clearable placeholder="请选择活动区域">
@@ -49,19 +48,16 @@
         </el-select>
         <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
       </el-form-item>
-      
     </el-form>
-    <div>
+    <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
-    </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogDayToHourDetial.toggle = false">取 消</el-button>
-      <el-button type="primary" @click="dialogDayToHourDetial.toggle = false"
+      <el-button type="primary" @click="dialogDayToHourDetial.toggle = false">取 消</el-button>
+      <!-- <el-button type="primary" @click="dialogDayToHourDetial.toggle = false"
         >确 定</el-button
-      >
+      > -->
     </div>
     <dayToHourCurve :dialogDayToHourCurve='dialogDayToHourCurve' />
   </el-dialog>
@@ -77,14 +73,29 @@ export default {
     }
   },
   methods: {
+    saveDayToHourDetail(val){
+      request({
+        url: "/buy/dtop/detail/save",
+        method: "post",
+        data: val
+      }).then(res=>{
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+      }).catch((error) => {
+        console.log(error);
+        this.$message.error('保存失败');
+      })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.dayToHourDetail.id = 1
           console.log("dayToHourDetail", this.dayToHourDetail);
-          // alert('submit!');
+          this.saveDayToHourDetail(this.dayToHourDetail)
         } else {
           console.log("error submit!!");
-          console.log("dayToHourDetail", this.dayToHourDetail);
           return false;
         }
       });
