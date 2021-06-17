@@ -63,29 +63,49 @@
           </div>
           <div style="flex: 7; margin-left: 20px; margin-bottom: 20px">
             <el-form-item label="起止时间" v-for="(timeItem, nums) in items.periodTimeList" :key="nums">
-              <div>
-                <el-time-select
-                  placeholder="起始时间"
-                  v-model="timeItem.startTime"
-                  @change="bingo(timeItem)"
-                  :picker-options="{
-                    start: '00:00',
-                    step: '00:15',
-                    end: '24:00',
-                  }"
-                >
-                </el-time-select>
-                <el-time-select
-                  placeholder="结束时间"
-                  v-model="timeItem.endTime"
-                  :picker-options="{
-                    start: '00:00',
-                    step: '00:15',
-                    end: '24:00',
-                    minTime: timeItem.startTime,
-                  }"
-                >
-                </el-time-select>
+              <div style="display: flex;">
+                <!-- <el-form-item 
+                  :prop='`timeperiodofusecfgSmallDTOList[${index}].periodTimeList[${nums}].startTime`'
+                  :rules="[
+                    {required: true, message: '时间不能为空', trigger: 'blur'},
+                    { validator: checkAge, trigger: 'blur' }
+                  ]"
+                > -->
+                <el-form-item>
+                  <el-time-select
+                    placeholder="起始时间"
+                    :editable='false'
+                    :clearable='false'
+                    v-model="timeItem.startTime"
+                    @change="bingo(timeItem, items.periodTimeList, nums)"
+                    :picker-options="{
+                      start: '00:00',
+                      step: '00:15',
+                      end: '24:00',
+                      maxTime: timeItem.endTime,
+                    }"
+                  />
+                </el-form-item>
+                <el-form-item>
+                <!-- <el-form-item 
+                  :prop='`timeperiodofusecfgSmallDTOList[${index}].periodTimeList[${nums}].endTime`'
+                  :rules="[
+                    {required: true, message: '时间不能为空', trigger: 'blur'},
+                    { validator: checkAge, trigger: 'blur' }
+                  ]"
+                > -->
+                  <el-time-select
+                    placeholder="结束时间"
+                    v-model="timeItem.endTime"
+                    @change="bingo(timeItem, items.periodTimeList, nums)"
+                    :picker-options="{
+                      start: '00:00',
+                      step: '00:15',
+                      end: '24:00',
+                      minTime: timeItem.startTime,
+                    }"
+                  />
+                </el-form-item>
               </div>
             </el-form-item>
             <div style="display: flex; justify-content: flex-end">
@@ -128,8 +148,6 @@ export default {
   },
   data() {
     return {
-      startTime: "", //起始时间
-      endTime: "", //结束时间
       showFormDom: false, //接口数据拿到之后再渲染表单的dom结构，防止报错
       // 分时方案详情页面 -- 弹窗表单
       timesasingSchemeDetial: {
@@ -143,6 +161,42 @@ export default {
     };
   },
   methods: {
+    checkAge(rule, value, callback){
+      // console.log('rule:', rule);
+      // const list = this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList
+      // let arr = []
+      // list.forEach(item =>{
+      //   arr.push(...item.periodTimeList)
+      // })
+      // let startArr = [],endArr = [];
+      // // startTime.map((item)=>{ startArr.push(getFormatDate(item)); });
+      // // endTime.map((item)=>{ endArr.push(getFormatDate(item)); });
+      // arr.forEach((item,index) => {
+      //   startArr.push(item.startTime)
+      //   endArr.push(item.endTime)
+      // })
+      // for(let i=1;i<startArr.length;i++){
+      //     if (startArr[i] <= endArr[i-1]){
+      //         console.log(9999999, '时间段存在重叠！');
+      //         break;
+      //     }
+      // }
+      // console.log('value:', value, 'arr:', arr, 'startArr:', startArr, 'endArr:', endArr);
+      // if(value > '10:15'){
+      //   callback(new Error('选择的时间有交叉'));
+      // }else{
+      //   callback()
+      // }
+    },
+    bingo(timeItem, aa, nums) {
+      // const list = this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList
+      // let arr = []
+      // list.forEach(item =>{
+      //   arr.push(...item.periodTimeList)
+      // })
+      // console.log(111, timeItem.startTime, timeItem.endTime);
+      // console.log(222, list, arr, aa, nums);
+    },
     //添加表单项事件
     addEnvironmentForm(index) {
       this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
@@ -157,15 +211,6 @@ export default {
       this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
         index
       ].periodTimeList.pop();
-    },
-    bingo(timeItem) {
-      const list = this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList
-      let arr = []
-      list.forEach(item =>{
-        arr.push(...item.periodTimeList)
-      })
-      console.log(111, timeItem.startTime, timeItem.endTime);
-      console.log(222, arr);
     },
     saveTimesasingSchemeDetial(val){
       //保存 购电合同-分时方案 页面信息
@@ -183,11 +228,67 @@ export default {
       //   this.$message.error('保存失败');
       // })
     },
+    validateQujian(timeItem, aa, nums) {
+      //判断区间是否有交叉 或者时间段总和不等于24小时
+      //把时间区间按照开始时间进行排序，再判断前一个的结束时间和后一个的开始时间是否相等，如果不想等，则表示时间区间断了
+      const list = this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList
+      let arr = []
+      let continued = true
+      list.forEach(item =>{
+        arr.push(...item.periodTimeList)
+      })
+      console.log(222, list, arr);
+      arr.sort(this.sortBy('startTime',1))
+      arr.forEach((item, index)=>{
+        if(index == arr.length - 1) return
+        if(item.endTime !== arr[index+1].startTime){
+          // 时间段不是连续的
+          continued = false
+          this.$message.error('时间段不连续');
+          console.log(index, '时间段不连续', item.startTime, arr[index+1].startTime);
+        }else{
+          console.log(index, '时间段连续', item.startTime, arr[index+1].startTime);
+        }
+      })
+      //如果发现时间段不是连续的，再判断时间段相加是否是24小时
+      if(continued){
+        this.validateAllTime(arr)
+      }
+    },
+    validateAllTime(arr){
+      let timeArr = JSON.parse(JSON.stringify(arr))
+      let ret = 0 //合计时间总时长（分种）
+      timeArr.forEach(item => {
+        console.log('startTime:', item.startTime.split(':'), 'endTime:', item.endTime.split(':'));
+        let start = item.startTime.split(':')
+        let end = item.endTime.split(':')
+        let a = (end[0] - start[0])*60 + (end[1] - start[1])
+        ret += a
+        console.log(end[0] - start[0], end[1] - start[1], a, ret);
+      })
+      if(ret !== 1440){
+        this.$message.error('时间总和不是24小时');
+        console.log('时间总和不是24小时');
+      }
+    },
+    sortBy(attr,rev){
+      //attr：根据该属性排序；rev：升序1或降序-1，不填则默认为1
+          if( rev==undefined ){ rev=1 }else{ (rev)?1:-1; }
+          return function (a,b){
+              a=a[attr];
+              b=b[attr];
+              if(a<b){ return rev*-1}
+              if(a>b){ return rev* 1 }
+              return 0;
+          }
+      },
     //提交事件
     submitForm(formName) {
+      //判断区间是否有交叉或者时间段总和不等于24小时
+      this.validateQujian()
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log("提交", this.timesasingSchemeDetial);
+          // console.log("提交", this.timesasingSchemeDetial);
           this.saveTimesasingSchemeDetial(this.timesasingSchemeDetial)
         } else {
           console.log("error submit!!");
@@ -205,21 +306,21 @@ export default {
             periodName: "谷",
             periodTimeList: [
               {
-                startTime: "00:15",
-                endTime: "00:15",
+                startTime: "00:00",
+                endTime: "24:00",
               },
               {
-                startTime: "00:15",
-                endTime: "00:15",
+                startTime: "00:00",
+                endTime: "24:00",
               },
-              {
-                startTime: "00:15",
-                endTime: "00:15",
-              },
-              {
-                startTime: "00:15",
-                endTime: "00:15",
-              },
+              // {
+              //   startTime: "00:00",
+              //   endTime: "24:00",
+              // },
+              // {
+              //   startTime: "00:00",
+              //   endTime: "24:00",
+              // },
             ],
           },
           {
@@ -227,10 +328,10 @@ export default {
             periodName: "平",
             periodTimeList: [
               {
-                startTime: "00:15",
-                endTime: "00:15",
+                startTime: "00:00",
+                endTime: "24:00",
               },
-              { startTime: "00:15", endTime: "00:15" },
+              { startTime: "00:00", endTime: "24:00" },
             ],
           },
           {
@@ -238,10 +339,10 @@ export default {
             periodName: "高",
             periodTimeList: [
               {
-                startTime: "00:15",
-                endTime: "00:15",
+                startTime: "00:00",
+                endTime: "24:00",
               },
-              { startTime: "00:15", endTime: "00:15" },
+              { startTime: "00:00", endTime: "24:00" },
             ],
           },
         ],
@@ -252,8 +353,8 @@ export default {
         url: `/buy/tpcfg/${id}/detail`,
         method: "get",
       }).then((res) => {
-        // this.timesasingSchemeDetial = res;
-        this.timesasingSchemeDetial = result;
+        this.timesasingSchemeDetial = res;
+        // this.timesasingSchemeDetial = result;
         this.$set(
           this.timesasingSchemeDetial,
           "len",
