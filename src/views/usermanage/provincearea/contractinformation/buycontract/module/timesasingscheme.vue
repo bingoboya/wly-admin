@@ -214,19 +214,20 @@ export default {
     },
     saveTimesasingSchemeDetial(val){
       //保存 购电合同-分时方案 页面信息
-      // request({
-      //   url: "/buy/save",
-      //   method: "post",
-      //   data: val
-      // }).then(res=>{
-      //   this.$message({
-      //     message: '保存成功',
-      //     type: 'success'
-      //   })
-      // }).catch((error) => {
-      //   console.log(error);
-      //   this.$message.error('保存失败');
-      // })
+      // /buy/tpcfg/detail/save
+      request({
+        url: "/buy/tpcfg/detail/save",
+        method: "post",
+        data: val
+      }).then(res=>{
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+      }).catch((error) => {
+        console.log(error);
+        this.$message.error('保存失败');
+      })
     },
     validateQujian(timeItem, aa, nums) {
       //判断区间是否有交叉 或者时间段总和不等于24小时
@@ -288,7 +289,7 @@ export default {
       this.validateQujian()
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // console.log("提交", this.timesasingSchemeDetial);
+          console.log("提交", this.timesasingSchemeDetial);
           this.saveTimesasingSchemeDetial(this.timesasingSchemeDetial)
         } else {
           console.log("error submit!!");
