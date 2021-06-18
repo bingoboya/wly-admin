@@ -1,7 +1,7 @@
 <template>
   <!-- 分时方案详情页面弹窗 -->
   <!-- 打开分时方案详情页面弹窗 Dialog -->
-  <el-dialog width="80%" @open="openDialog" append-to-body title="购电合同-日分时分解方案 1 月" :visible.sync="dialogDayToHourDetial.toggle">
+  <el-dialog width="80%" @open="openDialog" append-to-body :title="`购电合同-日分时分解方案 ${month} 月`" :visible.sync="dialogDayToHourDetial.toggle">
     <!-- <div>日分时分解方案 1 月</div> -->
     <el-form :model="dayToHourDetail"
       ref="ruleForm"
@@ -22,31 +22,31 @@
         <el-select v-model="dayToHourDetail.friCurID" clearable placeholder="请选择活动区域">
           <el-option v-for="item in dayToHourDropList" :key="item.id" :label="item.name" :value="item.id"/>
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
+        <el-button type="primary" @click="showdialogDayToHourCurve(dayToHourDetail.friCurID)">查询/编辑/另存</el-button>
       </el-form-item>
       <el-form-item label="周六曲线:" :label-width="formLabelWidth" prop="shiduanCount">
         <el-select v-model="dayToHourDetail.satCurID" clearable placeholder="请选择活动区域">
           <el-option v-for="item in dayToHourDropList" :key="item.id" :label="item.name" :value="item.id"/>
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
+        <el-button type="primary" @click="showdialogDayToHourCurve(dayToHourDetail.satCurID)">查询/编辑/另存</el-button>
       </el-form-item>
       <el-form-item label="周日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
         <el-select v-model="dayToHourDetail.sunCurID" clearable placeholder="请选择活动区域">
           <el-option v-for="item in dayToHourDropList" :key="item.id" :label="item.name" :value="item.id"/>
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
+        <el-button type="primary" @click="showdialogDayToHourCurve(dayToHourDetail.sunCurID)">查询/编辑/另存</el-button>
       </el-form-item>
       <el-form-item label="法定节假日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
         <el-select v-model="dayToHourDetail.holiCurID" clearable placeholder="请选择活动区域">
           <el-option v-for="item in dayToHourDropList" :key="item.id" :label="item.name" :value="item.id"/>
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
+        <el-button type="primary" @click="showdialogDayToHourCurve(dayToHourDetail.holiCurID)">查询/编辑/另存</el-button>
       </el-form-item>
       <el-form-item label="调休节假日曲线:" :label-width="formLabelWidth" prop="shiduanCount">
         <el-select v-model="dayToHourDetail.holiWorkCurID" clearable placeholder="请选择活动区域">
           <el-option v-for="item in dayToHourDropList" :key="item.id" :label="item.name" :value="item.id"/>
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourCurve.toggle = true">查询/编辑/另存</el-button>
+        <el-button type="primary" @click="showdialogDayToHourCurve(dayToHourDetail.holiWorkCurID)">查询/编辑/另存</el-button>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -59,7 +59,7 @@
         >确 定</el-button
       > -->
     </div>
-    <dayToHourCurve :dialogDayToHourCurve='dialogDayToHourCurve' />
+    <dayToHourCurve :id='id' :selectedId='selectedId' :dialogDayToHourCurve='dialogDayToHourCurve' />
   </el-dialog>
 </template>
 <script>
@@ -70,9 +70,22 @@ export default {
   props: {
     dialogDayToHourDetial: {
       type: Object,
+    },
+    selectId:{
+      type:[Number, String]
+    },
+    id:{
+      type:[Number, String]
+    },
+    month:{
+      type:[Number, String]
     }
   },
   methods: {
+    showdialogDayToHourCurve(selectedId){
+      this.selectedId = selectedId
+      this.dialogDayToHourCurve.toggle = true
+    },
     saveDayToHourDetail(val){
       request({
         url: "/buy/dtop/detail/save",
@@ -106,10 +119,8 @@ export default {
     },
      getDayToHourDetail(month) {
       //  获取日分时分解曲线方案详情页
-      let id = 2;
       request({
-        // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
-        url: `/buy/dtop/${id}/detail`,
+        url: `/buy/dtop/${this.selectId}/detail`,
         method: "get",
       }).then((res) => {
         this.dayToHourDetail = res
@@ -118,7 +129,6 @@ export default {
      getDayToHourDropList() {
        // 获取日分时分解曲线下拉列表
       request({
-        // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
         url: `/buy/dtop/list`,
         method: "get",
       }).then((res) => {
@@ -128,6 +138,7 @@ export default {
   },
   data() {
     return {
+      selectedId: '',
       dayToHourDropList: [],
       dialogDayToHourCurve: {toggle: false},
       // 分时方案详情页面 -- 弹窗表单

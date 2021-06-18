@@ -45,15 +45,11 @@
               inactive-text="比例"
               :width="60"
               v-model="chooseStyle"
+              @change='erbi'
             />
           </el-form-item>
           </el-col>
-        
-          
-          
-          
         </el-row>
-
         <el-row :gutter="5">
           <el-col :span="8">
             <el-form-item
@@ -290,6 +286,9 @@ export default {
     totalElectricity:{
       type: [String,Number]
     },
+    id:{
+      type: [String, Number]
+    }
   },
   
   data() {
@@ -310,6 +309,15 @@ export default {
   },
   
   methods: {
+    erbi(value){
+      // console.log(value, this.yearToMonthDetail);
+      for(let item in this.yearToMonthDetail){
+        if(item.startsWith('m')){
+          let aa = this.yearToMonthDetail[item]
+          this.yearToMonthDetail[item] = value ? `${(aa*this.yearToMonthDetail.totalElectricity)}`:`${(aa/this.yearToMonthDetail.totalElectricity)}`
+        }
+      }
+    },
     saveYearToMonthDetail(val){
       request({
         url: "/buy/ytom/save",
@@ -327,10 +335,49 @@ export default {
     },
     submitForm(formName) {
       let that = this
+      // console.log( 222, this.chooseStyle, this.yearToMonthDetail);
+      //保存的时候，判断如果当前是电量/比例，分别校验电量总和约等于总电量/比例合是否约等于1
+      if(this.chooseStyle){ //计算电量总和
+        let ret = 0
+        for(let item in this.yearToMonthDetail){
+          if(item.startsWith('m')){
+            ret += Number(this.yearToMonthDetail[item])
+            // this.yearToMonthDetail[item] = 0.6666666
+          }
+        }
+        // if (ret 约等于 this.yearToMonthDetail.totalElectricity){ // 通过 }
+        if(Math.abs(this.yearToMonthDetail.totalElectricity - ret) > 1){
+          this.$message.error('电量总和不等于总电量')
+          return false
+        }
+        console.log('电量总和', ret);
+      }else{
+        let bili = 0
+        for(let item in this.yearToMonthDetail){
+          if(item.startsWith('m')){
+            bili += Number(this.yearToMonthDetail[item])
+          }
+        }
+        // if (ret 约等于 1){ // 通过 }
+        if(Math.abs(bili - 1) > 0.1){
+          this.$message.error('比例总和不等于1')
+          return false
+        }
+        console.log('比例总和', bili);
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('yearToMonthDetail', that.yearToMonthDetail);
-          that.saveYearToMonthDetail(that.yearToMonthDetail)
+          let params = JSON.parse(JSON.stringify(that.yearToMonthDetail))
+          if(!that.chooseStyle){ //如果是比例值,提交前转换成电量值
+            for(let item in params){
+              if(item.startsWith('m')){
+                let bb = params[item]
+                params[item] = bb*params.totalElectricity
+              }
+            }
+          }
+          // console.log('params', params);
+          that.saveYearToMonthDetail(params)
         } else {
           console.log('error submit!!');
           return false;
@@ -342,15 +389,13 @@ export default {
     },
     getYearToMonthDetail() {
       //获取年到月分解曲线方案详情
-      let id = 1;
       request({
         // id是在  /buy  接口处获取到的
-        url: `/buy/ytom/${id}/detail`,
+        url: `/buy/ytom/${this.id}/detail`,
         method: "get",
       }).then((res) => {
         this.yearToMonthDetail = res;
         this.$set(this.yearToMonthDetail, 'totalElectricity', this.totalElectricity);
-        // console.log(333333, this.yearToMonthDetail);
       });
     },
   },

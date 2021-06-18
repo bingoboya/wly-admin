@@ -2,12 +2,18 @@
   <div style="padding: 30px">
     <!-- <el-alert :closable="false" title="购电合同" type="warning" /> -->
     <div>
-      <div style="display: flex;justify-content: space-between;">
+      <div class="toubu">
         <div>购电合同基本信息</div>
         <div>
-          <el-button type="primary" @click="isEdit=false">编辑</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-          <el-button type="primary" @click="$router.push('/usermanage/contractinformation/buycontract')">返回</el-button>
+          <el-button type="primary" @click="isEdit = false">编辑</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')"
+            >保存</el-button
+          >
+          <el-button
+            type="primary"
+            @click="$router.push('/usermanage/contractinformation/buycontract')"
+            >返回</el-button
+          >
           <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
         </div>
       </div>
@@ -18,11 +24,12 @@
         label-width="120px"
         class="demo-form-inline"
       >
-      <!-- #region -->
+        <!-- #region -->
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item label="合同名称" prop="name">
-              <el-input :disabled='isEdit'
+              <el-input
+                :disabled="isEdit"
                 v-model="buycontractinfo.name"
                 style="width: 220px"
                 placeholder="请输入合同名称"
@@ -31,7 +38,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="机构名称" prop="meterInfoDTO">
-              <el-select :disabled='isEdit'
+              <el-select
+                :disabled="isEdit"
                 v-model="buycontractinfo.meterInfoDTO"
                 placeholder="机构名称"
                 style="width: 220px"
@@ -50,7 +58,8 @@
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item label="所属区域">
-              <el-select :disabled='isEdit'
+              <el-select
+                :disabled="isEdit"
                 v-model="buycontractinfo.gridDTO"
                 style="width: 220px"
                 placeholder="所属区域"
@@ -66,7 +75,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="总电量" prop="totalElectricity">
-              <el-input :disabled='isEdit'
+              <el-input
+                :disabled="isEdit"
                 v-model="buycontractinfo.totalElectricity"
                 style="width: 220px"
                 placeholder="请输入总电量"
@@ -78,7 +88,8 @@
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item label="价格类型">
-              <el-select :disabled='isEdit'
+              <el-select
+                :disabled="isEdit"
                 v-model="buycontractinfo.priceType"
                 placeholder="价格类型"
                 style="width: 220px"
@@ -90,7 +101,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="是否有分解曲线" prop="curveValid">
-              <el-select :disabled='isEdit'
+              <el-select
+                :disabled="isEdit"
                 v-model="buycontractinfo.curveValid"
                 placeholder="是否有分解曲线"
                 style="width: 220px"
@@ -105,7 +117,8 @@
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item label="合同类型">
-              <el-select :disabled='isEdit'
+              <el-select
+                :disabled="isEdit"
                 v-model="buycontractinfo.contracttypeinfoDTO"
                 placeholder="合同类型"
                 style="width: 220px"
@@ -121,7 +134,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="是否有分时比例" prop="timeofuseValid">
-              <el-select :disabled='isEdit'
+              <el-select
+                :disabled="isEdit"
                 v-model="buycontractinfo.timeofuseValid"
                 placeholder="是否有分时比例"
                 style="width: 220px"
@@ -136,7 +150,8 @@
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item label="签署时间">
-              <el-date-picker :disabled='isEdit'
+              <el-date-picker
+                :disabled="isEdit"
                 v-model="buycontractinfo.signDate"
                 placeholder="请选择签署时间"
                 format="yyyy-MM-dd"
@@ -161,7 +176,8 @@
         <el-row :gutter="5">
           <el-col :span="24">
             <el-form-item label="起止时间" prop="timeLine">
-              <el-date-picker :disabled='isEdit'
+              <el-date-picker
+                :disabled="isEdit"
                 v-model="buycontractinfo.timeLine"
                 @change="GetzhifuTime"
                 :default-time="['00:00:00', '23:59:59']"
@@ -172,36 +188,6 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
               />
-              
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="5">
-          <el-col :span="24">
-            <el-form-item label="合同价格">
-              <div style="display: flex">
-                <el-input :disabled='isEdit'
-                  v-model="buycontractinfo.contractPrice"
-                  style="padding-right: 10px"
-                  placeholder="请输入合同价格"
-                />
-                <el-input :disabled='isEdit'
-                  v-model="buycontractinfo.contractPrice"
-                  placeholder="请输入合同价格"
-                  style="padding-right: 10px"
-                />
-                <el-input :disabled='isEdit'
-                  v-model="buycontractinfo.contractPrice"
-                  placeholder="请输入合同价格"
-                  style="padding-right: 10px"
-                />
-                <el-input :disabled='isEdit'
-                  v-model="buycontractinfo.contractPrice"
-                  placeholder="请输入合同价格"
-                  style="padding-right: 10px"
-                />
-              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -209,7 +195,8 @@
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item label="分时方案">
-              <el-select :disabled='isEdit'
+              <el-select
+                :disabled="isEdit"
                 v-model="buycontractinfo.timeperiodofusecfgDTO"
                 placeholder="分时方案"
                 style="width: 220px"
@@ -222,7 +209,8 @@
                 />
                 <el-option label="新增自定义方案" :value="999" />
               </el-select>
-              <el-button :disabled='isEdit'
+              <el-button
+                :disabled="isEdit"
                 type="primary"
                 @click="showDialogFormVisible.toggle = true"
                 >查询/编辑/另存</el-button
@@ -241,10 +229,50 @@
           </el-col>
         </el-row>
 
+        <el-row :gutter="5">
+          <el-col :span="12">
+            <el-form-item label="合同价格方案">
+              <el-form-item label="">
+                <el-select
+                  :disabled="isEdit"
+                  v-model="buycontractinfo.timeperiodofusecfgDTO"
+                  placeholder="合同价格方案"
+                  style="width: 220px"
+                >
+                  <el-option
+                    v-for="(item, index) in periodList"
+                    :key="`${item.id}${index}`"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                  <el-option label="新增自定义方案" :value="999" />
+                </el-select>
+                <el-button
+                  :disabled="isEdit"
+                  type="primary"
+                  @click="showDialogFormVisible.toggle = true"
+                  >查询/编辑/另存</el-button
+                >
+              </el-form-item>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" style="display: flex">
+            <div v-for="(item, index) in 4" :key="index">
+              <el-input
+                v-model="buycontractinfo.contractPrice"
+                disabled
+                style="padding-right: 10px"
+                placeholder="请输入合同价格"
+              />
+            </div>
+          </el-col>
+        </el-row>
+
         <div style="display: flex; flex-direction: column">
-          <div style="padding-top: 10px">分解曲线方案</div>
+          <div class="fenjiefangan">分解曲线方案</div>
           <el-form-item label="年到月分解方案">
-            <el-select :disabled='isEdit'
+            <el-select
+              :disabled="isEdit"
               style="width: 220px"
               v-model="buycontractinfo.curveytomDTO"
               placeholder="年到月分解方案"
@@ -257,12 +285,16 @@
               />
               <el-option label="新增自定义方案" :value="999" />
             </el-select>
-            <el-button :disabled='isEdit' type="primary" @click="dialogYearToMouth.toggle = true"
+            <el-button
+              :disabled="isEdit"
+              type="primary"
+              @click="dialogYearToMouth.toggle = true"
               >查询/编辑/另存</el-button
             >
           </el-form-item>
           <el-form-item label="月到日分解方案">
-            <el-select :disabled='isEdit'
+            <el-select
+              :disabled="isEdit"
               style="width: 220px"
               v-model="buycontractinfo.weightsetyearlymtodDTO"
               placeholder="月到日分解方案"
@@ -275,14 +307,16 @@
               />
               <el-option label="新增自定义方案" :value="999" />
             </el-select>
-            <el-button :disabled='isEdit'
+            <el-button
+              :disabled="isEdit"
               type="primary"
               @click="dialogMouthToDayBase.toggle = true"
               >查询/编辑/另存</el-button
             >
           </el-form-item>
           <el-form-item label="日分时分解方案">
-            <el-select :disabled='isEdit'
+            <el-select
+              :disabled="isEdit"
               style="width: 220px"
               v-model="buycontractinfo.curvesetyearlydtopDTO"
               placeholder="日分时分解方案"
@@ -295,19 +329,37 @@
               />
               <el-option label="新增自定义方案" :value="999" />
             </el-select>
-            <el-button :disabled='isEdit' type="primary" @click="dialogDayToHourBase.toggle = true"
+            <el-button
+              :disabled="isEdit"
+              type="primary"
+              @click="dialogDayToHourBase.toggle = true"
               >查询/编辑/另存</el-button
             >
           </el-form-item>
         </div>
-      <!-- #endregion -->
+        <!-- #endregion -->
       </el-form>
     </div>
-    <timesAsingScheme :showDialogFormVisible="showDialogFormVisible" />
-    <yearToMouth :totalElectricity="buycontractinfo.totalElectricity" :dialogYearToMouth="dialogYearToMouth"/>
-    <mouthToDayBase :totalElectricity="buycontractinfo.totalElectricity" :decompositionScheme="decompositionScheme"
-      :dialogMouthToDayBase="dialogMouthToDayBase"/>
-    <dayToHourBase :totalElectricity="buycontractinfo.totalElectricity" :dialogDayToHourBase="dialogDayToHourBase"/>
+    <!-- 分时方案弹窗 -->
+    <timesAsingScheme :id='this.$route.query.id' :showDialogFormVisible="showDialogFormVisible" />
+    <!-- 合同价格方案弹窗 -->
+    <!-- <timesAsingScheme :showDialogFormVisible="showDialogFormVisible" /> -->
+    <yearToMouth
+      :totalElectricity="buycontractinfo.totalElectricity"
+      :dialogYearToMouth="dialogYearToMouth"
+      :id='this.$route.query.id'
+    />
+    <mouthToDayBase
+      :totalElectricity="buycontractinfo.totalElectricity"
+      :decompositionScheme="decompositionScheme"
+      :dialogMouthToDayBase="dialogMouthToDayBase"
+      :id='this.$route.query.id'
+    />
+    <dayToHourBase
+      :totalElectricity="buycontractinfo.totalElectricity"
+      :dialogDayToHourBase="dialogDayToHourBase"
+      :id='this.$route.query.id'
+    />
   </div>
 </template>
 <script>
@@ -336,8 +388,8 @@ export default {
       dialogDayToHourBase: { toggle: false },
       //
       contracttypeinfoList: [], //合同类型下拉
-      saveBuycontractinfo: { // 提交的表单数据
-
+      saveBuycontractinfo: {
+        // 提交的表单数据
       },
       buycontractinfo: {
         userSmallDTO: "", //填报人
@@ -405,29 +457,31 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('buycontractinfo', this.buycontractinfo);
-          this.saveContractinDetail(this.buycontractinfo)
+          console.log("buycontractinfo", this.buycontractinfo);
+          this.saveContractinDetail(this.buycontractinfo);
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
     },
-    saveContractinDetail(val){
+    saveContractinDetail(val) {
       request({
         url: "/buy/save",
         method: "post",
-        data: val
-      }).then(res=>{
-        console.log('saveContractinDetail', res);
-        this.$message({
-          message: '保存成功',
-          type: 'success'
-        })
-      }).catch((error) => {
-        console.log(error);
-        this.$message.error('保存失败');
+        data: val,
       })
+        .then((res) => {
+          console.log("saveContractinDetail", res);
+          this.$message({
+            message: "保存成功",
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("保存失败");
+        });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -447,7 +501,7 @@ export default {
         url: `/buy/planlist?type=${type}`,
         method: "get",
       }).then((res) => {
-        console.log("getPlanlist", res);
+        // console.log("getPlanlist", res);
         if (type == 0) {
           this.yearToMonthPlan = res;
         }
@@ -463,8 +517,9 @@ export default {
       });
     },
     getContractinDetail() {
+      // console.log('query',this.$route.query);
       request({
-        url: "/buy/1/detail",
+        url: `/buy/${this.$route.query.id}/detail`,
         method: "get",
       }).then((res) => {
         this.buycontractinfo = res;
@@ -533,6 +588,20 @@ export default {
 };
 </script>
 <style lang="scss" scope>
+.toubu {
+  display: flex;
+  justify-content: space-between;
+  background: #ece9e9;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.fenjiefangan {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #e2dddd;
+  margin-bottom: 17px;
+  margin-top: 14px;
+}
 .el-range-editor.el-input__inner {
   width: 400px;
 }

@@ -242,7 +242,7 @@
         <el-button
           :disabled="chooseEntyType == 1"
           type="primary"
-          @click="showDialogMToDay()"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[0].planId, 0)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -289,7 +289,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(1)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[1].planId, 1)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -310,7 +310,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(2)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[2].planId, 2)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -331,7 +331,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(3)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[3].planId, 3)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -352,7 +352,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(4)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[4].planId, 4)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -373,7 +373,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(5)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[5].planId, 5)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -394,7 +394,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(6)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[6].planId, 6)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -415,7 +415,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(7)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[7].planId, 7)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -436,7 +436,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(8)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[8].planId, 8)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -457,7 +457,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(9)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[9].planId, 9)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -478,7 +478,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(10)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[10].planId, 10)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -499,7 +499,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(11)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[11].planId, 11)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -520,7 +520,7 @@
         <el-button
           :disabled="chooseEntyType == 0"
           type="primary"
-          @click="showDialogMToDay(12)"
+          @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[12].planId, 12)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -573,6 +573,9 @@ export default {
     decompositionScheme: {
       type: Array,
     },
+    id:{
+      type: [String, Number],
+    }
   },
   data() {
     return {
@@ -728,19 +731,18 @@ export default {
         }
       });
     },
-    async showDialogMToDay(month = 1) {
-      this.month = month;
-      await this.getMouthToDayDetail(month);
+    async showDialogMToDay(selectId, month) {
+      await this.getMouthToDayDetail(selectId, month);
       await console.log("await 2");
       // this.dialogMouthToDayDetial.toggle = true
     },
-    getMouthToDayDetail(month) {
+    getMouthToDayDetail(selectId,month) {
       //获取月到日分解曲线方案详情页
-      let contractId = 1;
-      let mtodId = 1;
+      let contractId = this.id;
+      let mtodId = month;
       request({
         // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
-        url: `/buy/${month}/${mtodId}/detail?month=${month}`,
+        url: `/buy/${contractId}/${selectId}/detail?month=${month}`,
         method: "get",
       })
         .then((res) => {
@@ -769,10 +771,9 @@ export default {
     },
     getMouthToDayBasic() {
       //获取月到日分解曲线方案基本页
-      let id = 1;
       request({
         // id是在  /buy  接口处获取到的
-        url: `/buy/mtod/${id}/basic`,
+        url: `/buy/mtod/${this.id}/basic`,
         method: "get",
       }).then((res) => {
         console.log(5555, res);

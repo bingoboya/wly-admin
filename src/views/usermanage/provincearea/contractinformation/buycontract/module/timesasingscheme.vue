@@ -145,6 +145,9 @@ export default {
     showDialogFormVisible: {
       type: Object,
     },
+    id:{
+      type: [String, Number],
+    }
   },
   data() {
     return {
@@ -356,9 +359,9 @@ export default {
         ],
       };
       //获取分时方案详情
-      let id = 2;
+      
       request({
-        url: `/buy/tpcfg/${id}/detail`,
+        url: `/buy/tpcfg/${this.id}/detail`,
         method: "get",
       }).then((res) => {
         this.timesasingSchemeDetial = res;

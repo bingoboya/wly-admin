@@ -99,6 +99,12 @@ export default {
     dialogDayToHourCurve: {
       type: Object,
     },
+    id:{
+      type: [String, Number],
+    },
+    selectedId:{
+      type: [String, Number],
+    }
   },
   methods: {
     submitForm(formName) {
@@ -116,10 +122,8 @@ export default {
     ///buy/dtop/{id}/division 获取日分时分解曲线-96点
     getDayToHourDivision() {
       //  获取日分时分解曲线方案详情页
-      let id = 2;
       request({
-        // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
-        url: `/buy/dtop/${id}/division`,
+        url: `/buy/dtop/${this.selectedId}/division`,
         method: "get",
       }).then((res) => {
         this.dayToHourDivisionData = res;

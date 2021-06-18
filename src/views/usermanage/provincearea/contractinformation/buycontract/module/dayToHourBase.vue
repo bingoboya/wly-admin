@@ -219,13 +219,14 @@
         ]"
       >
         <el-radio-group v-model="chooseEntyType">
-          <el-radio label="1">日历周-12个月统一</el-radio>
-          <el-radio label="0">日历周-12个月单独</el-radio>
+          <el-radio label="0">日历周-12个月统一</el-radio>
+          <el-radio label="1">日历周-12个月单独</el-radio>
         </el-radio-group>
       </el-form-item>
 
       <el-form-item label="全年统一方案：">
         <el-select
+          :disabled="chooseEntyType == 1"
           v-model="timesasingSchemeDetial.planDTOList[0].planId"
           placeholder="全年统一方案："
         >
@@ -234,12 +235,13 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button :disabled="chooseEntyType == 1" type="primary" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[0].planId)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="1月份方案：">
-        <el-select
+        <el-select :disabled="chooseEntyType == 0"
           v-model="timesasingSchemeDetial.planDTOList[0].planId"
           placeholder="1月份方案："
         >
@@ -248,12 +250,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button :disabled="chooseEntyType == 0" type="primary" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[0].planId, 1)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="2月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[1].planId"
           placeholder="2月份方案："
         >
@@ -262,12 +266,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[1].planId, 2)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="3月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[2].planId"
           placeholder="3月份方案："
         >
@@ -276,12 +282,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[2].planId, 3)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="4月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[3].planId"
           placeholder="4月份方案："
         >
@@ -290,12 +298,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[3].planId, 4)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="5月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[4].planId"
           placeholder="5月份方案："
         >
@@ -304,12 +314,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[4].planId, 5)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="6月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[5].planId"
           placeholder="6月份方案："
         >
@@ -318,12 +330,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[5].planId, 6)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="7月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[6].planId"
           placeholder="7月份方案："
         >
@@ -332,12 +346,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[6].planId, 7)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="8月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[7].planId"
           placeholder="8月份方案："
         >
@@ -346,12 +362,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[7].planId, 8)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="9月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[8].planId"
           placeholder="9月份方案："
         >
@@ -360,12 +378,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[8].planId, 9)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="10月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[9].planId"
           placeholder="10月份方案："
         >
@@ -374,12 +394,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[9].planId, 10)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="11月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[10].planId"
           placeholder="11月份方案："
         >
@@ -388,12 +410,14 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[10].planId, 11)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
       <el-form-item label="12月份方案：">
         <el-select
+          :disabled="chooseEntyType == 0" 
           v-model="timesasingSchemeDetial.planDTOList[11].planId"
           placeholder="12月份方案："
         >
@@ -402,7 +426,8 @@
           <el-option label="广东20年典型日权重1" :value="3" />
           <el-option label="新增自定义方案" :value="4" />
         </el-select>
-        <el-button type="primary" @click="dialogDayToHourDetial.toggle = true"
+        <el-button type="primary" :disabled="chooseEntyType == 0" 
+          @click="showDialogDayToHourDetail(timesasingSchemeDetial.planDTOList[11].planId, 12)"
           >查询/编辑/另存</el-button
         >
       </el-form-item>
@@ -413,7 +438,7 @@
         >确 定</el-button
       >
     </div>
-    <dayToHourDetial :dialogDayToHourDetial="dialogDayToHourDetial" />
+    <dayToHourDetial :id='id' :month='month' :selectId='selectId' :dialogDayToHourDetial="dialogDayToHourDetial" />
   </el-dialog>
 </template>
 <script>
@@ -428,12 +453,17 @@ export default {
     totalElectricity: {
       type: [String, Number],
     },
+    id:{
+      type: [String, Number],
+    }
   },
   created() {
     console.log("日到时基本页");
   },
   data() {
     return {
+      month: '',
+      selectId: '',
       chooseEntyType: "0",
       dialogDayToHourDetial: { toggle: false },
       // 分时方案详情页面 -- 弹窗表单
@@ -481,16 +511,21 @@ export default {
     };
   },
   methods: {
+    async showDialogDayToHourDetail(selectId, month) {
+      console.log(6666, month);
+      this.selectId = selectId
+      this.month = month
+      this.dialogDayToHourDetial.toggle = true
+    },
     openDialog() {
       console.log("打开日分时基础页面");
       this.getMouthToDayBasic();
     },
     getMouthToDayBasic() {
       //获取机构名称列表
-      let id = 1;
       request({
         // id是在  /buy  接口处获取到的
-        url: `/buy/dtop/${id}/basic`,
+        url: `/buy/dtop/${this.id}/basic`,
         method: "get",
       }).then((res) => {
         console.log(5555, res);

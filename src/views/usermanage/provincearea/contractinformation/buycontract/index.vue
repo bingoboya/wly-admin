@@ -212,7 +212,12 @@ export default {
     },
     gotoRouter(params) {
       console.log(12, params)
-      this.$router.push('/usermanage/contractinformation/contractindetail')
+      this.$router.push({
+        path: '/usermanage/contractinformation/contractindetail',
+        query:{
+          id: 7
+        }
+      })
     },
     // 改变状态
     changeEnabled(data, val) {
