@@ -238,38 +238,42 @@ export default {
       list.forEach(item =>{
         arr.push(...item.periodTimeList)
       })
-      console.log(222, list, arr);
+      // console.log(222, list, arr);
       arr.sort(this.sortBy('startTime',1))
       arr.forEach((item, index)=>{
         if(index == arr.length - 1) return
         if(item.endTime !== arr[index+1].startTime){
           // 时间段不是连续的
           continued = false
-          this.$message.error('时间段不连续');
-          console.log(index, '时间段不连续', item.startTime, arr[index+1].startTime);
+          // console.log(index, '时间段不连续', item.startTime, arr[index+1].startTime);
         }else{
-          console.log(index, '时间段连续', item.startTime, arr[index+1].startTime);
+          // console.log(index, '时间段连续', item.startTime, arr[index+1].startTime);
         }
       })
+      if(continued === false){
+        this.$message.error('时间段不连续');
+        return false
+      }
       //如果发现时间段不是连续的，再判断时间段相加是否是24小时
       if(continued){
-        this.validateAllTime(arr)
+        return this.validateAllTime(arr)
       }
     },
     validateAllTime(arr){
       let timeArr = JSON.parse(JSON.stringify(arr))
       let ret = 0 //合计时间总时长（分种）
       timeArr.forEach(item => {
-        console.log('startTime:', item.startTime.split(':'), 'endTime:', item.endTime.split(':'));
+        // console.log('startTime:', item.startTime.split(':'), 'endTime:', item.endTime.split(':'));
         let start = item.startTime.split(':')
         let end = item.endTime.split(':')
         let a = (end[0] - start[0])*60 + (end[1] - start[1])
         ret += a
-        console.log(end[0] - start[0], end[1] - start[1], a, ret);
+        // console.log(end[0] - start[0], end[1] - start[1], a, ret);
       })
       if(ret !== 1440){
         this.$message.error('时间总和不是24小时');
-        console.log('时间总和不是24小时');
+        // console.log('时间总和不是24小时');
+        return false
       }
     },
     sortBy(attr,rev){
@@ -286,7 +290,9 @@ export default {
     //提交事件
     submitForm(formName) {
       //判断区间是否有交叉或者时间段总和不等于24小时
-      this.validateQujian()
+      if(this.validateQujian() === false){
+        return false
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log("提交", this.timesasingSchemeDetial);
@@ -296,6 +302,7 @@ export default {
           return false;
         }
       });
+      
     },
     getTpcfgDetial() {
       let result = {
