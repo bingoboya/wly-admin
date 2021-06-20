@@ -206,7 +206,7 @@ export default {
         index
       ].periodTimeList.push({
         startTime: "00:00",
-        endTime: "00:00",
+        endTime: "24:00",
       });
     },
     //移除表单项事件

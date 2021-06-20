@@ -235,7 +235,7 @@
               <el-form-item label="">
                 <el-select
                   :disabled="isEdit"
-                  v-model="buycontractinfo.timeperiodofusecfgDTO"
+                  v-model="buycontractinfo.pricetimeofuseDTO"
                   placeholder="合同价格方案"
                   style="width: 220px"
                 >
@@ -250,24 +250,26 @@
                 <el-button
                   :disabled="isEdit"
                   type="primary"
-                  @click="showDialogFormVisible.toggle = true"
+                  @click="showDialogContractPrice.toggle = true"
                   >查询/编辑/另存</el-button
                 >
               </el-form-item>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="display: flex">
-            <div v-for="(item, index) in 4" :key="index">
+            <!-- <div v-for="(item, index) in buycontractinfo.priceList" :key="index"> -->
               <el-input
-                v-model="buycontractinfo.contractPrice"
-                disabled
+                :disabled="isEdit"
+                v-for="(item,index) in items" :key="index"
+                v-model="item.price"
                 style="padding-right: 10px"
-                placeholder="请输入合同价格"
+                onkeyup="value=value.replace(/[^\d.]/g,'')"
+                placeholder='请输入用户名'
               />
-            </div>
+              <!-- onkeyup="value=value.replace(/[^\d.]/g,'')" ==> 只能输入数字和小数点 -->
+            <!-- </div> -->
           </el-col>
         </el-row>
-
         <div style="display: flex; flex-direction: column">
           <div class="fenjiefangan">分解曲线方案</div>
           <el-form-item label="年到月分解方案">
@@ -340,10 +342,11 @@
         <!-- #endregion -->
       </el-form>
     </div>
+    <!-- #region -->
     <!-- 分时方案弹窗 -->
     <timesAsingScheme :id='this.$route.query.id' :showDialogFormVisible="showDialogFormVisible" />
     <!-- 合同价格方案弹窗 -->
-    <!-- <timesAsingScheme :showDialogFormVisible="showDialogFormVisible" /> -->
+    <contractPrice :items='items'  :showDialogContractPrice="showDialogContractPrice" />
     <yearToMouth
       :totalElectricity="buycontractinfo.totalElectricity"
       :dialogYearToMouth="dialogYearToMouth"
@@ -360,38 +363,31 @@
       :dialogDayToHourBase="dialogDayToHourBase"
       :id='this.$route.query.id'
     />
+    <!-- #endregion -->
   </div>
 </template>
 <script>
 import request from "@/utils/request";
+import contractPrice from "./module/contractPrice";
 import timesAsingScheme from "./module/timesasingscheme";
 import yearToMouth from "./module/yeartomouth";
 import mouthToDayBase from "./module/mouthToDayBase";
 import dayToHourBase from "./module/dayToHourBase";
 export default {
-  components: { timesAsingScheme, yearToMouth, mouthToDayBase, dayToHourBase },
-
   data() {
     return {
-      isEdit: true, //点击编辑修改是否可以编辑
-      yearToMonthPlan: [], // 年到月
-      monthToDayPlan: [], //月到日
-      dayToHourPlan: [], //日到时
-      decompositionScheme: [], //月到日基本页面内的--分解方案
-      // 分时方案详情页面 -- 弹窗表单
-      showDialogFormVisible: { toggle: false },
-      // 年到月分时方案详情页面 -- 弹窗表单
-      dialogYearToMouth: { toggle: false },
-      // 月到日分时方案基础页面 -- 弹窗表单
-      dialogMouthToDayBase: { toggle: false },
-      // 日分时分时方案基础页面 -- 弹窗表单
-      dialogDayToHourBase: { toggle: false },
-      //
-      contracttypeinfoList: [], //合同类型下拉
-      saveBuycontractinfo: {
-        // 提交的表单数据
-      },
+      items:[ 
+        203, 205
+          // { price: 101},
+          // { price: 103},
+      ],
+
       buycontractinfo: {
+        // items:[ 
+        //   // 203, 205
+        //     { price: 101},
+        //     { price: 103},
+        // ],
         userSmallDTO: "", //填报人
         timeofuseValid: "", // 是否有分时比例
         contracttypeinfoDTO: "", // 合同类型
@@ -405,11 +401,29 @@ export default {
         name: "", // 合同名称
         priceType: "", // 价格类型
         timeperiodofusecfgDTO: "", // 分时方案
+        pricetimeofuseDTO: "", // 合同价格方案
+        priceList: [], // 合同价格列表
         createDate: "", // 创建时间
         curveytomDTO: "", // 年到月分解方案
         weightsetyearlymtodDTO: "", // 月到日分解方案
         curvesetyearlydtopDTO: "", // 日分时分解方案
       },
+      isEdit: true, //点击编辑修改是否可以编辑
+      yearToMonthPlan: [], // 年到月
+      monthToDayPlan: [], //月到日
+      dayToHourPlan: [], //日到时
+      decompositionScheme: [], //月到日基本页面内的--分解方案
+      // 分时方案详情页面 -- 弹窗表单
+      showDialogFormVisible: { toggle: false },
+      // 合同价格方案弹出页面 -- 弹窗表单
+      showDialogContractPrice: { toggle: false },
+      // 年到月分时方案详情页面 -- 弹窗表单
+      dialogYearToMouth: { toggle: false },
+      // 月到日分时方案基础页面 -- 弹窗表单
+      dialogMouthToDayBase: { toggle: false },
+      // 日分时分时方案基础页面 -- 弹窗表单
+      dialogDayToHourBase: { toggle: false },
+      contracttypeinfoList: [], //合同类型下拉
       meterNameList: [], //机构名称列表
       periodList: [], //获取分时方案列表
       gridList: [], // /buy/gridList 获取所属区域列表
@@ -457,7 +471,11 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log("buycontractinfo", this.buycontractinfo);
+          let copyItems = JSON.parse(JSON.stringify(this.items))
+          let arr = []
+          copyItems.forEach(item => arr.push(Number(item.price)))
+          this.buycontractinfo.priceList = arr
+          console.log("buycontractinfo",copyItems,arr, this.buycontractinfo);
           this.saveContractinDetail(this.buycontractinfo);
         } else {
           console.log("error submit!!");
@@ -522,24 +540,31 @@ export default {
         url: `/buy/${this.$route.query.id}/detail`,
         method: "get",
       }).then((res) => {
-        this.buycontractinfo = res;
-        // this.contracttypeinfoList = res.contracttypeinfoList
-        this.buycontractinfo.curveytomDTO = res.curveytomDTO.id; //年到月分解方案
-        this.buycontractinfo.weightsetyearlymtodDTO =
-          res.weightsetyearlymtodDTO.id; //月到日分解方案
-        this.buycontractinfo.curvesetyearlydtopDTO =
-          res.curvesetyearlydtopDTO.id; //日分时分解方案
-        this.buycontractinfo.contracttypeinfoDTO = res.contracttypeinfoDTO.id; //设置合同类型id
-        this.buycontractinfo.meterInfoDTO = res.meterInfoDTO.id; //设置机构名称id
-        this.buycontractinfo.gridDTO = res.gridDTO.id; //设置所属区域id
-        this.buycontractinfo.userSmallDTO = res.userSmallDTO.name; //设置填报人
+        let ret = JSON.parse(JSON.stringify(res))
+        this.buycontractinfo = ret;
+        // this.contracttypeinfoList = ret.contracttypeinfoList
+        this.buycontractinfo.curveytomDTO = ret.curveytomDTO.id; //年到月分解方案
+        this.buycontractinfo.weightsetyearlymtodDTO = ret.weightsetyearlymtodDTO.id; //月到日分解方案
+        this.buycontractinfo.curvesetyearlydtopDTO = ret.curvesetyearlydtopDTO.id; //日分时分解方案
+        this.buycontractinfo.contracttypeinfoDTO = ret.contracttypeinfoDTO.id; //设置合同类型id
+        this.buycontractinfo.meterInfoDTO = ret.meterInfoDTO.id; //设置机构名称id
+        this.buycontractinfo.gridDTO = ret.gridDTO.id; //设置所属区域id
+        this.buycontractinfo.userSmallDTO = ret.userSmallDTO.name; //设置填报人
         //日期区间回显
         this.$set(this.buycontractinfo, "timeLine", [
-          res.startDate,
-          res.endDate,
+          ret.startDate,
+          ret.endDate,
         ]);
-        this.buycontractinfo.timeperiodofusecfgDTO =
-          res.timeperiodofusecfgDTO.id; //合同名称
+        this.buycontractinfo.timeperiodofusecfgDTO = ret.timeperiodofusecfgDTO.id; //合同名称
+        // this.buycontractinfo.priceList = ret.pricetimeofuseDTO.priceList; //合同名称
+        // this.buycontractinfo.priceList = [{ price: 21},{ price: 1103}] //合同名称
+        let arr = []
+        ret.pricetimeofuseDTO.priceList.forEach(item => {
+          arr.push({price: item})
+        })
+        this.items = arr
+        // this.items = [{ price: 21},{ price: 1103}]
+        this.buycontractinfo.pricetimeofuseDTO = ret.pricetimeofuseDTO.id; //合同名称
       });
     },
     getAgencyAll() {
@@ -569,22 +594,11 @@ export default {
         this.gridList = res;
       });
     },
-    changeDialogYearToMouth(val) {
-      this.dialogYearToMouth.toggle = false;
-    },
-    changeDialogMouthToDayBase(val) {
-      this.dialogMouthToDayBase.toggle = false;
-    },
-    changeDialogDayToHourBase(val) {
-      this.dialogDayToHourBase.toggle = false;
-    },
-    changeDialogForm(val) {
-      this.showDialogFormVisible.toggle = false;
-    },
     onSubmit() {
       console.log("submit!");
     },
   },
+  components: { contractPrice, timesAsingScheme, yearToMouth, mouthToDayBase, dayToHourBase },
 };
 </script>
 <style lang="scss" scope>

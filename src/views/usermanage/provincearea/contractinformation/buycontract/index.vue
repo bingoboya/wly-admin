@@ -36,14 +36,14 @@
             </el-col>
             <el-col :span="8">
               <div style="display:flex;"><div style="width:90px;">机构名称：</div>
-                <el-select v-model="listQuery.agencyName" @change="handleFilter" placeholder="机构名称：" clearable style="width: 90px" class="filter-item">
+                <el-select style="width: 200px;" v-model="listQuery.agencyName" @change="handleFilter" placeholder="机构名称：" clearable class="filter-item">
                   <el-option v-for="item in agencyAllList" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
               </div>
             </el-col>
             <el-col :span="8">
               <div style="display:flex;"><div style="width:90px;">审批状态：</div>
-                <el-select v-model="listQuery.status" @change="handleFilter" placeholder="审批状态" clearable style="width: 90px" class="filter-item">
+                <el-select v-model="listQuery.status" @change="handleFilter" placeholder="审批状态" clearable style="width: 200px;" class="filter-item">
                   <el-option v-for="item in approvalStatus" :key="item" :label="item" :value="item" />
                 </el-select>
               </div>
