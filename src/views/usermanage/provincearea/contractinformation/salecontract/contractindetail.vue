@@ -15,7 +15,7 @@
             @click="
               $router.push('/usermanage/contractinformation/salecontract')
             "
-          >返回1</el-button>
+          >返回</el-button>
           <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
         </div>
       </div>
@@ -92,43 +92,37 @@
           <el-col :span="12">
             <el-form-item label="电压等级">
               <el-select
-                v-model="buycontractinfo.gridDTO"
+                v-model="buycontractinfo.VoltLevel"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="电压等级"
               >
-                <el-option
-                  v-for="(item, index) in gridList"
-                  :key="`${item.id}${index}`"
-                  :label="item.name"
-                  :value="item.id"
-                />
+                <el-option label="低级" :value="0" />
+                <el-option label="中级" :value="1" />
+                <el-option label="高级" :value="2" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="结算类型" prop="totalElectricity">
+            <el-form-item label="结算类型" prop="SettleType">
               <el-select
-                v-model="buycontractinfo.gridDTO"
+                v-model="buycontractinfo.SettleType"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="结算类型"
               >
-                <el-option
-                  v-for="(item, index) in gridList"
-                  :key="`${item.id}${index}`"
-                  :label="item.name"
-                  :value="item.id"
-                />
+                <el-option label="固定" :value="0" />
+                <el-option label="分成" :value="1" />
+                <el-option label="保底分成" :value="2" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="5">
           <el-col :span="12">
-            <el-form-item label="默认参数组">
+            <el-form-item label="默认参数组" prop="paramId">
               <el-select
-                v-model="buycontractinfo.gridDTO"
+                v-model="buycontractinfo.paramId"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="默认参数组"
@@ -143,9 +137,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="用户分成比例" prop="totalElectricity">
+            <el-form-item label="用户分成比例" prop="PctUser">
               <el-input
-                v-model="buycontractinfo.totalElectricity"
+                v-model="buycontractinfo.PctUser"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入用户分成比例"
@@ -172,9 +166,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="居间人分成比例" prop="totalElectricity">
+            <el-form-item label="居间人分成比例" prop="PctAgencyAF">
               <el-input
-                v-model="buycontractinfo.totalElectricity"
+                v-model="buycontractinfo.PctAgencyAF"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入居间人分成比例"
@@ -184,19 +178,9 @@
         </el-row>
         <el-row :gutter="5">
           <el-col :span="12">
-            <el-form-item label="用户分成比例">
+            <el-form-item label="固定费用" prop="FixAgenFee">
               <el-input
-                v-model="buycontractinfo.totalElectricity"
-                :disabled="isEdit"
-                style="width: 220px"
-                placeholder="请输入用户分成比例"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="固定费用" prop="totalElectricity">
-              <el-input
-                v-model="buycontractinfo.totalElectricity"
+                v-model="buycontractinfo.FixAgenFee"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入固定费用"
@@ -374,19 +358,42 @@
               >查询/编辑/另存</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          
+        </el-row>
+        <el-row>
+          <el-col :span="24" style="display: flex;">
             <!-- <div v-for="(item, index) in buycontractinfo.priceList" :key="index"> -->
             <el-form-item
               v-for="(item, index) in items"
               :key="index"
-              :label="`价格${index + 1}:`"
+              :label="`合同价格${index + 1}:`"
             >
               <el-input
                 v-model="item.price"
                 disabled
                 style="width: 220px"
                 onkeyup="value=value.replace(/[^\d.]/g,'')"
-                placeholder="请输入用户名"
+                placeholder="请输入合同价格"
+              />
+              <!-- onkeyup="value=value.replace(/[^\d.]/g,'')" ==> 只能输入数字和小数点 -->
+              <!-- </div> -->
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24" style="display: flex;">
+            <!-- <div v-for="(item, index) in buycontractinfo.priceList" :key="index"> -->
+            <el-form-item
+              v-for="(item, index) in items"
+              :key="index"
+              :label="`固定价差${index + 1}:`"
+            >
+              <el-input
+                v-model="item.price"
+                disabled
+                style="width: 220px"
+                onkeyup="value=value.replace(/[^\d.]/g,'')"
+                placeholder="请输入固定价差"
               />
               <!-- onkeyup="value=value.replace(/[^\d.]/g,'')" ==> 只能输入数字和小数点 -->
               <!-- </div> -->
@@ -571,11 +578,17 @@ export default {
           { required: true, message: '请输入总电量', trigger: 'blur' }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
+        SettleType: [
+          { required: true, message: '请选择结算类型', trigger: 'change' }
+        ],
+        paramId: [
+          { required: true, message: '请选择默认参数组', trigger: 'change' }
+        ],
         meterInfoDTO: [
-          { required: true, message: '请输入机构名称', trigger: 'change' }
+          { required: true, message: '请选择机构名称', trigger: 'change' }
         ],
         timeLine: [
-          { required: true, message: '请输入起始时间', trigger: 'change' }
+          { required: true, message: '请选择起始时间', trigger: 'change' }
         ],
         timeofuseValid: [
           {
@@ -756,7 +769,8 @@ export default {
     getContractinDetail() {
       // console.log('query',this.$route.query);
       request({
-        url: `/buy/${this.$route.query.id}/detail`,
+        // /sell/{id}/detail
+        url: `/sell/${this.$route.query.id}/detail`,
         method: 'get'
       }).then((res) => {
         const ret = JSON.parse(JSON.stringify(res))

@@ -3,7 +3,7 @@
     <!-- <el-alert :closable="false" title="购电合同" type="warning" /> -->
     <div>
       <div class="toubu">
-        <div>购电2合同基本信息</div>
+        <div>购电合同基本信息</div>
         <div>
           <el-button type="primary" @click="isEdit = false">编辑</el-button>
           <el-button type="primary" @click="submitForm('ruleForm')"
@@ -259,7 +259,7 @@
           </el-col>
           <el-col :span="12" >
             <!-- <div v-for="(item, index) in buycontractinfo.priceList" :key="index"> -->
-            <el-form-item v-for="(item, index) in items" :label='`价格${index+1}:`' :key="index">
+            <el-form-item v-for="(item, index) in items" :label='`合同价格${index+1}:`' :key="index">
               <el-input
                 disabled
                 v-model="item.price"

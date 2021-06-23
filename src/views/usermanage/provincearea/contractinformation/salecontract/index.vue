@@ -185,7 +185,7 @@ export default {
       request({
         // id是在  /buy  接口处获取到的
         // url: '/buy' + '?' + qs.stringify({page: 1,limit: 20}),
-        url: '/buy' + '?' + qs.stringify(this.listQuery),
+        url: '/sell' + '?' + qs.stringify(this.listQuery),
         method: 'get'
       }).then(res => {
         this.buyDataList = res.content
