@@ -3,17 +3,19 @@
     <!-- <el-alert :closable="false" title="购电合同" type="warning" /> -->
     <div>
       <div class="toubu">
-        <div>购电2合同基本信息</div>
+        <div>售电合同基本信息</div>
         <div>
           <el-button type="primary" @click="isEdit = false">编辑</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')"
-            >保存</el-button
-          >
           <el-button
             type="primary"
-            @click="$router.push('/usermanage/contractinformation/buycontract')"
-            >返回</el-button
-          >
+            @click="submitForm('ruleForm')"
+          >保存</el-button>
+          <el-button
+            type="primary"
+            @click="
+              $router.push('/usermanage/contractinformation/salecontract')
+            "
+          >返回1</el-button>
           <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
         </div>
       </div>
@@ -29,8 +31,8 @@
           <el-col :span="12">
             <el-form-item label="合同名称" prop="name">
               <el-input
-                :disabled="isEdit"
                 v-model="buycontractinfo.name"
+                :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入合同名称"
               />
@@ -39,8 +41,8 @@
           <el-col :span="10">
             <el-form-item label="机构名称" prop="meterInfoDTO">
               <el-select
-                :disabled="isEdit"
                 v-model="buycontractinfo.meterInfoDTO"
+                :disabled="isEdit"
                 placeholder="机构名称"
                 style="width: 220px"
               >
@@ -59,8 +61,8 @@
           <el-col :span="12">
             <el-form-item label="所属区域">
               <el-select
-                :disabled="isEdit"
                 v-model="buycontractinfo.gridDTO"
+                :disabled="isEdit"
                 style="width: 220px"
                 placeholder="所属区域"
               >
@@ -76,8 +78,8 @@
           <el-col :span="10">
             <el-form-item label="总电量" prop="totalElectricity">
               <el-input
-                :disabled="isEdit"
                 v-model="buycontractinfo.totalElectricity"
+                :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入总电量"
               />
@@ -85,12 +87,131 @@
           </el-col>
         </el-row>
 
+        <!-- 新增 -->
+        <el-row :gutter="5">
+          <el-col :span="12">
+            <el-form-item label="电压等级">
+              <el-select
+                v-model="buycontractinfo.gridDTO"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="电压等级"
+              >
+                <el-option
+                  v-for="(item, index) in gridList"
+                  :key="`${item.id}${index}`"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="结算类型" prop="totalElectricity">
+              <el-select
+                v-model="buycontractinfo.gridDTO"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="结算类型"
+              >
+                <el-option
+                  v-for="(item, index) in gridList"
+                  :key="`${item.id}${index}`"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="5">
+          <el-col :span="12">
+            <el-form-item label="默认参数组">
+              <el-select
+                v-model="buycontractinfo.gridDTO"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="默认参数组"
+              >
+                <el-option
+                  v-for="(item, index) in gridList"
+                  :key="`${item.id}${index}`"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="用户分成比例" prop="totalElectricity">
+              <el-input
+                v-model="buycontractinfo.totalElectricity"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="请输入用户分成比例"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="5">
+          <el-col :span="12">
+            <el-form-item label="居间费类型">
+              <el-select
+                v-model="buycontractinfo.gridDTO"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="居间费类型"
+              >
+                <el-option
+                  v-for="(item, index) in gridList"
+                  :key="`${item.id}${index}`"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="居间人分成比例" prop="totalElectricity">
+              <el-input
+                v-model="buycontractinfo.totalElectricity"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="请输入居间人分成比例"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="5">
+          <el-col :span="12">
+            <el-form-item label="用户分成比例">
+              <el-input
+                v-model="buycontractinfo.totalElectricity"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="请输入用户分成比例"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="固定费用" prop="totalElectricity">
+              <el-input
+                v-model="buycontractinfo.totalElectricity"
+                :disabled="isEdit"
+                style="width: 220px"
+                placeholder="请输入固定费用"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--  -->
+
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item label="价格类型">
               <el-select
-                :disabled="isEdit"
                 v-model="buycontractinfo.priceType"
+                :disabled="isEdit"
                 placeholder="价格类型"
                 style="width: 220px"
               >
@@ -102,8 +223,8 @@
           <el-col :span="10">
             <el-form-item label="是否有分解曲线" prop="curveValid">
               <el-select
-                :disabled="isEdit"
                 v-model="buycontractinfo.curveValid"
+                :disabled="isEdit"
                 placeholder="是否有分解曲线"
                 style="width: 220px"
               >
@@ -118,8 +239,8 @@
           <el-col :span="12">
             <el-form-item label="合同类型">
               <el-select
-                :disabled="isEdit"
                 v-model="buycontractinfo.contracttypeinfoDTO"
+                :disabled="isEdit"
                 placeholder="合同类型"
                 style="width: 220px"
               >
@@ -135,8 +256,8 @@
           <el-col :span="10">
             <el-form-item label="是否有分时比例" prop="timeofuseValid">
               <el-select
-                :disabled="isEdit"
                 v-model="buycontractinfo.timeofuseValid"
+                :disabled="isEdit"
                 placeholder="是否有分时比例"
                 style="width: 220px"
               >
@@ -151,13 +272,12 @@
           <el-col :span="12">
             <el-form-item label="签署时间">
               <el-date-picker
-                :disabled="isEdit"
                 v-model="buycontractinfo.signDate"
+                :disabled="isEdit"
                 placeholder="请选择签署时间"
                 format="yyyy-MM-dd"
                 type="date"
-              >
-              </el-date-picker>
+              />
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -167,8 +287,7 @@
                 disabled
                 format="yyyy-MM-dd HH:mm:ss"
                 type="date"
-              >
-              </el-date-picker>
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -177,9 +296,8 @@
           <el-col :span="24">
             <el-form-item label="起止时间" prop="timeLine">
               <el-date-picker
-                :disabled="isEdit"
                 v-model="buycontractinfo.timeLine"
-                @change="GetzhifuTime"
+                :disabled="isEdit"
                 :default-time="['00:00:00', '23:59:59']"
                 unlink-panels
                 type="daterange"
@@ -187,6 +305,7 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                @change="GetzhifuTime"
               />
             </el-form-item>
           </el-col>
@@ -196,11 +315,11 @@
           <el-col :span="12">
             <el-form-item label="分时方案">
               <el-select
-                :disabled="isEdit"
-                @change="selectTimeperiodofusecfgDTO"
                 v-model="buycontractinfo.timeperiodofusecfgDTO"
+                :disabled="isEdit"
                 placeholder="分时方案"
                 style="width: 220px"
+                @change="selectTimeperiodofusecfgDTO"
               >
                 <el-option
                   v-for="(item, index) in periodList"
@@ -214,8 +333,7 @@
                 :disabled="isEdit"
                 type="primary"
                 @click="showDialogFormVisible.toggle = true"
-                >查询/编辑/另存</el-button
-              >
+              >查询/编辑/另存</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -234,13 +352,13 @@
           <el-col :span="12">
             <el-form-item label="合同价格方案" prop="pricetimeofuseDTO">
               <el-select
-                :disabled="isEdit"
-                @change="selectContractPrice"
                 v-model="buycontractinfo.pricetimeofuseDTO"
+                :disabled="isEdit"
                 placeholder="合同价格方案"
                 style="width: 220px"
+                @change="selectContractPrice"
               >
-                <el-option label="请选择" value="" disabled/>
+                <el-option label="请选择" value="" disabled />
                 <el-option
                   v-for="(item, index) in contractPriceList"
                   :key="`${item.id}${index}`"
@@ -253,17 +371,20 @@
                 :disabled="isEdit || !buycontractinfo.pricetimeofuseDTO"
                 type="primary"
                 @click="showDialogContractPrice.toggle = true"
-                >查询/编辑/另存</el-button
-              >
+              >查询/编辑/另存</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="12" >
+          <el-col :span="12">
             <!-- <div v-for="(item, index) in buycontractinfo.priceList" :key="index"> -->
-            <el-form-item v-for="(item, index) in items" :label='`价格${index+1}:`' :key="index">
+            <el-form-item
+              v-for="(item, index) in items"
+              :key="index"
+              :label="`价格${index + 1}:`"
+            >
               <el-input
-                disabled
                 v-model="item.price"
-                style="width: 220px;"
+                disabled
+                style="width: 220px"
                 onkeyup="value=value.replace(/[^\d.]/g,'')"
                 placeholder="请输入用户名"
               />
@@ -276,11 +397,11 @@
           <div class="fenjiefangan">分解曲线方案</div>
           <el-form-item label="年到月分解方案">
             <el-select
-              :disabled="isEdit"
-              @change="selectCurveytomDTO"
-              style="width: 220px"
               v-model="buycontractinfo.curveytomDTO"
+              :disabled="isEdit"
+              style="width: 220px"
               placeholder="年到月分解方案"
+              @change="selectCurveytomDTO"
             >
               <el-option
                 v-for="(item, index) in yearToMonthPlan"
@@ -294,16 +415,15 @@
               :disabled="isEdit"
               type="primary"
               @click="dialogYearToMouth.toggle = true"
-              >查询/编辑/另存</el-button
-            >
+            >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="月到日分解方案">
             <el-select
+              v-model="buycontractinfo.weightsetyearlymtodDTO"
               :disabled="isEdit"
               style="width: 220px"
-              @change="selectWeightsetyearlymtodDTO"
-              v-model="buycontractinfo.weightsetyearlymtodDTO"
               placeholder="月到日分解方案"
+              @change="selectWeightsetyearlymtodDTO"
             >
               <el-option
                 v-for="(item, index) in monthToDayPlan"
@@ -317,16 +437,15 @@
               :disabled="isEdit"
               type="primary"
               @click="dialogMouthToDayBase.toggle = true"
-              >查询/编辑/另存</el-button
-            >
+            >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="日分时分解方案">
             <el-select
+              v-model="buycontractinfo.curvesetyearlydtopDTO"
               :disabled="isEdit"
               style="width: 220px"
-              @change="selectCurvesetyearlydtopDTO"
-              v-model="buycontractinfo.curvesetyearlydtopDTO"
               placeholder="日分时分解方案"
+              @change="selectCurvesetyearlydtopDTO"
             >
               <el-option
                 v-for="(item, index) in dayToHourPlan"
@@ -340,8 +459,7 @@
               :disabled="isEdit"
               type="primary"
               @click="dialogDayToHourBase.toggle = true"
-              >查询/编辑/另存</el-button
-            >
+            >查询/编辑/另存</el-button>
           </el-form-item>
         </div>
         <!-- #endregion -->
@@ -350,43 +468,51 @@
     <!-- #region -->
     <!-- 分时方案弹窗 -->
     <timesAsingScheme
-      :id='this.buycontractinfo.timeperiodofusecfgDTO'
-      :showDialogFormVisible="showDialogFormVisible"
+      :id="buycontractinfo.timeperiodofusecfgDTO"
+      :show-dialog-form-visible="showDialogFormVisible"
     />
     <!-- 合同价格方案弹窗 -->
-    <contractPrice 
-      :id='buycontractinfo.pricetimeofuseDTO'
-      :contractPriceList='contractPriceList'
-      :cfgId='this.buycontractinfo.timeperiodofusecfgDTO'
-      :items="items" :showDialogContractPrice="showDialogContractPrice"
+    <contractPrice
+      :id="buycontractinfo.pricetimeofuseDTO"
+      :contract-price-list="contractPriceList"
+      :cfg-id="buycontractinfo.timeperiodofusecfgDTO"
+      :items="items"
+      :show-dialog-contract-price="showDialogContractPrice"
     />
     <yearToMouth
-      :totalElectricity="buycontractinfo.totalElectricity"
-      :dialogYearToMouth="dialogYearToMouth"
       :id="this.$route.query.id"
+      :total-electricity="buycontractinfo.totalElectricity"
+      :dialog-year-to-mouth="dialogYearToMouth"
     />
     <mouthToDayBase
-      :totalElectricity="buycontractinfo.totalElectricity"
-      :decompositionScheme="decompositionScheme"
-      :dialogMouthToDayBase="dialogMouthToDayBase"
       :id="this.$route.query.id"
+      :total-electricity="buycontractinfo.totalElectricity"
+      :decomposition-scheme="decompositionScheme"
+      :dialog-mouth-to-day-base="dialogMouthToDayBase"
     />
     <dayToHourBase
-      :totalElectricity="buycontractinfo.totalElectricity"
-      :dialogDayToHourBase="dialogDayToHourBase"
       :id="this.$route.query.id"
+      :total-electricity="buycontractinfo.totalElectricity"
+      :dialog-day-to-hour-base="dialogDayToHourBase"
     />
     <!-- #endregion -->
   </div>
 </template>
 <script>
-import request from "@/utils/request";
-import contractPrice from "./module/contractPrice";
-import timesAsingScheme from "./module/timesasingscheme";
-import yearToMouth from "./module/yeartomouth";
-import mouthToDayBase from "./module/mouthToDayBase";
-import dayToHourBase from "./module/dayToHourBase";
+import request from '@/utils/request'
+import contractPrice from './module/contractPrice'
+import timesAsingScheme from './module/timesasingscheme'
+import yearToMouth from './module/yeartomouth'
+import mouthToDayBase from './module/mouthToDayBase'
+import dayToHourBase from './module/dayToHourBase'
 export default {
+  components: {
+    contractPrice,
+    timesAsingScheme,
+    yearToMouth,
+    mouthToDayBase,
+    dayToHourBase
+  },
   data() {
     return {
       items: [
@@ -399,31 +525,31 @@ export default {
         //     { price: 101},
         //     { price: 103},
         // ],
-        userSmallDTO: "", //填报人
-        timeofuseValid: "", // 是否有分时比例
-        contracttypeinfoDTO: "", // 合同类型
-        curveValid: "", // 是否有分解曲线
-        contractPrice: "", // 合同价格
-        gridDTO: "", //所属区域
-        meterInfoDTO: "", // 机构名称
-        totalElectricity: "", // 总电量
-        timeLine: "", //用来存放日期组件所选中的值
-        signDate: "", // 签署时间
-        name: "", // 合同名称
-        priceType: "", // 价格类型
-        timeperiodofusecfgDTO: "", // 分时方案
-        pricetimeofuseDTO: "", // 合同价格方案
+        userSmallDTO: '', // 填报人
+        timeofuseValid: '', // 是否有分时比例
+        contracttypeinfoDTO: '', // 合同类型
+        curveValid: '', // 是否有分解曲线
+        contractPrice: '', // 合同价格
+        gridDTO: '', // 所属区域
+        meterInfoDTO: '', // 机构名称
+        totalElectricity: '', // 总电量
+        timeLine: '', // 用来存放日期组件所选中的值
+        signDate: '', // 签署时间
+        name: '', // 合同名称
+        priceType: '', // 价格类型
+        timeperiodofusecfgDTO: '', // 分时方案
+        pricetimeofuseDTO: '', // 合同价格方案
         priceList: [], // 合同价格列表
-        createDate: "", // 创建时间
-        curveytomDTO: "", // 年到月分解方案
-        weightsetyearlymtodDTO: "", // 月到日分解方案
-        curvesetyearlydtopDTO: "", // 日分时分解方案
+        createDate: '', // 创建时间
+        curveytomDTO: '', // 年到月分解方案
+        weightsetyearlymtodDTO: '', // 月到日分解方案
+        curvesetyearlydtopDTO: '' // 日分时分解方案
       },
-      isEdit: true, //点击编辑修改是否可以编辑
+      isEdit: true, // 点击编辑修改是否可以编辑
       yearToMonthPlan: [], // 年到月
-      monthToDayPlan: [], //月到日
-      dayToHourPlan: [], //日到时
-      decompositionScheme: [], //月到日基本页面内的--分解方案
+      monthToDayPlan: [], // 月到日
+      dayToHourPlan: [], // 日到时
+      decompositionScheme: [], // 月到日基本页面内的--分解方案
       // 分时方案详情页面 -- 弹窗表单
       showDialogFormVisible: { toggle: false, add: false },
       // 合同价格方案弹出页面 -- 弹窗表单
@@ -434,94 +560,99 @@ export default {
       dialogMouthToDayBase: { toggle: false, add: false },
       // 日分时分时方案基础页面 -- 弹窗表单
       dialogDayToHourBase: { toggle: false, add: false },
-      contracttypeinfoList: [], //合同类型下拉
-      meterNameList: [], //机构名称列表
-      contractPriceList: [], //合同价格方案列表
-      periodList: [], //获取分时方案列表
+      contracttypeinfoList: [], // 合同类型下拉
+      meterNameList: [], // 机构名称列表
+      contractPriceList: [], // 合同价格方案列表
+      periodList: [], // 获取分时方案列表
       gridList: [], // /buy/gridList 获取所属区域列表
       rules: {
-        name: [{ required: true, message: "请输入合同名称", trigger: "blur" }],
+        name: [{ required: true, message: '请输入合同名称', trigger: 'blur' }],
         totalElectricity: [
-          { required: true, message: "请输入总电量", trigger: "blur" },
+          { required: true, message: '请输入总电量', trigger: 'blur' }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
         meterInfoDTO: [
-          { required: true, message: "请输入机构名称", trigger: "change" },
+          { required: true, message: '请输入机构名称', trigger: 'change' }
         ],
         timeLine: [
-          { required: true, message: "请输入起始时间", trigger: "change" },
+          { required: true, message: '请输入起始时间', trigger: 'change' }
         ],
         timeofuseValid: [
           {
             required: true,
-            message: "请选择是否有分时比例",
-            trigger: "change",
-          },
+            message: '请选择是否有分时比例',
+            trigger: 'change'
+          }
         ],
         curveValid: [
           {
             required: true,
-            message: "请选择是否有分解曲线",
-            trigger: "change",
-          },
+            message: '请选择是否有分解曲线',
+            trigger: 'change'
+          }
         ],
         pricetimeofuseDTO: [
           {
             required: true,
-            message: "请选择合同价格方案",
-            trigger: "change",
-          },
-        ],
-      },
-    };
+            message: '请选择合同价格方案',
+            trigger: 'change'
+          }
+        ]
+      }
+    }
   },
   async created() {
-    await this.getAgencyAll();
-    await this.getGridList();
-    await this.getPeriodList();
-    await this.getPlanlist(0); // 年到月 下拉列表
-    await this.getPlanlist(1); // 月到日 下拉列表
-    await this.getPlanlist(2); // 日到时 下拉列表
-    await this.getPlanlist(3); // 获取月分解方案（ppt 第8页）
+    await this.getAgencyAll()
+    await this.getGridList()
+    await this.getPeriodList()
+    await this.getPlanlist(0) // 年到月 下拉列表
+    await this.getPlanlist(1) // 月到日 下拉列表
+    await this.getPlanlist(2) // 日到时 下拉列表
+    await this.getPlanlist(3) // 获取月分解方案（ppt 第8页）
     // 根据ID获取当前点击的合同的内容
-    await this.getContractinDetail();
+    await this.getContractinDetail()
   },
   methods: {
     selectContractPrice(event, item) {
-      console.log("修改合同价格方案选项id", event);
-      console.log("修改合同价格方案选项2",this.buycontractinfo.pricetimeofuseDTO,this.buycontractinfo.timeperiodofusecfgDTO, this.contractPriceList);
-      if (event == 999) {
-        this.showDialogContractPrice.toggle = true;
-        this.showDialogContractPrice.add = true;
+      console.log('修改合同价格方案选项id', event)
+      console.log(
+        '修改合同价格方案选项2',
+        this.buycontractinfo.pricetimeofuseDTO,
+        this.buycontractinfo.timeperiodofusecfgDTO,
+        this.contractPriceList
+      )
+      if (event === 999) {
+        this.showDialogContractPrice.toggle = true
+        this.showDialogContractPrice.add = true
       } else {
-        this.showDialogContractPrice.add = false;
+        this.showDialogContractPrice.add = false
         // console.log(666, this.contractPriceList);
-        let aa = this.contractPriceList.filter(val => val.id == event)
+        const aa = this.contractPriceList.filter((val) => val.id === event)
         // console.log('aa:', aa, aa[0].priceList);
-        let arr = [];
+        const arr = []
         aa[0].priceList.forEach((item) => {
-          arr.push({ price: item });
-        });
+          arr.push({ price: item })
+        })
         this.items = arr
       }
     },
     // 修改分时方案选项
     selectTimeperiodofusecfgDTO(event, item) {
-      console.log("修改分时方案选项重置合同价格方案", event);
-      this.buycontractinfo.pricetimeofuseDTO = "";
+      console.log('修改分时方案选项重置合同价格方案', event)
+      this.buycontractinfo.pricetimeofuseDTO = ''
       this.items = []
-      if(event == 999) {
-        this.showDialogFormVisible.toggle = true;
-        this.showDialogFormVisible.add = true;
+      if (event === 999) {
+        this.showDialogFormVisible.toggle = true
+        this.showDialogFormVisible.add = true
         return
       }
       this.getPricelist(event)
     },
-    getPricelist(event){
+    getPricelist(event) {
       request({
         url: `/buy/tpfcg/${event}/pricelist`,
-        method: "get",
-      }).then(res => {
+        method: 'get'
+      }).then((res) => {
         this.contractPriceList = res
       })
     },
@@ -534,170 +665,163 @@ export default {
           // copyItems.forEach((item) => arr.push(Number(item.price)));
           // this.buycontractinfo.priceList = arr;
           // console.log("buycontractinfo", copyItems, arr, this.buycontractinfo);
-          this.saveContractinDetail(this.buycontractinfo);
+          this.saveContractinDetail(this.buycontractinfo)
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     saveContractinDetail(val) {
       request({
-        url: "/buy/save",
-        method: "post",
-        data: val,
+        url: '/buy/save',
+        method: 'post',
+        data: val
       })
         .then((res) => {
-          console.log("saveContractinDetail", res);
+          console.log('saveContractinDetail', res)
           this.$message({
-            message: "保存成功",
-            type: "success",
-          });
+            message: '保存成功',
+            type: 'success'
+          })
         })
         .catch((error) => {
-          console.log(error);
-          this.$message.error("保存失败");
-        });
+          console.log(error)
+          this.$message.error('保存失败')
+        })
     },
     // 修改年到月分解方案选项
     selectCurveytomDTO(event, item) {
-      console.log("修改年到月分解方案选项", event);
+      console.log('修改年到月分解方案选项', event)
       if (event == 999) {
-        this.dialogYearToMouth.toggle = true;
-        this.dialogYearToMouth.add = true;
+        this.dialogYearToMouth.toggle = true
+        this.dialogYearToMouth.add = true
       } else {
-        this.dialogYearToMouth.add = false;
+        this.dialogYearToMouth.add = false
       }
     },
     // 修改月到日分解方案选项
     selectWeightsetyearlymtodDTO(event, item) {
-      console.log("修改月到日分解方案选项", event);
+      console.log('修改月到日分解方案选项', event)
       if (event == 999) {
-        this.dialogMouthToDayBase.toggle = true;
-        this.dialogMouthToDayBase.add = true;
+        this.dialogMouthToDayBase.toggle = true
+        this.dialogMouthToDayBase.add = true
       } else {
-        this.dialogMouthToDayBase.add = false;
+        this.dialogMouthToDayBase.add = false
       }
     },
     // 修改日分时分解方案选项
     selectCurvesetyearlydtopDTO(event, item) {
-      console.log("修改日分时分解方案选项", event);
+      console.log('修改日分时分解方案选项', event)
       if (event == 999) {
-        this.dialogDayToHourBase.toggle = true;
-        this.dialogDayToHourBase.add = true;
+        this.dialogDayToHourBase.toggle = true
+        this.dialogDayToHourBase.add = true
       } else {
-        this.dialogDayToHourBase.add = false;
+        this.dialogDayToHourBase.add = false
       }
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     GetzhifuTime() {
-      //利用change事件监听表单内容变化，并将选中的值赋值给所需要的两个字段
-      //支付时间戳设置
+      // 利用change事件监听表单内容变化，并将选中的值赋值给所需要的两个字段
+      // 支付时间戳设置
       // console.log(77777, this.buycontractinfo.timeLine)
       if (this.buycontractinfo != null) {
-        this.buycontractinfo.startDate = this.buycontractinfo.timeLine[0];
-        this.buycontractinfo.endDate = this.buycontractinfo.timeLine[1];
+        this.buycontractinfo.startDate = this.buycontractinfo.timeLine[0]
+        this.buycontractinfo.endDate = this.buycontractinfo.timeLine[1]
       }
     },
     getPlanlist(type) {
-      //获取分解曲线方案列表
+      // 获取分解曲线方案列表
       request({
         url: `/buy/planlist?type=${type}`,
-        method: "get",
+        method: 'get'
       }).then((res) => {
         // console.log("getPlanlist", res);
         if (type == 0) {
-          this.yearToMonthPlan = res;
+          this.yearToMonthPlan = res
         }
         if (type == 1) {
-          this.monthToDayPlan = res;
+          this.monthToDayPlan = res
         }
         if (type == 2) {
-          this.dayToHourPlan = res;
+          this.dayToHourPlan = res
         }
         if (type == 3) {
-          this.decompositionScheme = res;
+          this.decompositionScheme = res
         }
-      });
+      })
     },
     getContractinDetail() {
       // console.log('query',this.$route.query);
       request({
         url: `/buy/${this.$route.query.id}/detail`,
-        method: "get",
+        method: 'get'
       }).then((res) => {
-        let ret = JSON.parse(JSON.stringify(res));
-        this.buycontractinfo = ret;
+        const ret = JSON.parse(JSON.stringify(res))
+        this.buycontractinfo = ret
         // this.contracttypeinfoList = ret.contracttypeinfoList
-        this.buycontractinfo.curveytomDTO = ret.curveytomDTO.id; //年到月分解方案
+        this.buycontractinfo.curveytomDTO = ret.curveytomDTO.id // 年到月分解方案
         this.buycontractinfo.weightsetyearlymtodDTO =
-          ret.weightsetyearlymtodDTO.id; //月到日分解方案
+          ret.weightsetyearlymtodDTO.id // 月到日分解方案
         this.buycontractinfo.curvesetyearlydtopDTO =
-          ret.curvesetyearlydtopDTO.id; //日分时分解方案
-        this.buycontractinfo.contracttypeinfoDTO = ret.contracttypeinfoDTO.id; //设置合同类型id
-        this.buycontractinfo.meterInfoDTO = ret.meterInfoDTO.id; //设置机构名称id
-        this.buycontractinfo.gridDTO = ret.gridDTO.id; //设置所属区域id
-        this.buycontractinfo.userSmallDTO = ret.userSmallDTO.name; //设置填报人
-        //日期区间回显
-        this.$set(this.buycontractinfo, "timeLine", [
+          ret.curvesetyearlydtopDTO.id // 日分时分解方案
+        this.buycontractinfo.contracttypeinfoDTO = ret.contracttypeinfoDTO.id // 设置合同类型id
+        this.buycontractinfo.meterInfoDTO = ret.meterInfoDTO.id // 设置机构名称id
+        this.buycontractinfo.gridDTO = ret.gridDTO.id // 设置所属区域id
+        this.buycontractinfo.userSmallDTO = ret.userSmallDTO.name // 设置填报人
+        // 日期区间回显
+        this.$set(this.buycontractinfo, 'timeLine', [
           ret.startDate,
-          ret.endDate,
-        ]);
+          ret.endDate
+        ])
         this.buycontractinfo.timeperiodofusecfgDTO =
-          ret.timeperiodofusecfgDTO.id; //合同名称
+          ret.timeperiodofusecfgDTO.id // 合同名称
         // this.buycontractinfo.priceList = ret.pricetimeofuseDTO.priceList; //合同名称
         // this.buycontractinfo.priceList = [{ price: 21},{ price: 1103}] //合同名称
-        let arr = [];
+        const arr = []
         ret.pricetimeofuseDTO.priceList.forEach((item) => {
-          arr.push({ price: item });
-        });
-        this.items = arr;
+          arr.push({ price: item })
+        })
+        this.items = arr
         // this.items = [{ price: 21},{ price: 1103}]
-        this.buycontractinfo.pricetimeofuseDTO = ret.pricetimeofuseDTO.id; //合同名称
+        this.buycontractinfo.pricetimeofuseDTO = ret.pricetimeofuseDTO.id // 合同名称
         this.contractPriceList = ret.pricetimeofuseDTOList
-      });
+      })
     },
     getAgencyAll() {
-      //获取机构名称列表
+      // 获取机构名称列表
       request({
-        url: "/buy/agencyAll",
-        method: "get",
+        url: '/buy/agencyAll',
+        method: 'get'
       }).then((res) => {
-        this.meterNameList = res;
-      });
+        this.meterNameList = res
+      })
     },
     getPeriodList() {
-      //获取分时方案列表
+      // 获取分时方案列表
       request({
-        url: "/buy/periodlist",
-        method: "get",
+        url: '/buy/periodlist',
+        method: 'get'
       }).then((res) => {
-        this.periodList = res;
-      });
+        this.periodList = res
+      })
     },
     getGridList() {
-      //获取所属区域列表
+      // 获取所属区域列表
       request({
-        url: "/buy/gridList",
-        method: "get",
+        url: '/buy/gridList',
+        method: 'get'
       }).then((res) => {
-        this.gridList = res;
-      });
+        this.gridList = res
+      })
     },
     onSubmit() {
-      console.log("submit!");
-    },
-  },
-  components: {
-    contractPrice,
-    timesAsingScheme,
-    yearToMouth,
-    mouthToDayBase,
-    dayToHourBase,
-  },
-};
+      console.log('submit!')
+    }
+  }
+}
 </script>
 <style lang="scss" scope>
 .toubu {

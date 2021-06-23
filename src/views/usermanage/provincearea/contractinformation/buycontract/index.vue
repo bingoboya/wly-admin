@@ -63,7 +63,7 @@
             slot="reference"
             class="el-link--primary"
             style="cursor:pointer;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
-            @click="gotoRouter(scope.row.name)"
+            @click="gotoRouter(scope.row)"
           >
             {{ scope.row.name }}
           </div>
@@ -215,7 +215,7 @@ export default {
       this.$router.push({
         path: '/usermanage/contractinformation/contractindetail',
         query:{
-          id: 7
+          id: params.id
         }
       })
     },

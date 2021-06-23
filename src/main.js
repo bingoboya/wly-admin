@@ -19,9 +19,6 @@ import './assets/styles/element-variables.scss'
 // global css
 import './assets/styles/index.scss'
 
-// 代码高亮
-import VueHighlightJS from 'vue-highlightjs'
-import 'highlight.js/styles/atom-one-dark.css'
 
 import App from './App'
 import store from './store'
@@ -32,7 +29,7 @@ import './router/index' // permission control
 import 'echarts-gl'
 
 Vue.use(checkPer)
-Vue.use(VueHighlightJS)
+// Vue.use(VueHighlightJS)
 Vue.use(mavonEditor)
 Vue.use(permission)
 Vue.use(dict)

@@ -43,7 +43,7 @@
               @change="selectNumPeriod"
               style="width: 220px"
               v-model="timesasingSchemeDetial.numPeriod"
-              placeholder="选择分时时段数"
+              placeholder="年到月分解方案"
             >
               <el-option
                 v-for="(item, index) in 5"

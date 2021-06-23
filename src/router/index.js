@@ -15,7 +15,8 @@ router.beforeEach((to, from, next) => {
   // console.log('router.beforeEach:----', to);
   // alert(to.path)
   if (to.meta.title) {
-    document.title = to.meta.title + ' - ' + Config.title
+    document.title = to.meta.title
+    // document.title = to.meta.title + ' - ' + Config.title
   }
   NProgress.start()
   if (getToken()) {
@@ -60,7 +61,7 @@ export const loadMenus = (next, to) => {
       component: 'Layout',
       redirect: 'noredirect',
       name: 'usermanage',
-      meta: { activeName: 7, title: '数据是理',icon: 'menu'},
+      meta: { activeName: 7, title: '数据管理',icon: 'menu'},
       children: [
         {
           path: 'peddingapproval',
@@ -92,15 +93,23 @@ export const loadMenus = (next, to) => {
             },
             {
               path: 'contractindetail',
-              // hidden: true,
+              hidden: true,
               component: "usermanage/provincearea/contractinformation/buycontract/contractindetail",
               name: 'contractinformation-contractindetail',
+              meta: { activeName: 7, icon: 'menu', title: '合同详情' }
+            },
+            {
+              path: 'salecontractindetail',
+              hidden: true,
+              component: "usermanage/provincearea/contractinformation/salecontract/contractindetail",
+              name: 'contractinformation-salecontractindetail',
               meta: { activeName: 7, icon: 'menu', title: '合同详情' }
             },
           ]
         },
         {
           path: 'curvemanagement',
+          hidden: true,
           component: "usermanage/curvemanagement",
           name: 'provincearea-commoncurvemanagement',
           redirect: 'noredirect',
@@ -122,23 +131,25 @@ export const loadMenus = (next, to) => {
         },
         {
           path: 'institutionalinformation',
+          hidden: true,
           component: "usermanage/provincearea/institutionalinformation",
           name: 'provincearea-institutionalinformation',
           meta: { activeName: 7, icon: 'menu', title: '机构信息' }
         },
         {
           path: 'intersogueinformation',
+          hidden: true,
           component: "usermanage/provincearea/intersogueinformation",
           name: 'provincearea-intersogueinformation',
           meta: { activeName: 7, icon: 'menu', title: '居间人信息' }
         },
         {
           path: 'marketruleinformation',
+          hidden: true,
           component: "usermanage/provincearea/marketruleinformation",
           name: 'provincearea-marketruleinformation',
           meta: { activeName: 7, icon: 'menu', title: '市场规则信息' }
         },
-        
       ]
     }
   ]
@@ -151,7 +162,7 @@ export const loadMenus = (next, to) => {
     const sidebarRoutes = filterAsyncRouter(sdata)
     rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
 
-    console.log('动态添加可访问路由表:-', rewriteRoutes);
+    console.log('动态添加可访问路由表:', rewriteRoutes);
     console.log('侧边蓝路由表:-', sidebarRoutes);
 
     store.dispatch('GenerateRoutes', rewriteRoutes).then(() => { // 存储路由

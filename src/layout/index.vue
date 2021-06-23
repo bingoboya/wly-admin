@@ -5,7 +5,7 @@
     <div :class="{hasTagsView:needTagsView}" class="main-container">
 
       <div :class="{'fixed-header':fixedHeader}">
-        <el-tabs v-model="activeName" style="margin-bottom: -14px;" @tab-click="handleClick">
+        <el-tabs v-model="activeName" class="bingo" style="margin-bottom: -14px;" @tab-click="handleClick">
           <el-tab-pane label="用户管理" name="7" />
           <el-tab-pane label="配置管理" name="8" />
           <el-tab-pane label="角色管理" name="9" />
@@ -112,11 +112,15 @@ export default {
   }
 }
 </script>
-
+<style lang="scss">
+  .el-tabs--top .el-tabs__item.is-top:nth-child(2), .el-tabs--top .el-tabs__item.is-bottom:nth-child(2), .el-tabs--bottom .el-tabs__item.is-top:nth-child(2), .el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2){
+    padding-left: 20px !important;
+  }
+</style>
 <style lang="scss" scoped>
   @import "~@/assets/styles/mixin.scss";
   @import "~@/assets/styles/variables.scss";
-
+  
   .top-nav{
     display: flex;
     .top-nav-item{

@@ -18,6 +18,9 @@ module.exports = {
   // assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
+  // watchOptions: {
+  //   ignored: /node_modules/
+  // },
   devServer: {
     port: 8007,
     // open: true,
