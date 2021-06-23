@@ -92,21 +92,20 @@
           <el-col :span="12">
             <el-form-item label="电压等级">
               <el-select
-                v-model="buycontractinfo.VoltLevel"
+                v-model="buycontractinfo.voltLevel"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="电压等级"
               >
-                <el-option label="低级" :value="0" />
-                <el-option label="中级" :value="1" />
-                <el-option label="高级" :value="2" />
+                <el-option label="110KV" :value="0" />
+                <el-option label="220KV" :value="1" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="结算类型" prop="SettleType">
+            <el-form-item label="结算类型" prop="settleType">
               <el-select
-                v-model="buycontractinfo.SettleType"
+                v-model="buycontractinfo.settleType"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="结算类型"
@@ -128,7 +127,7 @@
                 placeholder="默认参数组"
               >
                 <el-option
-                  v-for="(item, index) in gridList"
+                  v-for="(item, index) in defaultParamIdList"
                   :key="`${item.id}${index}`"
                   :label="item.name"
                   :value="item.id"
@@ -137,9 +136,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="用户分成比例" prop="PctUser">
+            <el-form-item label="用户分成比例" prop="pctUser">
               <el-input
-                v-model="buycontractinfo.PctUser"
+                v-model="buycontractinfo.pctUser"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入用户分成比例"
@@ -151,7 +150,7 @@
           <el-col :span="12">
             <el-form-item label="居间费类型">
               <el-select
-                v-model="buycontractinfo.gridDTO"
+                v-model="buycontractinfo.agenFeeType"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="居间费类型"
@@ -166,9 +165,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="居间人分成比例" prop="PctAgencyAF">
+            <el-form-item label="居间人分成比例">
               <el-input
-                v-model="buycontractinfo.PctAgencyAF"
+                v-model="buycontractinfo.pctRetailerAF"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入居间人分成比例"
@@ -178,9 +177,9 @@
         </el-row>
         <el-row :gutter="5">
           <el-col :span="12">
-            <el-form-item label="固定费用" prop="FixAgenFee">
+            <el-form-item label="固定费用" prop="fixAgenFee">
               <el-input
-                v-model="buycontractinfo.FixAgenFee"
+                v-model="buycontractinfo.fixAgenFee"
                 :disabled="isEdit"
                 style="width: 220px"
                 placeholder="请输入固定费用"
@@ -570,6 +569,7 @@ export default {
       contracttypeinfoList: [], // 合同类型下拉
       meterNameList: [], // 机构名称列表
       contractPriceList: [], // 合同价格方案列表
+      defaultParamIdList: [], // 默认参数组下拉选项
       periodList: [], // 获取分时方案列表
       gridList: [], // /buy/gridList 获取所属区域列表
       rules: {
@@ -578,7 +578,7 @@ export default {
           { required: true, message: '请输入总电量', trigger: 'blur' }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
-        SettleType: [
+        settleType: [
           { required: true, message: '请选择结算类型', trigger: 'change' }
         ],
         paramId: [
@@ -618,6 +618,7 @@ export default {
     await this.getAgencyAll()
     await this.getGridList()
     await this.getPeriodList()
+    await this.getDefaultParamIdList()
     await this.getPlanlist(0) // 年到月 下拉列表
     await this.getPlanlist(1) // 月到日 下拉列表
     await this.getPlanlist(2) // 日到时 下拉列表
@@ -626,6 +627,15 @@ export default {
     await this.getContractinDetail()
   },
   methods: {
+    getDefaultParamIdList(){//获取默认参数组下拉选项
+      // /sell/params
+      request({
+        url: `/sell/params`,
+        method: 'get'
+      }).then((res) => {
+        this.defaultParamIdList = res
+      })
+    },
     selectContractPrice(event, item) {
       console.log('修改合同价格方案选项id', event)
       console.log(
