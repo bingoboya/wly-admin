@@ -7,7 +7,7 @@
     custom-class="bingo"
     @open="openDialog"
     @closed="showFormDom = false"
-    title="购电合同-合同价格方案"
+    title="售电合同-合同价格方案"
     :visible.sync="showDialogContractPrice.toggle"
   >
     <el-form
@@ -50,7 +50,8 @@
                 trigger: 'blur',
               }"
             >
-              <el-input style="width: 220px;" onkeyup="value=value.replace(/[^\d.]/g,'')" placeholder="请输入时段名称" v-model="item.price" />
+              <el-input style="width: 220px;" placeholder="请输入时段名称" v-model="item.price" />
+              <!-- <el-input style="width: 220px;" onkeyup="value=value.replace(/[^\d.]/g,'')" placeholder="请输入时段名称" v-model="item.price" /> -->
             </el-form-item>
           </div>
         </div>
@@ -120,21 +121,26 @@ export default {
       this.$refs[formName].resetFields();
     },
     saveTimesasingSchemeDetial(val) {
-      //保存 购电合同-分时方案 页面信息
+      let that = this
+      //保存 售电合同-分时方案 页面信息
       request({
         url: "/buy/tpfcg/price/save",
         method: "post",
         data: val,
       })
-        .then((res) => {
-          this.$message({
+        .then(async (res) => {
+          console.log('出发1');
+          //如果点击 保存并选择 按钮， 把返回的id赋值给 合同价格方案 字段
+          that.$emit('changepricetimeofuseDTO', res.id, 'price-timeofuseDTO')
+          that.$message({
             message: "保存成功",
             type: "success",
           });
+          this.showDialogContractPrice.toggle = false
         })
         .catch((error) => {
           console.log(error);
-          this.$message.error("保存失败");
+          that.$message.error("保存失败");
         });
     },
 

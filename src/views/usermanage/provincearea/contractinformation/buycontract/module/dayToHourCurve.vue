@@ -41,23 +41,28 @@
         </el-form-item>
       </el-col>
     </el-row>
-      <!-- <div> -->
-        
-      <!-- </div> -->
-      <!-- <div> -->
-        
-      <!-- </div> -->
+      
     </el-form>
     <!-- 图表模块 -->
     <div v-if="showFormDom">
       <div style="display: flex;">
         <el-table :data="rest.slice(0,rest.length/2)" border style="width: 100%">
           <el-table-column prop="name" label="键" width="60px"/>
-          <el-table-column prop="value" label="值" />
+          <!-- <el-table-column prop="value" label="值" /> -->
+          <el-table-column prop="value" label="值">
+            <template slot-scope="scope">
+              <el-input @input.native='changeTableValue' v-model="rest.slice(0,rest.length/2)[scope.$index].value" size="mini" class="edit-input" />
+            </template>
+          </el-table-column>
         </el-table>
         <el-table :data="rest.slice(rest.length/2)" border style="width: 100%">
           <el-table-column prop="name" label="键" width="60px"/>
-          <el-table-column prop="value" label="值" />
+          <!-- <el-table-column prop="value" label="值" /> -->
+          <el-table-column prop="value" label="值">
+            <template slot-scope="scope">
+              <el-input @input.native='changeTableValue' v-model="rest.slice(rest.length/2)[scope.$index].value" size="mini" class="edit-input" />
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       
@@ -66,20 +71,15 @@
           style="background: #fff; padding: 16px 16px 0; margin-bottom: 32px"
         >
           <div class="chart-wrapper">
-            <dayToHourCurveEcharts :rest="rest" />
+            <dayToHourCurveEcharts ref="dayToHourCurveEcharts" :rest="rest" />
           </div>
         </el-row>
       </div>
     </div>
-    <div>
-      <!-- <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button> -->
-    </div>
+   
     <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
+      <!-- <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button> -->
       <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
         <el-button type="primary" @click="dialogYearToMouth.toggle = false">取 消</el-button>
@@ -107,11 +107,16 @@ export default {
     }
   },
   methods: {
+    changeTableValue(){
+      console.log('changeTableValue');
+      this.$refs.dayToHourCurveEcharts.initChart()
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log("dayToHourDivisionData", this.dayToHourDivisionData);
           // alert('submit!');
+          console.log("dayToHourDivisionData", this.dayToHourDivisionData);
+          console.log("rest", this.rest);
         } else {
           console.log("error submit!!");
           console.log("dayToHourDivisionData", this.dayToHourDivisionData);
@@ -174,6 +179,13 @@ export default {
   },
 };
 </script>
+<style rel="stylesheet/scss" lang="scss">
+  .edit-input {
+    .el-input__inner {
+      border: 1px solid #e5e6e7;
+    }
+  }
+</style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 ::v-deep .el-dialog__body {
   max-height: 500px;

@@ -161,6 +161,7 @@ export default {
     },
     id:{
       type: [String, Number],
+      default: 1
     }
   },
   data() {
@@ -181,6 +182,7 @@ export default {
     selectNumPeriod(item){
       // 选择分时时段数
       console.log('选择分时时段数', item);
+      this.addbingoEnvironmentForm(item)
     },
     saveTimesasingSchemeDetial(val, type){
       //保存 购电合同-分时方案 页面信息
@@ -193,6 +195,7 @@ export default {
           message: '保存成功',
           type: 'success'
         })
+        this.showDialogFormVisible.toggle = false
       }).catch((error) => {
         console.log(error);
         this.$message.error('保存失败');
@@ -268,6 +271,23 @@ export default {
       this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
         index
       ].periodTimeList.pop();
+    },
+    //添加大表单项事件
+    addbingoEnvironmentForm(num) {
+      let list = JSON.parse(JSON.stringify(this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList))
+      console.log('num:', num, 'length:', list.length);
+      if(list.length > num){
+        this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList = list.slice(0, num)
+      }else if(list.length < num){
+        console.log('a', num - list.length);
+        for(let i=1; i <= num - list.length; i++){
+          console.log(i);
+          this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList.push({
+            periodName: '',
+            periodTimeList: [{startTime: "00:00",endTime: "24:00"}]
+          });
+        }
+      }
     },
     
     validateQujian(timeItem, aa, nums) {
@@ -386,6 +406,7 @@ export default {
         method: "get",
       }).then((res) => {
         this.timesasingSchemeDetial = res;
+        console.log('timesasingSchemeDetial',this.timesasingSchemeDetial);
         // this.timesasingSchemeDetial = result;
         // this.$set(
         //   this.timesasingSchemeDetial,

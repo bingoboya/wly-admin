@@ -255,15 +255,10 @@
         </el-row>
           <!-- #endregion -->
       </el-form>
-      <div>
-          <!-- <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button> -->
-      </div>
+      
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
+        <!-- <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button> -->
         <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
         <el-button type="primary" @click="dialogYearToMouth.toggle = false">取 消</el-button>
@@ -328,6 +323,7 @@ export default {
           message: '保存成功',
           type: 'success'
         })
+        this.dialogYearToMouth.toggle = false
       }).catch((error) => {
         console.log(error);
         this.$message.error('保存失败');

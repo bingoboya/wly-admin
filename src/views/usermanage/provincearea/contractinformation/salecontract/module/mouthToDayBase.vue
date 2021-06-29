@@ -2,7 +2,7 @@
   <!-- 分时方案详情页面弹窗 -->
   <!-- 打开分时方案详情页面弹窗 Dialog -->
   <el-dialog
-    title="购电合同-月到日分时方案基本页"
+    title="售电合同-月到日分时方案基本页"
     width="80%"
     v-el-drag-dialog
     @open="openDialog"
@@ -247,30 +247,6 @@
           >查询/编辑/另存</el-button
         >
       </el-form-item>
-
-      <!-- <div v-for="(item,index) in mouthToDayBaseDetail.planDTOList" :key="`${index}${item.id}`">
-        <el-form-item :label="index == 0 ? '全年统一方案:' : `${index}月份方案:`">
-          <el-select
-            :disabled="index == 0 ? chooseEntyType == 1 : index == 0"
-            v-model="item.planId"
-            :placeholder="`${index}月份方案:`"
-          >
-            <el-option
-              v-for="val in decompositionScheme"
-              :key="val.id"
-              :label="val.name"
-              :value="val.id"
-            />
-            <el-option label="新增自定义方案" :value="5" />
-          </el-select>
-          <el-button
-            :disabled="index == 0 ? chooseEntyType == 1 : index == 0"
-            type="primary"
-            @click="showDialogMToDay(index)"
-            >查询/编辑/另存</el-button
-          >
-        </el-form-item>
-      </div> -->
 
       <!-- #region -->
       <el-form-item label="1月份方案：">
@@ -543,11 +519,11 @@
       <el-button type="primary" @click="submitForm('ruleForm', 'add')"
         >另存</el-button
       >
-      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
+      <!-- <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button> -->
       <el-button type="primary" @click="submitForm('ruleForm', 'save')"
         >保存</el-button
       >
-      <el-button type="primary" @click="submitForm('ruleForm')"
+      <el-button type="primary" @click="submitForm('ruleForm', 'select')"
         >保存并选择</el-button
       >
       <el-button type="primary" @click="dialogMouthToDayBase.toggle = false"
@@ -562,6 +538,7 @@
       :formDataDetial="formDataDetial"
       :dayPropetieList="dayPropetieList"
       :tableData="tableData"
+      :yearToMonPercentageAllData="yearToMonPercentageAllData"
       :yearToMonPercentage1="yearToMonPercentage1"
       :yearToMonPercentage2="yearToMonPercentage2"
       :dialogMouthToDayDetial="dialogMouthToDayDetial"
@@ -667,6 +644,7 @@ export default {
           weight: "",
         },
       ],
+      yearToMonPercentageAllData: [], //总的比例数据
       yearToMonPercentage1: {
         //年到月比例
         persent: [
@@ -714,6 +692,7 @@ export default {
             message: "保存成功",
             type: "success",
           });
+          this.dialogMouthToDayBase.toggle = false
         })
         .catch((error) => {
           console.log(error);
@@ -734,8 +713,9 @@ export default {
           if (type === "add") {
             this.saveMouthToDayBaseDetail(res);
           } else if (type === "save") {
-            // this.mouthToDayBaseDetail.mtodId = 1
             res.mtodId = 1;
+            this.saveMouthToDayBaseDetail(res);
+          }else if(type === 'select'){
             this.saveMouthToDayBaseDetail(res);
           }
         } else {
@@ -752,7 +732,7 @@ export default {
     getMouthToDayDetail(selectId,month) {
       //获取月到日分解曲线方案详情页
       let contractId = this.id;
-      let mtodId = month;
+      this.month = month;
       request({
         // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
         url: `/buy/${contractId}/${selectId}/detail?month=${month}`,
@@ -762,6 +742,7 @@ export default {
           console.log("获取月到日分解曲线方案详情页-");
           this.formDataDetial = res.weightMtod;
           this.dayPropetieList = res.dayPropetieList;
+          this.yearToMonPercentageAllData = res.curveytom
           console.log("await 1", this.dayPropetieList.length);
           this.yearToMonPercentage1.persent[0].list.forEach(
             (item) => (item.persentVal = res.curveytom[item.key])

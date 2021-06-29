@@ -37,7 +37,10 @@ export default {
   },
   mounted() {
     this.initChart()
-    
+    // setInterval(()=>{
+    //   this.initChart()
+    //   console.log('重新加载echarts');
+    // }, 3000)
   },
   beforeDestroy() {
     console.log(4567890);

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div style="display: flex">
+  <div style="width: 100%">
+    <div style="display: flex;width: 100%">
       <div class="color-squr-wrapper">
         工作日:
         <div class="color-squr" style="background: #27727b" />
@@ -48,7 +48,7 @@ export default {
     },
     width: {
       type: String,
-      default: "100%",
+      default: "600px",
     },
     height: {
       type: String,

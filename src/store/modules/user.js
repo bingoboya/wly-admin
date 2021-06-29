@@ -34,7 +34,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo.username, userInfo.password, userInfo.code, userInfo.uuid).then(res => {
           setToken(res.token, rememberMe)
-
+          console.log('登录', res)
           commit('SET_TOKEN', res.token)
 
           setUserInfo(res.user, commit)
@@ -53,6 +53,7 @@ const user = {
     GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
+          
           setUserInfo(res, commit)
           resolve(res)
         }).catch(error => {
@@ -94,6 +95,7 @@ export const setUserInfo = (res, commit) => {
   } else {
     commit('SET_ROLES', res.roles)
   }
+  console.log('SET_USER', res.user);
   commit('SET_USER', res.user)
 }
 

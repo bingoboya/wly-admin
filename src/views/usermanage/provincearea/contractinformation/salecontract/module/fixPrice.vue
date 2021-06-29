@@ -7,7 +7,7 @@
     custom-class="bingo"
     @open="openDialog"
     @closed="showFormDom = false"
-    title="购电合同-合同价格方案"
+    title="售电合同-固定价差方案"
     :visible.sync="showDialogContractPrice.toggle"
   >
     <el-form
@@ -50,9 +50,7 @@
                 trigger: 'blur',
               }"
             >
-            <!-- 价格小于9999999999 -->
               <el-input style="width: 220px;"  placeholder="请输入时段名称" v-model="item.price" />
-              <!-- <el-input style="width: 220px;" onkeyup="value=value.replace(/[^\d.]/g,'')" placeholder="请输入时段名称" v-model="item.price" /> -->
             </el-form-item>
           </div>
         </div>
@@ -60,7 +58,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-      <!-- <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button> -->
+      <!-- <el-button type="primary" @click="submitForm('  uleForm')">保存</el-button> -->
       <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
       <el-button type="primary" @click="showDialogContractPrice.toggle = false">取 消</el-button>
       <!-- <el-button type="primary" @click="submitForm('timesasingSchemeDetial')">提交</el-button>  -->
@@ -78,7 +76,7 @@ export default {
     showDialogContractPrice: {
       type: Object,
     },
-    items: {
+    fixPriceArr: {
       type: Array,
     },
     id:{
@@ -122,20 +120,18 @@ export default {
       this.$refs[formName].resetFields();
     },
     saveTimesasingSchemeDetial(val) {
-      //保存 购电合同-分时方案 页面信息
+      //保存 售电合同-分时方案 页面信息
       request({
         url: "/buy/tpfcg/price/save",
         method: "post",
         data: val,
       })
         .then((res) => {
-          //如果点击 保存并选择 按钮， 把返回的id赋值给 合同价格方案 字段
-          this.$emit('changepricetimeofuseDTO', res.id)
+          this.$emit('changepricetimeofuseDTO', res.id, 'fix-PriceofUseDTO')
           this.$message({
             message: "保存成功",
             type: "success",
           });
-          this.showDialogContractPrice.toggle = false
         })
         .catch((error) => {
           console.log(error);
@@ -162,7 +158,7 @@ export default {
       });
     },
     getTpcfgDetial() {
-      let ret = JSON.parse(JSON.stringify(this.items))
+      let ret = JSON.parse(JSON.stringify(this.fixPriceArr))
       // [{price: 56}, {price: 53}, {price: 57}]
       if (this.showDialogContractPrice.add){
         ret.forEach((item) => (item.price = null));

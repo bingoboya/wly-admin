@@ -1,12 +1,12 @@
 <template>
   <!-- 月到日分解方案详情页 -->
   <el-dialog
-    width="80%"
+    width="900px"
     destroy-on-close
     v-el-drag-dialog
     @open="openDialog"
     append-to-body
-    :title="`购电合同-月到日分解方案-${month}月详情页`"
+    :title="month == 0 ? '售电合同-月到日分解方案-全年统一方案' : `售电合同-月到日分解方案-${month}月详情页`"
     :visible.sync="dialogMouthToDayDetial.toggle"
   >
     <el-form
@@ -49,7 +49,7 @@
     <!-- 图表模块 -->
     <div>
       <div>
-        <p>2021年分月比例(100%)</p>
+        <p style="background: #d0caca;">2021年分月比例(100%)</p>
         <el-table
           :data="yearToMonPercentage1.persent"
           border
@@ -104,50 +104,35 @@
         </el-table>
       </div>
       <div>
-        月分日曲线
-        <div style="display: flex; justify-content: space-around">
+        <div style="display: flex; justify-content: space-around;align-items: baseline">
           <div>
-            <p>5月分日比例(32.34%)</p>
+            <div style="background: #d0caca;">月分日曲线</div>
+            <p v-if='month== 0'>全年统一月分日比例</p>
+            <p v-else>{{month}}月分日比例({{yearToMonPercentageAllData[`m${(10 > month && month > 0) ? '0' : ''}${month}`]}}%)</p>
             <el-table :data="tableData" border style="width: 100%">
               <el-table-column prop="dateType" label="日期类型" />
               <el-table-column prop="weight" label="权重" />
             </el-table>
           </div>
-          <div>
-            <p>5月--日历</p>
-            <el-table :data="tableData" border style="width: 100%">
-              <el-table-column prop="dateType" label="日期类型" />
-              <el-table-column prop="weight" label="权重" />
-            </el-table>
+          <div style="width=100%;">
+            <div style="margin-top: 22px;background: #d0caca;">月分日曲线图</div>
+              <div style="width=100%;" class="chart-wrapper">
+                <categoryEcharts :dayPropetieList="dayPropetieList" />
+              </div>
           </div>
         </div>
 
-        <div style="width=100%;">
-          <p>月分日曲线图</p>
-          <el-row style="background: #fff; padding: 16px 16px 0">
-            <div class="chart-wrapper">
-              <categoryEcharts :dayPropetieList="dayPropetieList" />
-            </div>
-          </el-row>
-        </div>
       </div>
     </div>
-    <div>
-      <!-- <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')"
-        >保存并选择</el-button
-      > -->
-    </div>
+    
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')"
+      <el-button type="primary" @click="submitForm('ruleForm', 'add')">另存</el-button>
+      <!-- <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button> -->
+      <el-button type="primary" @click="submitForm('ruleForm', 'save')">保存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm', 'select')"
         >保存并选择</el-button
       >
-      <el-button type="primary" @click="dialogMouthToDayBase.toggle = false">取 消</el-button>
+      <el-button type="primary" @click="dialogMouthToDayDetial.toggle = false">取 消</el-button>
       <!-- <el-button type="primary" @click="dialogMouthToDayBase.toggle = false"
         >确 定</el-button
       > -->
@@ -172,6 +157,7 @@ export default {
           message: '保存成功',
           type: 'success'
         })
+        this.dialogMouthToDayDetial.toggle = false
       }).catch((error) => {
         console.log(error);
         this.$message.error('保存失败');
@@ -181,7 +167,13 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log("formDataDetial", this.formDataDetial);
-          this.saveFormDataDetial(this.formDataDetial)
+          let ret = JSON.parse(JSON.stringify(this.formDataDetial))
+          ret.monWeight = Number(ret.monWeight)
+          ret.satWeight = Number(ret.satWeight)
+          ret.sunWeight = Number(ret.sunWeight)
+          ret.holiWeight = Number(ret.holiWeight)
+          ret.holiworkweight = Number(ret.holiworkweight)
+          this.saveFormDataDetial(ret)
         } else {
           console.log("error submit!!");
           return false;
@@ -308,6 +300,9 @@ export default {
     },
     yearToMonPercentage2: {
       type: Object,
+    },
+    yearToMonPercentageAllData: {
+      type: [Object, Array],
     },
     dayPropetieList: {
       type: Array,

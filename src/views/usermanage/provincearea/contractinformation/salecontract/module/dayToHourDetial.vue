@@ -50,10 +50,10 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm('ruleForm')">另存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm', 'add')">另存</el-button>
+      <!-- <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button> -->
+      <el-button type="primary" @click="submitForm('ruleForm', 'save')">保存</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm', 'select')">保存并选择</el-button>
       <el-button type="primary" @click="dialogDayToHourDetial.toggle = false">取 消</el-button>
       <!-- <el-button type="primary" @click="dialogDayToHourDetial.toggle = false"
         >确 定</el-button
@@ -96,6 +96,7 @@ export default {
           message: '保存成功',
           type: 'success'
         })
+        this.dialogDayToHourDetial.toggle = false
       }).catch((error) => {
         console.log(error);
         this.$message.error('保存失败');
