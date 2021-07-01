@@ -289,10 +289,10 @@
             </el-form-item>
 
             <el-form-item v-if='buycontractinfo.timeofuseValid == 1' label="合同价格方案" prop="pricetimeofuseDTO"
-              :rules="{ required: buycontractinfo.timeofuseValid == 1, message: '请选择合同价格方案', trigger: 'change' }"
+              :rules="[{ required: buycontractinfo.timeofuseValid == 1, message: buycontractinfo.timeperiodofusecfgDTO == 999 ? `请选择分时方案` : `请选择合同价格方案`, trigger: 'change' }]"
             >
               <el-select
-                :disabled="this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
+                :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 v-model="buycontractinfo.pricetimeofuseDTO"
                 @change="selectContractPrice"
                 placeholder="合同价格方案"
@@ -332,10 +332,10 @@
               </el-col>
             </el-row>    
             <el-form-item v-if='buycontractinfo.timeofuseValid == 1' label="固定价差方案" prop="fixPriceofUseDTO"
-              :rules="{ required: buycontractinfo.timeofuseValid == 1, message: '请选择合同价格方案', trigger: 'change' }"
+              :rules="[{ required: buycontractinfo.timeofuseValid == 1, message: buycontractinfo.timeperiodofusecfgDTO == 999 ? `请选择分时方案` : `请选择合同价格方案`, trigger: 'change' }]"
             >
               <el-select
-                :disabled="this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
+                :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 v-model="buycontractinfo.fixPriceofUseDTO"
                 @change="selectfixPriceofUseDTO"
                 placeholder="固定价差方案"
@@ -495,6 +495,7 @@
     <!-- 分时方案弹窗 -->
     <timesAsingScheme
       :id="buycontractinfo.timeperiodofusecfgDTO"
+      @getPeriodList='getPeriodList'
       :show-dialog-form-visible="showDialogFormVisible"
     />
     <!-- 合同价格方案弹窗 -->
@@ -554,8 +555,7 @@ export default {
     return {
       fixPriceArr:[],
       items: [
-        // { price: 101},
-        // { price: 103},
+        // { price: 101},{ price: 103},
       ],
       buycontractinfo: {
         userSmallDTO: '', // 填报人
@@ -643,20 +643,7 @@ export default {
             trigger: 'change'
           }
         ],
-        // pricetimeofuseDTO: [
-        //   {
-        //     required: true,
-        //     message: '请选择合同价格方案',
-        //     trigger: 'change'
-        //   }
-        // ],
-        // fixPriceofUseDTO: [
-        //   {
-        //     required: true,
-        //     message: '请选择固定价差方案',
-        //     trigger: 'change'
-        //   }
-        // ]
+        
       }
     }
   },
@@ -782,8 +769,19 @@ export default {
         this.items = arr
       }
     },
+    resetValidate(event){
+      this.$nextTick(()=>{
+        this.$refs['ruleForm'].validateField('pricetimeofuseDTO', ()=>{
+          // console.log('pricetimeofuseDTO:', this.buycontractinfo.timeperiodofusecfgDTO);
+        })
+        this.$refs['ruleForm'].validateField('fixPriceofUseDTO', ()=>{
+          // console.log('fixPriceofUseDTO:', this.buycontractinfo.timeperiodofusecfgDTO);
+        })
+      })
+    },
     // 修改分时方案选项
     selectTimeperiodofusecfgDTO(event, item) {
+      this.resetValidate(event) //修改分时方案时，重新校验 合同价格方案 选项，并根据当前选择的分时方案提示不同的校验信息
       this.buycontractinfo.pricetimeofuseDTO = ''
       this.items = []
       this.buycontractinfo.fixPriceofUseDTO = ''
@@ -971,13 +969,16 @@ export default {
         this.meterNameList = res
       })
     },
-    getPeriodList() {
+    getPeriodList(type, id) {
       // 获取分时方案列表
       request({
         url: '/buy/periodlist',
         method: 'get'
       }).then((res) => {
         this.periodList = res
+        if(type == 'saveselected'){
+          this.buycontractinfo.timeperiodofusecfgDTO = id
+        }
       })
     },
     getGridList() {

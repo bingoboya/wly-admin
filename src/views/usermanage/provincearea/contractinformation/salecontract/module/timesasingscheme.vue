@@ -6,7 +6,7 @@
     v-el-drag-dialog
     custom-class="bingo"
     @open="openDialog"
-    @closed="showFormDom = false"
+    @close="showFormDom = false"
     title="售电合同-分时方案"
     :visible.sync="showDialogFormVisible.toggle"
   >
@@ -77,20 +77,12 @@
           <div style="flex: 7; margin-left: 20px; margin-bottom: 20px">
             <el-form-item label="起止时间" v-for="(timeItem, nums) in items.periodTimeList" :key="nums">
               <div style="display: flex;">
-                <!-- <el-form-item 
-                  :prop='`timeperiodofusecfgSmallDTOList[${index}].periodTimeList[${nums}].startTime`'
-                  :rules="[
-                    {required: true, message: '时间不能为空', trigger: 'blur'},
-                    { validator: checkAge, trigger: 'blur' }
-                  ]"
-                > -->
                 <el-form-item>
                   <el-time-select
                     placeholder="起始时间"
                     :editable='false'
                     :clearable='false'
                     v-model="timeItem.startTime"
-                    @change="bingo(timeItem, items.periodTimeList, nums)"
                     :picker-options="{
                       start: '00:00',
                       step: '00:15',
@@ -100,17 +92,9 @@
                   />
                 </el-form-item>
                 <el-form-item>
-                <!-- <el-form-item 
-                  :prop='`timeperiodofusecfgSmallDTOList[${index}].periodTimeList[${nums}].endTime`'
-                  :rules="[
-                    {required: true, message: '时间不能为空', trigger: 'blur'},
-                    { validator: checkAge, trigger: 'blur' }
-                  ]"
-                > -->
                   <el-time-select
                     placeholder="结束时间"
                     v-model="timeItem.endTime"
-                    @change="bingo(timeItem, items.periodTimeList, nums)"
                     :picker-options="{
                       start: '00:00',
                       step: '00:15',
@@ -170,8 +154,17 @@ export default {
       // 分时方案详情页面 -- 弹窗表单
       timesasingSchemeDetial: {
         id: '',
-        name: "bingo1",
-        timeperiodofusecfgSmallDTOList:[]
+        name: "",
+        numPeriod: 1,
+        timeperiodofusecfgSmallDTOList:[{
+          periodName: "",
+          periodTimeList: [
+            {
+              startTime: "00:00",
+              endTime: "24:00",
+            },
+          ],
+        }]
       },
       formLabelWidth: "120px",
       rules: {
@@ -212,6 +205,9 @@ export default {
           message: '保存成功',
           type: 'success'
         })
+        if(type == 'saveselected'){
+          this.$emit('getPeriodList', 'saveselected', res.id)
+        }
         this.showDialogFormVisible.toggle = false
       }).catch((error) => {
         console.log(error);
@@ -238,42 +234,8 @@ export default {
         }
       });
     },
-    checkAge(rule, value, callback){
-      // console.log('rule:', rule);
-      // const list = this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList
-      // let arr = []
-      // list.forEach(item =>{
-      //   arr.push(...item.periodTimeList)
-      // })
-      // let startArr = [],endArr = [];
-      // // startTime.map((item)=>{ startArr.push(getFormatDate(item)); });
-      // // endTime.map((item)=>{ endArr.push(getFormatDate(item)); });
-      // arr.forEach((item,index) => {
-      //   startArr.push(item.startTime)
-      //   endArr.push(item.endTime)
-      // })
-      // for(let i=1;i<startArr.length;i++){
-      //     if (startArr[i] <= endArr[i-1]){
-      //         console.log(9999999, '时间段存在重叠！');
-      //         break;
-      //     }
-      // }
-      // console.log('value:', value, 'arr:', arr, 'startArr:', startArr, 'endArr:', endArr);
-      // if(value > '10:15'){
-      //   callback(new Error('选择的时间有交叉'));
-      // }else{
-      //   callback()
-      // }
-    },
-    bingo(timeItem, aa, nums) {
-      // const list = this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList
-      // let arr = []
-      // list.forEach(item =>{
-      //   arr.push(...item.periodTimeList)
-      // })
-      // console.log(111, timeItem.startTime, timeItem.endTime);
-      // console.log(222, list, arr, aa, nums);
-    },
+    
+    
     //添加表单项事件
     addEnvironmentForm(index) {
       this.timesasingSchemeDetial.timeperiodofusecfgSmallDTOList[
@@ -355,7 +317,6 @@ export default {
         name: "bingo1",
         timeperiodofusecfgSmallDTOList: [
           {
-            period: 0,
             periodName: "谷",
             periodTimeList: [
               {
@@ -366,18 +327,10 @@ export default {
                 startTime: "00:00",
                 endTime: "24:00",
               },
-              // {
-              //   startTime: "00:00",
-              //   endTime: "24:00",
-              // },
-              // {
-              //   startTime: "00:00",
-              //   endTime: "24:00",
-              // },
+             
             ],
           },
           {
-            period: 1,
             periodName: "平",
             periodTimeList: [
               {
@@ -388,7 +341,6 @@ export default {
             ],
           },
           {
-            period: 2,
             periodName: "高",
             periodTimeList: [
               {
@@ -406,12 +358,6 @@ export default {
         method: "get",
       }).then((res) => {
         this.timesasingSchemeDetial = res;
-        // this.timesasingSchemeDetial = result;
-        // this.$set(
-        //   this.timesasingSchemeDetial,
-        //   "len",
-        //   res.timeperiodofusecfgSmallDTOList.length
-        // );
         this.showFormDom = true; //接口数据拿到之后再渲染表单的dom结构，防止报错
       });
     },
@@ -419,6 +365,24 @@ export default {
     openDialog() {
       if(this.id !== 999){
         this.getTpcfgDetial();
+      }else if(this.id == 999){
+        //新建表单
+        console.log('新建表单');
+        this.timesasingSchemeDetial = {
+          id: '',
+          name: "",
+          numPeriod: 1,
+          timeperiodofusecfgSmallDTOList:[{
+            periodName: "",
+            periodTimeList: [
+              {
+                startTime: "00:00",
+                endTime: "24:00",
+              },
+            ],
+          }]
+        }
+        this.showFormDom = true
       }
     },
     

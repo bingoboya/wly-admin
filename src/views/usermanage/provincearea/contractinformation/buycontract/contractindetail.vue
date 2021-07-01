@@ -14,7 +14,6 @@
             @click="$router.push('/usermanage/contractinformation/buycontract')"
             >返回</el-button
           >
-          <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
         </div>
       </div>
       <el-form
@@ -193,11 +192,11 @@
                 <el-option label="否" :value="0" />
               </el-select>
             </el-form-item>
-            <el-form-item v-if='buycontractinfo.timeofuseValid == 1' label="合同价格方案"  prop="pricetimeofuseDTO"
-              :rules="{ required: buycontractinfo.timeofuseValid == 1, message: '请选择合同价格方案', trigger: 'change' }"
+            <el-form-item v-if='buycontractinfo.timeofuseValid == 1' :label="`合同价格方案`"  prop="pricetimeofuseDTO"
+              :rules="[{ required: buycontractinfo.timeofuseValid == 1, message: buycontractinfo.timeperiodofusecfgDTO == 999 ? `请选择分时方案` : `请选择合同价格方案`, trigger: 'change' }]"
             >
               <el-select
-                :disabled="this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
+                :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 @change="selectContractPrice"
                 v-model="buycontractinfo.pricetimeofuseDTO"
                 placeholder="合同价格方案"
@@ -246,7 +245,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        
         <el-row>
           <el-col :span="24" style="display: flex;">
             <!-- articleList.slice(0,1) -->
@@ -360,6 +358,7 @@
     <!-- 分时方案弹窗 -->
     <timesAsingScheme
       :id='this.buycontractinfo.timeperiodofusecfgDTO'
+      @getPeriodList='getPeriodList'
       :showDialogFormVisible="showDialogFormVisible"
     />
     <!-- 合同价格方案弹窗 -->
@@ -398,6 +397,7 @@ import mouthToDayBase from "./module/mouthToDayBase";
 import dayToHourBase from "./module/dayToHourBase";
 export default {
   data() {
+    
     return {
       items: [
         // { price: 101}, { price: 103},
@@ -417,7 +417,6 @@ export default {
         name: "", // 合同名称
         priceType: 0, // 价格类型
         timeperiodofusecfgDTO: 3, // 分时方案
-        // timeperiodofusecfgDTO: 1, // 分时方案
         pricetimeofuseDTO: "", // 合同价格方案
         priceList: [], // 合同价格列表
         curveytomDTO: "", // 年到月分解方案
@@ -470,15 +469,9 @@ export default {
           {required: true, message: "请选择是否有分时比例",trigger: "change"},
           // {validator: ()=>this.validateEmail('jj'),trigger: 'change'}
         ],
-        // pricetimeofuseDTO: [
-        //   {
-        //     required: true,
-        //     message: "请选择合同价格方案",
-        //     trigger: "change",
-        //   },
-        // ],
       },
     };
+    
   },
   async created() {
     await this.getAgencyAll();
@@ -591,9 +584,17 @@ export default {
         this.items = arr
       }
     },
+    resetValidate(event){
+      this.$nextTick(()=>{
+        this.$refs['ruleForm'].validateField('pricetimeofuseDTO', ()=>{
+          console.log('pricetimeofuseDTO:', this.buycontractinfo.timeperiodofusecfgDTO);
+        })
+      })
+    },
     // 修改分时方案选项
     selectTimeperiodofusecfgDTO(event, item) {
       console.log("修改分时方案选项重置合同价格方案", event);
+      this.resetValidate(event) //修改分时方案时，重新校验 合同价格方案 选项，并根据当前选择的分时方案提示不同的校验信息
       this.buycontractinfo.pricetimeofuseDTO = "";
       this.items = []
       if(event == 999) {
@@ -611,7 +612,6 @@ export default {
         this.contractPriceList = res
       })
     },
-    
     saveContractinDetail(val) {
       request({
         url: "/buy/save",
@@ -658,9 +658,6 @@ export default {
       } else {
         this.dialogDayToHourBase.add = false;
       }
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
     },
     GetzhifuTime() {
       //利用change事件监听表单内容变化，并将选中的值赋值给所需要的两个字段
@@ -745,13 +742,16 @@ export default {
         this.meterNameList = res;
       });
     },
-    getPeriodList() {
+    getPeriodList(type, id) {
       //获取分时方案列表
       request({
         url: "/buy/periodlist",
         method: "get",
       }).then((res) => {
         this.periodList = res;
+        if(type == 'saveselected'){
+          this.buycontractinfo.timeperiodofusecfgDTO = id
+        }
       });
     },
     getGridList() {
@@ -762,9 +762,6 @@ export default {
       }).then((res) => {
         this.gridList = res;
       });
-    },
-    onSubmit() {
-      console.log("submit!");
     },
   },
   components: {
