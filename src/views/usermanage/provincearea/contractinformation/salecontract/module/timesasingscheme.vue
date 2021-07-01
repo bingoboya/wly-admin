@@ -205,9 +205,7 @@ export default {
           message: '保存成功',
           type: 'success'
         })
-        if(type == 'saveselected'){
-          this.$emit('getPeriodList', 'saveselected', res.id)
-        }
+        this.$emit('getPeriodList', type, res.id)
         this.showDialogFormVisible.toggle = false
       }).catch((error) => {
         console.log(error);
