@@ -2,6 +2,21 @@
   <div id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
+        v-for="(tag, index) in visitedViews"
+        ref="tag"
+        :key="index"
+        :class="isActive(tag)?'active':''"
+        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+        tag="span"
+        class="tags-view-item"
+        @click.native="clickRouterLinkItem(tag)"
+        @click.middle.native="closeSelectedTag(tag)"
+        @contextmenu.prevent.native="openMenu(tag,$event)"
+      >
+        {{ tag.title }}{{tag.query ? tag.query.id ? tag.query.id : '' : ''}}
+        <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+      </router-link>
+      <!-- <router-link
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
@@ -15,7 +30,7 @@
       >
         {{ tag.title }}
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
-      </router-link>
+      </router-link> -->
     </scroll-pane>
 
     <!-- 鼠标右键弹出菜单列表 -->
@@ -27,11 +42,9 @@
     </ul>
   </div>
 </template>
-
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
-
 export default {
   components: { ScrollPane },
   data() {
@@ -45,6 +58,7 @@ export default {
   },
   computed: {
     visitedViews() {
+      console.log(22, this.$store.state.tagsView.visitedViews);
       return this.$store.state.tagsView.visitedViews
     },
     routes() {
@@ -54,6 +68,7 @@ export default {
   watch: {
     $route() {
       this.addTags()
+      console.log('watch-route-----1---')
       this.moveToCurrentTag()
     },
     visible(value) {
@@ -69,14 +84,36 @@ export default {
     this.addTags()
   },
   methods: {
+    moveToCurrentTag() {
+      const tags = this.$refs.tag
+      console.log('watch-route-----2----', tags)
+      this.$nextTick(() => {
+        for (const tag of tags) {
+          console.log('watch-route-----3----', this.$route.path)
+          if (tag.to.path === this.$route.path) {
+            console.log('watch-route-----4----')
+            this.$refs.scrollPane.moveToTarget(tag)
+            // when query is different then update
+            if (tag.to.fullPath !== this.$route.fullPath) {
+              console.log('watch-route-----5----')
+              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+            }
+            break
+          }
+        }
+      })
+    },
     clickRouterLinkItem(tag) {
       // 设置顶部页签的当前的选中项
       if (tag.meta.activeName) { this.$store.dispatch('tagsView/changeCurrentActiveName', tag.meta.activeName.toString()) }
     },
     isActive(route) {
-      return route.path === this.$route.path
+      // console.log('isActive', route.fullPath, this.$route.fullPath);
+      return route.fullPath === this.$route.fullPath
+      // return route.path === this.$route.path
     },
     filterAffixTags(routes, basePath = '/') {
+      // 设置成true表示，tag-view不可删除
       let tags = []
       routes.forEach(route => {
         if (route.meta && route.meta.affix) {
@@ -110,26 +147,13 @@ export default {
     },
     addTags() {
       const { name } = this.$route
+      // console.log('addTags', this.$route.name, this.$route.fullPath);
       if (name) {
         this.$store.dispatch('tagsView/addView', this.$route)
       }
       return false
     },
-    moveToCurrentTag() {
-      const tags = this.$refs.tag
-      this.$nextTick(() => {
-        for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag)
-            // when query is different then update
-            if (tag.to.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
-            }
-            break
-          }
-        }
-      })
-    },
+    
     refreshSelectedTag(view) {
       this.$store.dispatch('tagsView/delCachedView', view).then(() => {
         const { fullPath } = view

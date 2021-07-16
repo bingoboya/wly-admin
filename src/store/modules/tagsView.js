@@ -6,16 +6,35 @@ const state = {
 }
 
 const mutations = {
-  //
   ADD_VISITED_VIEW: (state, view) => {
-    if (state.visitedViews.some(v => v.path === view.path)) return
-    state.visitedViews.push(
-      Object.assign({}, view, {
-        title: view.meta.title || 'no-name'
-      })
-    )
+    console.log('addTagsADD_VISITED_VIEW', state.visitedViews, view)
+    state.visitedViews.forEach((item, index) => {
+      console.log('item', index, item, item.fullPath === view.fullPath)
+      // console.log('item item.fullPath',index, item.fullPath);
+      // console.log('item view.fullPath',index, view.fullPath);
+    })
+    const isHave = state.visitedViews.some(v => v.path === view.path)
+    // const isHave = state.visitedViews.some(v => v.fullPath === view.fullPath);
+    console.log('addTags-isHave', isHave)
+    if (!isHave) {
+      state.visitedViews.push(
+        Object.assign({}, view, {
+          title: view.meta.title || 'no-name'
+        })
+      )
+    }
+  },
+  UPDATE_VISITED_VIEW: (state, view) => {
+    console.log('UPDATE_-VISITED_VIEW')
+    for (let v of state.visitedViews) {
+      if (v.path === view.path) {
+        v = Object.assign(v, view)
+        break
+      }
+    }
   },
   ADD_CACHED_VIEW: (state, view) => {
+    console.log('ADD_CACHED_VIEW', state.cachedViews)
     if (state.cachedViews.includes(view.name)) return
     if (!view.meta.noCache) {
       state.cachedViews.push(view.name)
@@ -23,6 +42,7 @@ const mutations = {
   },
 
   DEL_VISITED_VIEW: (state, view) => {
+    console.log('DEL_VISITED_VIEW')
     for (const [i, v] of state.visitedViews.entries()) {
       if (v.path === view.path) {
         state.visitedViews.splice(i, 1)
@@ -31,6 +51,7 @@ const mutations = {
     }
   },
   DEL_CACHED_VIEW: (state, view) => {
+    console.log('DEL_CACHED_VIEW')
     for (const i of state.cachedViews) {
       if (i === view.name) {
         const index = state.cachedViews.indexOf(i)
@@ -41,11 +62,13 @@ const mutations = {
   },
 
   DEL_OTHERS_VISITED_VIEWS: (state, view) => {
+    console.log('DEL_OTHERS_VISITED_VIEWS')
     state.visitedViews = state.visitedViews.filter(v => {
       return v.meta.affix || v.path === view.path
     })
   },
   DEL_OTHERS_CACHED_VIEWS: (state, view) => {
+    console.log('DEL_OTHERS_CACHED_VIEWS')
     for (const i of state.cachedViews) {
       if (i === view.name) {
         const index = state.cachedViews.indexOf(i)
@@ -56,21 +79,14 @@ const mutations = {
   },
 
   DEL_ALL_VISITED_VIEWS: state => {
+    console.log('DEL_ALL_VISITED_VIEWS')
     // keep affix tags
     const affixTags = state.visitedViews.filter(tag => tag.meta.affix)
     state.visitedViews = affixTags
   },
   DEL_ALL_CACHED_VIEWS: state => {
+    console.log('DEL_ALL_CACHED_VIEWS')
     state.cachedViews = []
-  },
-
-  UPDATE_VISITED_VIEW: (state, view) => {
-    for (let v of state.visitedViews) {
-      if (v.path === view.path) {
-        v = Object.assign(v, view)
-        break
-      }
-    }
   },
   // 切换顶部tab-pane页签，修改侧边栏的对应路由模块的显示
   CHANGE_CURRENTSIDEBAROUTER: (state, view) => {

@@ -192,7 +192,6 @@ export default {
           type: 'success'
         })
         this.$emit('getPeriodList', type, res.id)
-
         this.showDialogFormVisible.toggle = false
       }).catch((error) => {
         console.log(error)
@@ -322,7 +321,7 @@ export default {
         if (valid) {
           console.log('提交', this.timesasingSchemeDetial)
           const ret = JSON.parse(JSON.stringify(this.timesasingSchemeDetial))
-          if (type == 'save') {
+          if (type === 'save') {
             ret.id = this.id
           }
           this.saveTimesasingSchemeDetial(ret, type)
