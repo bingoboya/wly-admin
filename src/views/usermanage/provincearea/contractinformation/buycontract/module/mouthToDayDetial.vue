@@ -1,17 +1,17 @@
 <template>
   <!-- 月到日分解方案详情页 -->
   <el-dialog
+    v-el-drag-dialog
     width="900px"
     destroy-on-close
-    v-el-drag-dialog
-    @open="openDialog"
     append-to-body
     :title="month == 0 ? '购电合同-月到日分解方案-全年统一方案' : `购电合同-月到日分解方案-${month}月详情页`"
     :visible.sync="dialogMouthToDayDetial.toggle"
+    @open="openDialog"
   >
     <el-form
-      :model="formDataDetial"
       ref="ruleForm"
+      :model="formDataDetial"
       :rules="rules"
       label-width="120px"
     >
@@ -24,7 +24,7 @@
               { required: true, message: '请输入方案名称', trigger: 'blur' },
             ]"
           >
-            <el-input width="100" v-model="formDataDetial.name" />
+            <el-input v-model="formDataDetial.name" width="100" />
           </el-form-item>
           <el-form-item label="工作日权重:" prop="monWeight">
             <el-input v-model="formDataDetial.monWeight" />
@@ -61,13 +61,12 @@
             align="center"
             label="月份"
             fixed
-          >
-          </el-table-column>
+          />
           <template v-for="(col, i) in yearToMonPercentage1.mounthly">
             <el-table-column
+              :key="col"
               :show-overflow-tooltip="true"
               :label="col"
-              :key="col"
               align="center"
             >
               <template slot-scope="scope">
@@ -87,13 +86,12 @@
             align="center"
             label="月份"
             fixed
-          >
-          </el-table-column>
+          />
           <template v-for="(col, i) in yearToMonPercentage2.mounthly">
             <el-table-column
+              :key="col"
               :show-overflow-tooltip="true"
               :label="col"
-              :key="col"
               align="center"
             >
               <template slot-scope="scope">
@@ -107,8 +105,8 @@
         <div style="display: flex; justify-content: space-around;align-items: baseline">
           <div>
             <div style="background: #d0caca;">月分日曲线</div>
-            <p v-if='month== 0'>全年统一月分日比例</p>
-            <p v-else>{{month}}月分日比例({{yearToMonPercentageAllData[`m${(10 > month && month > 0) ? '0' : ''}${month}`]}}%)</p>
+            <p v-if="month== 0">全年统一月分日比例</p>
+            <p v-else>{{ month }}月分日比例({{ yearToMonPercentageAllData[`m${(10 > month && month > 0) ? '0' : ''}${month}`] }}%)</p>
             <!-- <p >{{month== 0 ? '全年统一': month}}月分日比例(32.34%)</p> -->
             <el-table :data="tableData" border style="width: 100%">
               <el-table-column prop="dateType" label="日期类型" />
@@ -117,22 +115,23 @@
           </div>
           <div style="width=100%;">
             <div style="margin-top: 22px;background: #d0caca;">月分日曲线图</div>
-              <div style="width=100%;" class="chart-wrapper">
-                <categoryEcharts :dayPropetieList="dayPropetieList" />
-              </div>
+            <div style="width=100%;" class="chart-wrapper">
+              <categoryEcharts :day-propetie-list="dayPropetieList" />
+            </div>
           </div>
         </div>
-        
+
       </div>
     </div>
-    
+
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm('ruleForm', 'add')">另存</el-button>
       <!-- <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button> -->
       <el-button type="primary" @click="submitForm('ruleForm', 'save')">保存</el-button>
-      <el-button type="primary" @click="submitForm('ruleForm', 'select')"
-        >保存并选择</el-button
-      >
+      <el-button
+        type="primary"
+        @click="submitForm('ruleForm', 'select')"
+      >保存并选择</el-button>
       <el-button type="primary" @click="dialogMouthToDayDetial.toggle = false">取 消</el-button>
       <!-- <el-button type="primary" @click="dialogMouthToDayBase.toggle = false"
         >确 定</el-button
@@ -141,76 +140,41 @@
   </el-dialog>
 </template>
 <script>
-import request from "@/utils/request";
-import categoryEcharts from "../categoryEcharts";
+import request from '@/utils/request'
+import categoryEcharts from '../categoryEcharts'
 import elDragDialog from '@/components/Directive/el-drag-dialog'
 
 export default {
   directives: { elDragDialog },
-  methods: {
-    saveFormDataDetial(val){
-      request({
-        url: "/buy/mtod/detail/save",
-        method: "post",
-        data: val
-      }).then(res=>{
-        this.$message({
-          message: '保存成功',
-          type: 'success'
-        })
-        this.dialogMouthToDayDetial.toggle = false
-      }).catch((error) => {
-        console.log(error);
-        this.$message.error('保存失败');
-      })
+  components: {
+    categoryEcharts
+  },
+  props: {
+    formDataDetial: {
+      type: Object
     },
-    submitForm(formName, type) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log("formDataDetial", this.formDataDetial);
-          let ret = JSON.parse(JSON.stringify(this.formDataDetial))
-          ret.monWeight = Number(ret.monWeight)
-          ret.satWeight = Number(ret.satWeight)
-          ret.sunWeight = Number(ret.sunWeight)
-          ret.holiWeight = Number(ret.holiWeight)
-          ret.holiworkweight = Number(ret.holiworkweight)
-          this.saveFormDataDetial(ret)
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+
+    yearToMonPercentage1: {
+      type: Object
     },
-    openDialog() {
-      console.log("打开月到日基础页面");
-      // this.getMouthToDayDetail(this.month);
+    yearToMonPercentage2: {
+      type: Object
     },
-    // #region
-    // getMouthToDayDetail(month) {
-    //   //获取月到日分解曲线方案详情页
-    //   let contractId = 1;
-    //   let mtodId = 1;
-    //   request({
-    //     // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
-    //     url: `/buy/${month}/${mtodId}/detail?month=${month}`,
-    //     method: "get",
-    //   }).then((res) => {
-    //     console.log("获取月到日分解曲线方案详情页-", res);
-    //     this.formDataDetial = res.weightMtod;
-    //     this.dayPropetieList = res.dayPropetieList;
-    //     const curveytom = res.curveytom;
-    //     this.yearToMonPercentage1.persent[0].list.forEach(
-    //       (item) => (item.persentVal = curveytom[item.key])
-    //     );
-    //     this.yearToMonPercentage2.persent[0].list.forEach(
-    //       (item) => (item.persentVal = curveytom[item.key])
-    //     );
-    //     this.tableData.forEach((item) => {
-    //       return (item.weight = res.weightMtod[item.dateTypeEnName]);
-    //     });
-    //   });
-    // },
-    // #endregion
+    dayPropetieList: {
+      type: Array
+    },
+    tableData: {
+      type: Array
+    },
+    yearToMonPercentageAllData: {
+      type: [Object, Array]
+    },
+    dialogMouthToDayDetial: {
+      type: Object
+    },
+    month: {
+      type: [Number, String]
+    }
   },
   data() {
     return {
@@ -279,49 +243,84 @@ export default {
       // formDataDetial: {},
       rules: {
         contractName: [
-          { required: true, message: "请输入合同名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
+          { required: true, message: '请输入合同名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         startDate: [
-          { required: true, message: "请输入起始时间", trigger: "change" },
-        ],
-      },
-    };
-  },
-  components: {
-    categoryEcharts,
-  },
-  props: {
-    formDataDetial: {
-      type: Object,
-    },
-    
-    yearToMonPercentage1: {
-      type: Object,
-    },
-    yearToMonPercentage2: {
-      type: Object,
-    },
-    dayPropetieList: {
-      type: Array,
-    },
-    tableData: {
-      type: Array,
-    },
-    yearToMonPercentageAllData: {
-      type: [Object, Array],
-    },
-    dialogMouthToDayDetial: {
-      type: Object,
-    },
-    month: {
-      type: [Number, String],
-    },
+          { required: true, message: '请输入起始时间', trigger: 'change' }
+        ]
+      }
+    }
   },
   created() {
-    console.log("月到日分解方案详情页");
+    console.log('月到日分解方案详情页')
   },
-};
+  methods: {
+    saveFormDataDetial(val) {
+      request({
+        url: '/buy/mtod/detail/save',
+        method: 'post',
+        data: val
+      }).then(res => {
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+        this.dialogMouthToDayDetial.toggle = false
+      }).catch((error) => {
+        console.log(error)
+        this.$message.error('保存失败')
+      })
+    },
+    submitForm(formName, type) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log('formDataDetial', this.formDataDetial)
+          const ret = JSON.parse(JSON.stringify(this.formDataDetial))
+          ret.monWeight = Number(ret.monWeight)
+          ret.satWeight = Number(ret.satWeight)
+          ret.sunWeight = Number(ret.sunWeight)
+          ret.holiWeight = Number(ret.holiWeight)
+          ret.holiworkweight = Number(ret.holiworkweight)
+          this.saveFormDataDetial(ret)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    openDialog() {
+      console.log('打开月到日基础页面')
+      // this.getMouthToDayDetail(this.month);
+    }
+    // #region
+    // getMouthToDayDetail(month) {
+    //   //获取月到日分解曲线方案详情页
+    //   let contractId = 1;
+    //   let mtodId = 1;
+    //   request({
+    //     // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
+    //     url: `/buy/${month}/${mtodId}/detail?month=${month}`,
+    //     method: "get",
+    //   }).then((res) => {
+    //     console.log("获取月到日分解曲线方案详情页-", res);
+    //     this.formDataDetial = res.weightMtod;
+    //     this.dayPropetieList = res.dayPropetieList;
+    //     const curveytom = res.curveytom;
+    //     this.yearToMonPercentage1.persent[0].list.forEach(
+    //       (item) => (item.persentVal = curveytom[item.key])
+    //     );
+    //     this.yearToMonPercentage2.persent[0].list.forEach(
+    //       (item) => (item.persentVal = curveytom[item.key])
+    //     );
+    //     this.tableData.forEach((item) => {
+    //       return (item.weight = res.weightMtod[item.dateTypeEnName]);
+    //     });
+    //   });
+    // },
+    // #endregion
+  }
+}
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .chart-wrapper {

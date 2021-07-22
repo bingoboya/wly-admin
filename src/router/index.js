@@ -184,25 +184,25 @@ export const loadMenus = (next, to) => {
         },
         {
           path: 'curvemanagement',
-          hidden: true,
-          component: 'usermanage/curvemanagement',
-          name: 'provincearea-commoncurvemanagement',
-          redirect: 'noredirect',
-          meta: { activeName: 7, icon: 'menu', title: '常用曲线管理' },
-          children: [
-            {
-              path: 'curvemanagementsearch',
-              component: 'usermanage/curvemanagement/curvemanagementsearch',
-              name: 'curvemanagement-curvemanagementsearch',
-              meta: { activeName: 7, icon: 'menu', title: '常用曲线查询' }
-            },
-            {
-              path: 'mycurvemanagement',
-              component: 'usermanage/curvemanagement/mycurvemanagement',
-              name: 'curvemanagement-mycurvemanagement',
-              meta: { activeName: 7, icon: 'menu', title: '我的常用曲线' }
-            }
-          ]
+          hidden: false,
+          component: 'usermanage/provincearea/curvemanagement',
+          name: 'curve-management',
+          // redirect: 'noredirect',
+          meta: { activeName: 7, icon: 'menu', title: '常用曲线管理' }
+          // children: [
+          //   {
+          //     path: 'curvemanagementsearch',
+          //     component: 'usermanage/curvemanagement/curvemanagementsearch',
+          //     name: 'curvemanagement-curvemanagementsearch',
+          //     meta: { activeName: 7, icon: 'menu', title: '常用曲线查询' }
+          //   },
+          //   {
+          //     path: 'mycurvemanagement',
+          //     component: 'usermanage/curvemanagement/mycurvemanagement',
+          //     name: 'curvemanagement-mycurvemanagement',
+          //     meta: { activeName: 7, icon: 'menu', title: '我的常用曲线' }
+          //   }
+          // ]
         }
       ]
     }
