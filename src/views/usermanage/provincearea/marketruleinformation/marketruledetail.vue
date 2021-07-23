@@ -13,7 +13,7 @@
           >保存</el-button>
           <el-button
             type="primary"
-            @click="$router.push('/usermanage/contractinformation/buycontract')"
+            @click="$router.push('/usermanage/marketruleinfo')"
           >返回</el-button>
         </div>
       </div>
@@ -37,9 +37,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="所属区域" prop="gridDTO">
+            <el-form-item label="所属区域" prop="gridID">
               <el-select
-                v-model="buycontractinfo.gridDTO"
+                v-model="buycontractinfo.gridID"
                 :disabled="this.$route.query.id !== '' && isEdit"
                 style="width: 220px"
                 placeholder="所属区域"
@@ -68,11 +68,11 @@
           <el-col :span="10">
             <el-form-item
               label="填报人"
-              prop="userSmallDTO"
+              prop="presenter"
               :rules="{ required: true, message: '请输入填报人', trigger: 'blur' }"
             >
               <el-input
-                v-model="buycontractinfo.userSmallDTO"
+                v-model="buycontractinfo.presenter"
                 :disabled="this.$route.query.id !== ''"
                 style="width: 220px"
                 placeholder="请输入填报人"
@@ -116,7 +116,7 @@
           <el-col :span="12">
             <el-form-item v-if="buycontractinfo.timeofuseValid == 1" label="分时方案">
               <el-select
-                v-model="buycontractinfo.timeperiodofusecfgDTO"
+                v-model="buycontractinfo.timeperiodofuseCfgID"
                 :disabled="this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 placeholder="分时方案"
                 style="width: 220px"
@@ -158,27 +158,29 @@
           </el-row>
           <el-form-item label="全年统一方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[0].planId"
+              v-model="buycontractinfo.defaultID"
               :disabled="chooseEntyType == 1"
               placeholder="全年统一方案："
             >
               <el-option disabled label="请选择方案" value="" />
-              <el-option label="浙江典型年度分解方案" :value="1" />
-              <el-option label="广东典型年度分解方案" :value="2" />
-              <el-option label="广东20年典型日权重1" :value="3" />
-              <el-option label="广东20年典型日权重2" :value="4" />
+              <el-option
+                v-for="item in decompositionScheme"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
               <el-option label="新增自定义方案" :value="999" />
             </el-select>
             <el-button
               :disabled="chooseEntyType == 1"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[0].planId, 0)"
+              @click="showDialogMToDay(buycontractinfo.defaultID, 0)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <!-- #region -->
           <el-form-item label="1月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[1].planId"
+              v-model="buycontractinfo.m01id"
               :disabled="chooseEntyType == 0"
               placeholder="1月份方案："
             >
@@ -194,12 +196,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[1].planId, 1)"
+              @click="showDialogMToDay(buycontractinfo.m01id, 1)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="2月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[2].planId"
+              v-model="buycontractinfo.m02id"
               :disabled="chooseEntyType == 0"
               placeholder="2月份方案："
             >
@@ -215,12 +217,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[2].planId, 2)"
+              @click="showDialogMToDay(buycontractinfo.m02id, 2)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="3月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[3].planId"
+              v-model="buycontractinfo.m03id"
               :disabled="chooseEntyType == 0"
               placeholder="3月份方案："
             >
@@ -236,12 +238,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[3].planId, 3)"
+              @click="showDialogMToDay(buycontractinfo.m03id, 3)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="4月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[4].planId"
+              v-model="buycontractinfo.m04id"
               :disabled="chooseEntyType == 0"
               placeholder="4月份方案："
             >
@@ -257,12 +259,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[4].planId, 4)"
+              @click="showDialogMToDay(buycontractinfo.m04id, 4)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="5月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[5].planId"
+              v-model="buycontractinfo.m05id"
               :disabled="chooseEntyType == 0"
               placeholder="5月份方案："
             >
@@ -278,12 +280,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[5].planId, 5)"
+              @click="showDialogMToDay(buycontractinfo.m05id, 5)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="6月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[6].planId"
+              v-model="buycontractinfo.m06id"
               :disabled="chooseEntyType == 0"
               placeholder="6月份方案："
             >
@@ -299,12 +301,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[6].planId, 6)"
+              @click="showDialogMToDay(buycontractinfo.m06id, 6)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="7月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[7].planId"
+              v-model="buycontractinfo.m07id"
               :disabled="chooseEntyType == 0"
               placeholder="7月份方案："
             >
@@ -320,12 +322,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[7].planId, 7)"
+              @click="showDialogMToDay(buycontractinfo.m07id, 7)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="8月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[8].planId"
+              v-model="buycontractinfo.m08id"
               :disabled="chooseEntyType == 0"
               placeholder="8月份方案："
             >
@@ -341,12 +343,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[8].planId, 8)"
+              @click="showDialogMToDay(buycontractinfo.m08id, 8)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="9月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[9].planId"
+              v-model="buycontractinfo.m09id"
               :disabled="chooseEntyType == 0"
               placeholder="9月份方案："
             >
@@ -362,12 +364,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[9].planId, 9)"
+              @click="showDialogMToDay(buycontractinfo.m09id, 9)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="10月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[10].planId"
+              v-model="buycontractinfo.m10id"
               :disabled="chooseEntyType == 0"
               placeholder="10月份方案："
             >
@@ -383,12 +385,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[10].planId, 10)"
+              @click="showDialogMToDay(buycontractinfo.m10id, 10)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="11月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[11].planId"
+              v-model="buycontractinfo.m11id"
               :disabled="chooseEntyType == 0"
               placeholder="11月份方案："
             >
@@ -404,12 +406,12 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[11].planId, 11)"
+              @click="showDialogMToDay(buycontractinfo.m11id, 11)"
             >查询/编辑/另存</el-button>
           </el-form-item>
           <el-form-item label="12月份方案：">
             <el-select
-              v-model="mouthToDayBaseDetail.planDTOList[12].planId"
+              v-model="buycontractinfo.m12id"
               :disabled="chooseEntyType == 0"
               placeholder="12月份方案："
             >
@@ -425,7 +427,7 @@
             <el-button
               :disabled="chooseEntyType == 0"
               type="primary"
-              @click="showDialogMToDay(mouthToDayBaseDetail.planDTOList[12].planId, 12)"
+              @click="showDialogMToDay(buycontractinfo.m12id, 12)"
             >查询/编辑/另存</el-button>
           </el-form-item>
         <!-- #endregion -->
@@ -436,7 +438,7 @@
     <!-- #region -->
     <!-- 分时方案弹窗 -->
     <timesAsingScheme
-      :id="buycontractinfo.timeperiodofusecfgDTO"
+      :id="buycontractinfo.timeperiodofuseCfgID"
       :show-dialog-form-visible="showDialogFormVisible"
       @getPeriodList="getPeriodList"
     />
@@ -449,6 +451,7 @@
 </template>
 <script>
 import request from '@/utils/request'
+import qs from 'qs'
 import mouthToDayDetial from './mouthToDayDetial'
 import timesAsingScheme from './module/timesasingscheme'
 export default {
@@ -464,12 +467,12 @@ export default {
       chooseEntyType: '0',
       buycontractinfo: {
         createTime: new Date(), // 创建时间
-        userSmallDTO: '', // 填报人
+        presenter: '', // 填报人
         timeofuseValid: 1, // 是否有分时比例
-        gridDTO: '', // 所属区域
+        gridID: '', // 所属区域
         timeLine: '', // 用来存放日期组件所选中的值
         name: '', // 合同名称
-        timeperiodofusecfgDTO: 3 // 分时方案
+        timeperiodofuseCfgID: 3 // 分时方案
       },
       isEdit: true, // 点击编辑修改是否可以编辑
       // 分时方案详情页面 -- 弹窗表单
@@ -478,7 +481,7 @@ export default {
       gridList: [], // /buy/gridList 获取所属区域列表
       rules: {
         name: [{ required: true, message: '请输入合同名称', trigger: 'blur' }],
-        gridDTO: [
+        gridID: [
           { required: true, message: '请选择所属区域', trigger: 'change' }
         ],
         timeLine: [
@@ -526,12 +529,12 @@ export default {
   async created() {
     await this.getGridList()
     await this.getPeriodList()
-    await this.getPlanlist()
+    // await this.getPlanlist()
     // 根据ID获取当前点击的合同的内容
     // 如果 this.$route.query.id 为空，则表示是新增详情页，不凋 getContractinDetail
     if (this.$route.query.id) {
       await this.getContractinDetail()
-      await this.getMouthToDayBasic()
+      // await this.getMouthToDayBasic()
     }
   },
   methods: {
@@ -540,18 +543,35 @@ export default {
       await console.log('await 2')
     },
     getMouthToDayDetail(selectId, month) {
-      // 获取月到日分解曲线方案详情页
-      const contractId = this.$route.query.id
-      this.month = month
+      const para = {
+        ruleid: this.$route.query.id,
+        rulesetid: selectId
+      }
       request({
-        // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
-        url: `/buy/${contractId}/${selectId}/detail?month=${month}`,
+        // url: `/rules/overuse?ruleid=${ruleid}&rulesetid=${selectId}`,
+        url: '/rules/overuse' + '?' + qs.stringify(para),
         method: 'get'
       })
         .then((res) => {
-          console.log('获取月到日分解曲线方案详情页-')
-          this.formDataDetial = res.weightMtod
-          console.log('await 1')
+          this.formDataDetial = res
+          console.log('overUsePriceList', res.overUsePriceList)
+          this.formDataDetial.overUsePriceList = res.overUsePriceList.map(item => {
+            return { 'value': item }
+          })
+          this.formDataDetial.penaltyFeePriceList1 = (res.penaltyFeePriceList1 && res.penaltyFeePriceList1.length > 0) ? res.penaltyFeePriceList1.map(item => {
+            return { 'value': item }
+          }) : []
+          this.formDataDetial.penaltyFeePriceList2 = (res.penaltyFeePriceList2 && res.penaltyFeePriceList2.length > 0) ? res.penaltyFeePriceList2.map(item => {
+            return { 'value': item }
+          }) : []
+          this.formDataDetial.penaltyFeePriceList3 = (res.penaltyFeePriceList3 && res.penaltyFeePriceList3.length > 0) ? res.penaltyFeePriceList3.map(item => {
+            return { 'value': item }
+          }) : []
+          this.formDataDetial.penaltyFeePriceList4 = (res.penaltyFeePriceList4 && res.penaltyFeePriceList4.length > 0) ? res.penaltyFeePriceList4.map(item => {
+            return { 'value': item }
+          }) : []
+
+          console.log('await 1', this.formDataDetial)
         })
         .then(() => {
           console.log('await 3')
@@ -584,7 +604,7 @@ export default {
           // copyItems.forEach((item) => arr.push(Number(item.price)));
           // console.log("buycontractinfo", copyItems, arr, this.buycontractinfo);
           const saveData = JSON.parse(JSON.stringify(this.buycontractinfo))
-          saveData.gridID = saveData.gridDTO
+          // saveData.gridID = saveData.gridID
           console.log('gag', this.$store.state.user.user.id)
           if (this.$route.query.id === '') {
             saveData.userId = 1003
@@ -634,21 +654,20 @@ export default {
       }
     },
     getContractinDetail() {
+      // /rules/{id}/detail  获取市场规则信息--PPt第5页
       request({
-        url: `/buy/${this.$route.query.id}/detail`,
+        url: `/rules/${this.$route.query.id}/detail`,
         method: 'get'
       }).then((res) => {
         const ret = JSON.parse(JSON.stringify(res))
         this.buycontractinfo = ret
-        this.buycontractinfo.gridDTO = ret.gridDTO.id // 设置所属区域id
-        this.buycontractinfo.userSmallDTO = ret.userSmallDTO.name // 设置填报人
+        this.decompositionScheme = ret.planList
+        // this.buycontractinfo.timeofuseValid = ret.timeperiodofuseCfgID === 0 ? 0 : 1
         // 日期区间回显
         this.$set(this.buycontractinfo, 'timeLine', [
           ret.startDate,
           ret.endDate
         ])
-        this.buycontractinfo.timeperiodofusecfgDTO =
-          ret.timeperiodofusecfgDTO.id // 合同名称
       })
     },
     getPeriodList(type, id) { // 获取分时方案下拉列表
@@ -658,7 +677,7 @@ export default {
       }).then((res) => {
         this.periodList = res
         if (type === 'saveselected') {
-          this.buycontractinfo.timeperiodofusecfgDTO = id
+          this.buycontractinfo.timeperiodofuseCfgID = id
         }
       })
     },

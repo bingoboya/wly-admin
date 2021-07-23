@@ -165,11 +165,9 @@ export default {
           delete this.listQuery[item]
         }
       }
-      // 获取机构名称列表
+      // 获取市场规则列表
       request({
-        // id是在  /buy  接口处获取到的
-        // url: '/buy' + '?' + qs.stringify({page: 1,size: 20}),
-        url: '/buy' + '?' + qs.stringify(this.listQuery),
+        url: '/rules/list' + '?' + qs.stringify(this.listQuery),
         method: 'get'
       }).then(res => {
         this.buyDataList = res.content
