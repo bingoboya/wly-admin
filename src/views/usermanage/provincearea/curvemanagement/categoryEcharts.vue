@@ -1,23 +1,5 @@
 <template>
-  <div style="width: 100%">
-    <div style="display: flex;width: 100%">
-      <div class="color-squr-wrapper">
-        工作日:
-        <div class="color-squr" style="background: #27727b" />
-      </div>
-      <div class="color-squr-wrapper">
-        节假日:
-        <div class="color-squr" style="background: #fe8463" />
-      </div>
-      <div class="color-squr-wrapper">
-        星期日:
-        <div class="color-squr" style="background: #9bca63" />
-      </div>
-      <div class="color-squr-wrapper">
-        星期六:
-        <div class="color-squr" style="background: #ff0000" />
-      </div>
-    </div>
+  <div style="width: 100%; height:100%;">
     <div
       :id="id"
       :class="className"
@@ -41,7 +23,7 @@ export default {
     },
     id: {
       type: String,
-      default: 'chart'
+      default: 'yeartomcurvechart'
     },
     width: {
       type: String,
@@ -49,13 +31,12 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '350px'
     }
   },
   data() {
     return {
-      chart: null,
-      aa: []
+      chart: null
     }
   },
   mounted() {
@@ -69,8 +50,8 @@ export default {
     this.chart = null
   },
   created() {
-    this.dayPropetieList.forEach((item) => (item.value = Math.random()))
-    // console.log(100000, this.dayPropetieList);
+    // this.dayPropetieList.forEach((item) => (item.value = Math.random()))
+    console.log(100000, this.dayPropetieList)
   },
   methods: {
     formateXAxis(val) {
@@ -87,31 +68,13 @@ export default {
         // "10日",
         // "11日",
         // "12日",
-        // "13日",
-        // "14日",
-        // "15日",
-        // "16日",
-        // "17日",
-        // "18日",
-        // "19日",
-        // "20日",
-        // "21日",
-        // "22日",
-        // "23日",
-        // "24日",
-        // "25日",
-        // "26日",
-        // "27日",
-        // "28日",
-        // "29日",
-        // "30日",
-        // "31日",
       ]
       return Array.from({ length: this.dayPropetieList.length }).map(
-        (v, k) => `${k + 1}日`
+        (v, k) => `${k + 1}月`
       )
     },
     initChart() {
+      // console.log(9990, this.dayPropetieList);
       this.chart = echarts.init(document.getElementById(this.id))
       const option = {
         title: {
@@ -146,41 +109,22 @@ export default {
             //   { value: 30.0, color: "red" },
             //   { value: 25.0, color: "red" },
             //   { value: 26.0, color: "red" },
-            //   { value: 35.0, color: "green" },
-            //   { value: 23.0, color: "green" },
-            //   { value: 27.0, color: "green" },
-            //   { value: 39.0, color: "green" },
-            //   { value: 38.0, color: "green" },
-            //   { value: 22.0, color: "green" },
-            //   { value: 3.0, color: "red" },
-            //   { value: 40.0, color: "red" },
-            //   { value: 50.0, color: "red" },
-            //   { value: 20.0, color: "red" },
-            //   { value: 60.0, color: "orange" },
-            //   { value: 34.0, color: "orange" },
-            //   { value: 55.0, color: "orange" },
-            //   { value: 63.0, color: "orange" },
-            //   { value: 34.0, color: "orange" },
-            //   { value: 3.0, color: "red" },
-            //   { value: 34.0, color: "red" },
-            //   { value: 66.0, color: "red" },
-            //   { value: 66.0, color: "red" },
             // ],
             itemStyle: {
               normal: {
                 color: function(params) {
                   // console.log('echarts-params--', params);
                   // return params.data.color ? params.data.color : params.color;
-                  if (params.data.dayType == 'HOLIDAY') {
-                    return '#FE8463'
-                  } else if (params.data.dayType == 'WEEKDAY') {
-                    return '#27727B'
-                  } else if (params.data.dayType == 'SATURDAY') {
-                    return '#9BCA63'
-                  } else if (params.data.dayType == 'SUNDAY') {
-                    return '#ff0000'
-                  }
-                  // return "#9BCA63";
+                  // if (params.data.dayType == 'HOLIDAY') {
+                  //   return '#FE8463'
+                  // } else if (params.data.dayType == 'WEEKDAY') {
+                  //   return '#27727B'
+                  // } else if (params.data.dayType == 'SATURDAY') {
+                  //   return '#9BCA63'
+                  // } else if (params.data.dayType == 'SUNDAY') {
+                  //   return '#ff0000'
+                  // }
+                  return '#9BCA63'
                   // if(params.value >0 && params.value <100){
                   // 	return "#FE8463";
                   // }else if(params.value >=100 && params.value<=300 ){

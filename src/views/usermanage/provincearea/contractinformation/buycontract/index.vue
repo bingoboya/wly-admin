@@ -10,34 +10,34 @@
       <div class="filter-container">
         <el-row>
           <el-col :span="8">
-            <div style="display:flex;"><div style="width:90px;">合同名称：</div><el-input v-model="listQuery.name" placeholder="请输入合同名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+            <div style="display:flex;align-items: baseline;"><div style="width:90px;">合同名称：</div><el-input v-model="listQuery.name" placeholder="请输入合同名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
             </div>
           </el-col>
           <el-col :span="8">
-            <div style="display:flex;"><div style="width:90px;">合同类型：</div>
+            <div style="display:flex;align-items: baseline;"><div style="width:90px;">合同类型：</div>
               <el-select v-model="listQuery.contracttypeid" style="width: 200px;" placeholder="请选择合同类型" clearable class="filter-item" @change="handleFilter">
                 <el-option v-for="item in contractTypeAllList" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </div>
           </el-col>
           <el-col :span="8">
-            <div style="display:flex;"><div style="width:90px;">合同年度：</div><el-input v-model="listQuery.year" placeholder="请输入合同年度" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+            <div style="display:flex;align-items: baseline;"><div style="width:90px;">合同年度：</div><el-input v-model="listQuery.year" placeholder="请输入合同年度" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
             </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <div style="display:flex;"><div style="width:90px;">提报人：</div><el-input v-model="listQuery.presenter" placeholder="请输入提报人" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /></div>
+            <div style="display:flex;align-items: baseline;"><div style="width:90px;">提报人：</div><el-input v-model="listQuery.presenter" placeholder="请输入提报人" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /></div>
           </el-col>
           <el-col :span="8">
-            <div style="display:flex;"><div style="width:90px;">机构名称：</div>
+            <div style="display:flex;align-items: baseline;"><div style="width:90px;">机构名称：</div>
               <el-select v-model="listQuery.agencyName" style="width: 200px;" placeholder="机构名称：" clearable class="filter-item" @change="handleFilter">
                 <el-option v-for="item in agencyAllList" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </div>
           </el-col>
           <el-col :span="8">
-            <div style="display:flex;"><div style="width:90px;">审批状态：</div>
+            <div style="display:flex;align-items: baseline;"><div style="width:90px;">审批状态：</div>
               <el-select v-model="listQuery.state" placeholder="审批状态" clearable style="width: 200px;" class="filter-item" @change="handleFilter">
                 <el-option v-for="item in approvalStatus" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>

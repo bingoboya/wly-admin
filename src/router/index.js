@@ -163,7 +163,7 @@ export const loadMenus = (next, to) => {
         },
         {
           path: 'marketruledetail',
-          hidden: false,
+          hidden: true,
           component: 'usermanage/provincearea/marketruleinformation/marketruledetail.vue',
           name: 'marketrule-detail',
           meta: { activeName: 7, icon: 'menu', title: '市场规则信息详情' }
