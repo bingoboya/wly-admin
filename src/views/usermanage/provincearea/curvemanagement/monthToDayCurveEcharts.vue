@@ -31,7 +31,7 @@ export default {
     },
     height: {
       type: String,
-      default: '350px'
+      default: '230px'
     }
   },
   data() {
@@ -79,6 +79,13 @@ export default {
           data: this.formateXAxis()
         },
         yAxis: {},
+        grid: {
+          top: 10, // 设置图表在canvas中距离上边的距离，调整铺满div
+          left: '2%',
+          right: '2%',
+          bottom: '3%',
+          containLabel: true
+        },
         series: [
           {
             name: '销量',

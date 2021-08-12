@@ -306,7 +306,10 @@ export default {
         })
       }
     },
-    getBuyDataList() {
+    getBuyDataList(val) {
+      if (val && val.page === 1) {
+        this.listQuery.page = 1
+      }
       this.listLoading = true
       this.listQuery.meterId = this.$route.query.meterId
       for (const item in this.listQuery) {

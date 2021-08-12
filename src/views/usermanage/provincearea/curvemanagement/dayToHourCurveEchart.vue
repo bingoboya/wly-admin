@@ -26,7 +26,7 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '290px'
     }
   },
   data() {
@@ -77,6 +77,13 @@ export default {
           axisPointer: {
             type: 'cross'
           }
+        },
+        grid: {
+          top: 10, // 设置图表在canvas中距离上边的距离，调整铺满div
+          left: '2%',
+          right: '2%',
+          bottom: '3%',
+          containLabel: true
         },
         legend: {
           show: false,

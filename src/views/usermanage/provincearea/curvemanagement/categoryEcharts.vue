@@ -31,7 +31,7 @@ export default {
     },
     height: {
       type: String,
-      default: '350px'
+      default: '270px'
     }
   },
   data() {
@@ -49,26 +49,22 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
-  created() {
-    // this.dayPropetieList.forEach((item) => (item.value = Math.random()))
-    console.log(100000, this.dayPropetieList)
-  },
   methods: {
     formateXAxis(val) {
-      const data = [
-        // "1日",
-        // "2日",
-        // "3日",
-        // "4日",
-        // "5日",
-        // "6日",
-        // "7日",
-        // "8日",
-        // "9日",
-        // "10日",
-        // "11日",
-        // "12日",
-      ]
+      // const data = [
+      // "1日",
+      // "2日",
+      // "3日",
+      // "4日",
+      // "5日",
+      // "6日",
+      // "7日",
+      // "8日",
+      // "9日",
+      // "10日",
+      // "11日",
+      // "12日",
+      // ]
       return Array.from({ length: this.dayPropetieList.length }).map(
         (v, k) => `${k + 1}月`
       )
@@ -81,6 +77,13 @@ export default {
           // text: '月分日曲线'
         },
         tooltip: {},
+        grid: {
+          top: 10, // 设置图表在canvas中距离上边的距离，调整铺满div
+          left: '2%',
+          right: '2%',
+          bottom: '3%',
+          containLabel: true
+        },
         legend: {
           show: false,
           data: ['销量']

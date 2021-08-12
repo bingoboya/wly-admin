@@ -2,20 +2,20 @@
   <!-- 分时方案详情页面弹窗 -->
   <!-- 打开分时方案详情页面弹窗 Dialog -->
   <el-dialog
-    width="80%"
     v-el-drag-dialog
+    width="80%"
     custom-class="bingo"
-    @open="openDialog"
-    @closed="showFormDom = false"
     title="售电合同-固定价差方案"
     :visible.sync="showDialogContractPrice.toggle"
+    @open="openDialog"
+    @closed="showFormDom = false"
   >
     <el-form
       v-if="showFormDom"
+      ref="ruleForm"
       :model="timesasingSchemeDetial"
       style="width: 100%"
       :rules="rules"
-      ref="ruleForm"
     >
       <el-form-item>
         <el-form-item
@@ -24,7 +24,7 @@
           prop="name"
           :rules="{ required: true, message: '名称不能为空', trigger: 'blur' }"
         >
-          <el-input style="width: 220px;" placeholder="请输入方案名称" v-model="timesasingSchemeDetial.name" />
+          <el-input v-model="timesasingSchemeDetial.name" style="width: 220px;" placeholder="请输入方案名称" />
         </el-form-item>
       </el-form-item>
       <div
@@ -50,7 +50,7 @@
                 trigger: 'blur',
               }"
             >
-              <el-input style="width: 220px;"  placeholder="请输入时段名称" v-model="item.price" />
+              <el-input v-model="item.price" style="width: 220px;" placeholder="请输入时段名称" />
             </el-form-item>
           </div>
         </div>
@@ -68,112 +68,112 @@
   </el-dialog>
 </template>
 <script>
-import request from "@/utils/request";
-import elDragDialog from "@/components/Directive/el-drag-dialog";
+import request from '@/utils/request'
+import elDragDialog from '@/components/Directive/el-drag-dialog'
 export default {
   directives: { elDragDialog },
   props: {
     showDialogContractPrice: {
-      type: Object,
+      type: Object
     },
     fixPriceArr: {
-      type: Array,
-    },
-    id:{
-      type: [Number, String]
-    },
-    contractPriceList:{
       type: Array
     },
-    cfgId:{
+    id: {
+      type: [Number, String]
+    },
+    contractPriceList: {
+      type: Array
+    },
+    cfgId: {
       type: [Number, String]
     }
   },
   data() {
     return {
-      showFormDom: false, //接口数据拿到之后再渲染表单的dom结构，防止报错
+      showFormDom: false, // 接口数据拿到之后再渲染表单的dom结构，防止报错
       // 分时方案详情页面 -- 弹窗表单
       timesasingSchemeDetial: {
         id: '',
         name: '',
         cfgId: '',
-        priceList: [],
+        priceList: []
       },
-      formLabelWidth: "120px",
-      rules: {},
-    };
+      formLabelWidth: '120px',
+      rules: {}
+    }
   },
   methods: {
-    //跟据id获取到价格方案名称
-    getPriceName(){
-      if(this.id == 999) {
+    // 跟据id获取到价格方案名称
+    getPriceName() {
+      if (this.id == 999) {
         this.timesasingSchemeDetial.id = ''
         return
       }
-      console.log('获取到价格方案名称',this.contractPriceList, this.id);
-      let aa = this.contractPriceList.filter(item => this.id == item.id)
-      console.log(9999, aa[0].name);
+      console.log('获取到价格方案名称', this.contractPriceList, this.id)
+      const aa = this.contractPriceList.filter(item => this.id == item.id)
+      console.log(9999, aa[0].name)
       this.timesasingSchemeDetial.name = aa[0].name
       this.timesasingSchemeDetial.id = this.id
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     saveTimesasingSchemeDetial(val) {
-      //保存 售电合同-分时方案 页面信息
+      // 保存 售电合同-分时方案 页面信息
       request({
-        url: "/buy/tpfcg/price/save",
-        method: "post",
-        data: val,
+        url: '/buy/tpfcg/price/save',
+        method: 'post',
+        data: val
       })
         .then((res) => {
           this.$emit('changepricetimeofuseDTO', res.id, 'fix-PriceofUseDTO')
           this.$message({
-            message: "保存成功",
-            type: "success",
-          });
+            message: '保存成功',
+            type: 'success'
+          })
         })
         .catch((error) => {
-          console.log(error);
-          this.$message.error("保存失败");
-        });
+          console.log(error)
+          this.$message.error('保存失败')
+        })
     },
 
-    //提交事件
+    // 提交事件
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log("提交", this.timesasingSchemeDetial);
-          let ret = JSON.parse(JSON.stringify(this.timesasingSchemeDetial))
-          let arr = []
-          ret.priceList.forEach(item =>{
+          console.log('提交', this.timesasingSchemeDetial)
+          const ret = JSON.parse(JSON.stringify(this.timesasingSchemeDetial))
+          const arr = []
+          ret.priceList.forEach(item => {
             arr.push(Number(item.price))
           })
           ret.priceList = arr
-          this.saveTimesasingSchemeDetial(ret);
+          this.saveTimesasingSchemeDetial(ret)
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     getTpcfgDetial() {
-      let ret = JSON.parse(JSON.stringify(this.fixPriceArr))
+      const ret = JSON.parse(JSON.stringify(this.fixPriceArr))
       // [{price: 56}, {price: 53}, {price: 57}]
-      if (this.showDialogContractPrice.add){
-        ret.forEach((item) => (item.price = null));
+      if (this.showDialogContractPrice.add) {
+        ret.forEach((item) => (item.price = null))
         this.timesasingSchemeDetial.name = ''
       }
-      this.timesasingSchemeDetial.priceList = ret;
-      this.timesasingSchemeDetial.cfgId = this.cfgId;
-      this.showFormDom = true; //接口数据拿到之后再渲染表单的dom结构，防止报错
+      this.timesasingSchemeDetial.priceList = ret
+      this.timesasingSchemeDetial.cfgId = this.cfgId
+      this.showFormDom = true // 接口数据拿到之后再渲染表单的dom结构，防止报错
     },
     openDialog() {
       this.getPriceName()
-      this.getTpcfgDetial();
-    },
-  },
-};
+      this.getTpcfgDetial()
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .shiduan-wrapper {

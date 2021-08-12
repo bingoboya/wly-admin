@@ -17,38 +17,40 @@
               </el-select>
             </div>
           </el-col> -->
-            <el-col :span="8">
+            <el-col :span="4">
               <div style="display:flex;align-items: baseline;">
-                <div style="width:90px;">曲线名称：</div>
-                <el-input v-model="listQuery.curveName" placeholder="请选择曲线名称" style="width: 100px;" class="filter-item" @keyup.enter.native="handleFilter" />
+                <div style="width:82px;white-space: nowrap;">曲线名称：</div>
+                <el-input v-model="listQuery.curveName" placeholder="请选择曲线名称" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter" />
               </div>
             </el-col>
-            <el-col :span="8">
-              <div style="display:flex;align-items: baseline;"><div style="width:90px;">曲线类型：</div>
-                <el-select v-model="listQuery.curveType" placeholder="审批状态" clearable style="width: 200px;" class="filter-item" @change="handleFilter">
+            <el-col :span="4">
+              <div style="display:flex;align-items: baseline;"><div style="width:82px;white-space: nowrap;">曲线类型：</div>
+                <el-select v-model="listQuery.curveType" placeholder="审批状态" clearable style="width: 120px;" class="filter-item" @change="handleFilter">
                   <el-option label="年分月曲线" :value="0" />
                   <el-option label="月分日曲线" :value="1" />
                   <el-option label="日分时曲线" :value="2" />
                 </el-select>
               </div>
             </el-col>
-            <el-col :span="8">
-              <div style="display:flex;align-items: baseline;"><div style="width:90px;">更新时间：</div><el-input v-model="listQuery.updateTime" placeholder="请输入更新时间" style="width: 100px;" class="filter-item" @keyup.enter.native="handleFilter" /></div>
+            <el-col :span="4">
+              <div style="display:flex;align-items: baseline;"><div style="width:82px;white-space: nowrap;">更新时间：</div><el-input v-model="listQuery.updateTime" placeholder="请输入更新时间" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter" /></div>
             </el-col>
-            <el-col :span="8">
-              <div style="display:flex;align-items: baseline;"><div style="width:90px;">审批状态：</div>
-                <el-select v-model="listQuery.state" placeholder="审批状态" clearable style="width: 200px;" class="filter-item" @change="handleFilter">
+            <el-col :span="4">
+              <div style="display:flex;align-items: baseline;"><div style="width:82px;white-space: nowrap;">审批状态：</div>
+                <el-select v-model="listQuery.state" placeholder="审批状态" clearable style="width: 120px;" class="filter-item" @change="handleFilter">
                   <el-option v-for="item in approvalStatus" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
               </div>
             </el-col>
-            <el-col :span="8">
-              <div style="display:flex;align-items: baseline;"><div style="width:90px;">提报人：</div><el-input v-model="listQuery.presenter" placeholder="请输入提报人" style="width: 100px;" class="filter-item" @keyup.enter.native="handleFilter" /></div>
+            <el-col :span="4">
+              <div style="display:flex;align-items: baseline;"><div style="width:82px;white-space: nowrap;">提报人：</div><el-input v-model="listQuery.presenter" placeholder="请输入提报人" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter" /></div>
+            </el-col>
+            <el-col :span="4">
+              <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+              <!-- <el-button class="filter-item" type="primary" icon="el-icon-search" @click="gotoRouter">新增</el-button> -->
+              <el-button :disabled="selections.length == 0" class="filter-item" type="primary" icon="el-icon-search" @click="deleteBuyDataList">删除</el-button>
             </el-col>
           </el-row>
-          <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-          <!-- <el-button class="filter-item" type="primary" icon="el-icon-search" @click="gotoRouter">新增</el-button> -->
-          <el-button :disabled="selections.length == 0" class="filter-item" type="primary" icon="el-icon-search" @click="deleteBuyDataList">删除</el-button>
         </div>
       </div>
       <div slot="footer" class="dialog-footer title-wrapper" style="margin-bottom: 10px;">
@@ -103,7 +105,7 @@
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :size.sync="listQuery.size" @pagination="getBuyDataList" />
     </div>
     <!--表单渲染  操作按钮（新增/删除）-->
-    <div v-if="curveType === 0">
+    <div v-if="curveType === 0" class="form-label-height">
       <div slot="footer" class="dialog-footer title-wrapper">
         <div>曲线详情-年到月曲线</div>
         <div>
@@ -370,7 +372,7 @@
       </div>
     </div>
 
-    <div v-if="curveType === 1">
+    <div v-if="curveType === 1" class="form-label-height">
       <div slot="footer" class="dialog-footer title-wrapper">
         <div>曲线详情-月分日权重</div>
         <div>
@@ -482,9 +484,9 @@
         </el-form>
         <!-- 图表模块 -->
         <div v-if="showFormDom" style="display: flex;">
-          <div style="display: flex;flex:1;height: 300px;overflow: hidden;overflow-y: scroll;border-top-style: outset;border-bottom-style: inset;">
+          <div style="dtoh-table-wrapper">
             <div style="display: flex;width: 100%;align-items: flex-start;">
-              <el-table :data="rest.slice(0,rest.length/2)" border style="width: 100%">
+              <el-table max-height="300" :data="rest.slice(0,rest.length/2)" border style="width: 100%">
                 <el-table-column prop="name" label="键" width="60px" />
                 <el-table-column prop="value" label="值">
                   <template slot-scope="scope">
@@ -492,7 +494,7 @@
                   </template>
                 </el-table-column>
               </el-table>
-              <el-table :data="rest.slice(rest.length/2)" border style="width: 100%">
+              <el-table max-height="300" :data="rest.slice(rest.length/2)" border style="width: 100%">
                 <el-table-column prop="name" label="键" width="60px" />
                 <!-- <el-table-column prop="value" label="值" /> -->
                 <el-table-column prop="value" label="值">
@@ -705,7 +707,10 @@ export default {
       this.listQuery.page = 1
       this.getBuyDataList()
     },
-    getBuyDataList() {
+    getBuyDataList(val) {
+      if (val && val.page === 1) {
+        this.listQuery.page = 1
+      }
       this.listLoading = true
       for (const item in this.listQuery) {
         if (this.listQuery[item] === undefined) {
@@ -756,6 +761,13 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.dtoh-table-wrapper{
+  // display: flex;flex:1;height: 300px;overflow: hidden;overflow-y: scroll;border-top-style: outset;border-bottom-style: inset;
+}
+.form-label-height .el-form-item--small.el-form-item{
+  margin-bottom: 6px !important;
+}
+
 .edit-input {
     .el-input__inner {
       border: 1px solid #e5e6e7;
@@ -763,9 +775,10 @@ export default {
   }
 .pagination-container{
   margin-top: 0px !important;
-      padding: 12px 16px !important;
+  padding: 12px 16px !important;
 }
 .title-wrapper{
+  margin-bottom: 10px;
   display:flex;
   justify-content: space-between;
   align-items: center;

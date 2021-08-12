@@ -161,7 +161,7 @@ export default {
         })
         // 刷新列表
         this.getBuyDataList()
-      }).catch(error => {
+      }).catch(() => {
         this.$message.error('删除失败')
       })
     },
@@ -169,7 +169,10 @@ export default {
       this.listQuery.page = 1
       this.getBuyDataList()
     },
-    getBuyDataList() {
+    getBuyDataList(val) {
+      if (val && val.page === 1) {
+        this.listQuery.page = 1
+      }
       this.listLoading = true
       for (const item in this.listQuery) {
         if (this.listQuery[item] === undefined) {

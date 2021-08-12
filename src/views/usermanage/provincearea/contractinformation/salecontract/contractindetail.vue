@@ -5,7 +5,7 @@
       <div class="toubu">
         <div>售电合同基本信息</div>
         <div>
-          <el-button v-if='this.$route.query.id !== ""' type="primary" @click="isEdit = false">编辑</el-button>
+          <el-button v-if="this.$route.query.id !== &quot;&quot;" type="primary" @click="isEdit = false">编辑</el-button>
           <el-button
             type="primary"
             @click="submitForm('ruleForm')"
@@ -90,7 +90,7 @@
         <!-- 新增 -->
         <el-row :gutter="5">
           <el-col :span="12">
-            <el-form-item label="电压等级" prop='voltLevel'>
+            <el-form-item label="电压等级" prop="voltLevel">
               <el-select
                 v-model="buycontractinfo.voltLevel"
                 :disabled="this.$route.query.id !== '' && isEdit"
@@ -148,7 +148,7 @@
         </el-row>
         <el-row :gutter="5">
           <el-col :span="12">
-            <el-form-item label="居间费类型" prop='agenFeeType'>
+            <el-form-item label="居间费类型" prop="agenFeeType">
               <el-select
                 v-model="buycontractinfo.agenFeeType"
                 :disabled="this.$route.query.id !== '' && isEdit"
@@ -183,7 +183,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span='10'>
+          <el-col :span="10">
             <el-form-item label="签署时间">
               <el-date-picker
                 v-model="buycontractinfo.signDate"
@@ -225,7 +225,7 @@
 
         <el-row :gutter="5">
           <el-col :span="12">
-            <el-form-item label="合同类型" prop='contracttypeinfoDTO'>
+            <el-form-item label="合同类型" prop="contracttypeinfoDTO">
               <el-select
                 v-model="buycontractinfo.contracttypeinfoDTO"
                 :disabled="this.$route.query.id !== '' && isEdit"
@@ -242,12 +242,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="填报人"
-              prop="userSmallDTO" :rules="{ required: true, message: '请输入填报人', trigger: 'blur' }"
+            <el-form-item
+              label="填报人"
+              prop="userSmallDTO"
+              :rules="{ required: true, message: '请输入填报人', trigger: 'blur' }"
             >
               <!-- 新建时可编辑 -->
-              <el-input :disabled="this.$route.query.id !== ''"
+              <el-input
                 v-model="buycontractinfo.userSmallDTO"
+                :disabled="this.$route.query.id !== ''"
                 style="width: 220px"
                 placeholder="请输入填报人"
               />
@@ -288,15 +291,18 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item v-if='buycontractinfo.timeofuseValid == 1' label="合同价格方案" prop="pricetimeofuseDTO"
+            <el-form-item
+              v-if="buycontractinfo.timeofuseValid == 1"
+              label="合同价格方案"
+              prop="pricetimeofuseDTO"
               :rules="[{ required: buycontractinfo.timeofuseValid == 1, message: buycontractinfo.timeperiodofusecfgDTO == 999 ? `请选择分时方案` : `请选择合同价格方案`, trigger: 'change' }]"
             >
               <el-select
-                :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 v-model="buycontractinfo.pricetimeofuseDTO"
-                @change="selectContractPrice"
+                :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 placeholder="合同价格方案"
                 style="width: 220px"
+                @change="selectContractPrice"
               >
                 <el-option label="请选择" value="" disabled />
                 <el-option
@@ -312,13 +318,14 @@
                 type="primary"
                 @click="showDialogContractPrice.toggle = true"
               >查询/编辑/另存</el-button>
-            </el-form-item>     
-            <el-row >
+            </el-form-item>
+            <el-row>
               <el-col :span="24" style="display: flex;">
                 <!-- <div v-for="(item, index) in buycontractinfo.priceList" :key="index"> -->
-                <el-form-item  :label="`合同价格${index + 1}:`"
+                <el-form-item
                   v-for="(item, index) in (buycontractinfo.timeofuseValid == 1 ? items : items.slice(0,1))"
                   :key="index"
+                  :label="`合同价格${index + 1}:`"
                 >
                   <el-input
                     v-model="item.price"
@@ -330,16 +337,19 @@
                   <!-- </div> -->
                 </el-form-item>
               </el-col>
-            </el-row>    
-            <el-form-item v-if='buycontractinfo.timeofuseValid == 1' label="固定价差方案" prop="fixPriceofUseDTO"
+            </el-row>
+            <el-form-item
+              v-if="buycontractinfo.timeofuseValid == 1"
+              label="固定价差方案"
+              prop="fixPriceofUseDTO"
               :rules="[{ required: buycontractinfo.timeofuseValid == 1, message: buycontractinfo.timeperiodofusecfgDTO == 999 ? `请选择分时方案` : `请选择合同价格方案`, trigger: 'change' }]"
             >
               <el-select
-                :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 v-model="buycontractinfo.fixPriceofUseDTO"
-                @change="selectfixPriceofUseDTO"
+                :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 placeholder="固定价差方案"
                 style="width: 220px"
+                @change="selectfixPriceofUseDTO"
               >
                 <el-option label="请选择" value="" disabled />
                 <el-option
@@ -355,10 +365,10 @@
                 type="primary"
                 @click="showDialogFixPrice.toggle = true"
               >查询/编辑/另存</el-button>
-            </el-form-item>   
+            </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-if='buycontractinfo.timeofuseValid == 1' label="分时方案">
+            <el-form-item v-if="buycontractinfo.timeofuseValid == 1" label="分时方案">
               <el-select
                 v-model="buycontractinfo.timeperiodofusecfgDTO"
                 :disabled="this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
@@ -382,13 +392,14 @@
             </el-form-item>
           </el-col>
         </el-row>
-        
-        <el-row >
+
+        <el-row>
           <el-col :span="24" style="display: flex;">
             <!-- <div v-for="(item, index) in buycontractinfo.priceList" :key="index"> -->
-            <el-form-item :label="`固定价差${index + 1}:`"
+            <el-form-item
               v-for="(item, index) in (buycontractinfo.timeofuseValid == 1 ? fixPriceArr : fixPriceArr.slice(0,1))"
               :key="index"
+              :label="`固定价差${index + 1}:`"
             >
               <el-input
                 v-model="item.price"
@@ -416,6 +427,28 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!-- 上传附件模块 -->
+        <div>
+          <el-button
+            slot="left"
+            class="filter-item"
+            size="mini"
+            type="primary"
+            icon="el-icon-upload"
+            @click="showupload = true"
+          >上传附件
+          </el-button>
+          <div style="display:flex;flex-wrap: wrap;">
+            <div v-for="(item, index) in allUploadFiles" :key="index" class="bingooooo">
+              <span
+                class="el-link--primary"
+                style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
+                @click="downFile(item)"
+              >{{ item.name }}</span>
+            </div>
+          </div>
+        </div>
+        <!--  -->
         <div style="display: flex; flex-direction: column">
           <div class="fenjiefangan">分解曲线方案</div>
           <el-form-item label="年到月分解方案">
@@ -426,7 +459,7 @@
               placeholder="年到月分解方案"
               @change="selectCurveytomDTO"
             >
-            <el-option label="请选择" value="" disabled />
+              <el-option label="请选择" value="" disabled />
               <el-option
                 v-for="(item, index) in yearToMonthPlan"
                 :key="`${item.id}${index}`"
@@ -449,7 +482,7 @@
               placeholder="月到日分解方案"
               @change="selectWeightsetyearlymtodDTO"
             >
-            <el-option label="请选择" value="" disabled />
+              <el-option label="请选择" value="" disabled />
               <el-option
                 v-for="(item, index) in monthToDayPlan"
                 :key="`${item.id}${index}`"
@@ -472,7 +505,7 @@
               placeholder="日分时分解方案"
               @change="selectCurvesetyearlydtopDTO"
             >
-            <el-option label="请选择" value="" disabled />
+              <el-option label="请选择" value="" disabled />
               <el-option
                 v-for="(item, index) in dayToHourPlan"
                 :key="`${item.id}${index}`"
@@ -491,30 +524,55 @@
         <!-- #endregion -->
       </el-form>
     </div>
+    <!-- 上传附件弹窗 -->
+    <el-dialog :close-on-click-modal="false" :visible.sync="showupload" title="文件上传" width="500px">
+      <!--   上传文件   -->
+      <el-upload
+        ref="upload"
+        :limit="1"
+        :data="uploadParams"
+        :before-upload="beforeUpload"
+        :auto-upload="false"
+        :headers="headers"
+        :on-success="handleSuccess"
+        :on-error="handleError"
+        :action="`http://${domain}/buy/upload`"
+      >
+        <!-- /buy/upload 购电合同上传附件 -->
+        <!-- :action="'https://jsonplaceholder.typicode.com/posts/' + '?name=' + filename" -->
+        <div class="eladmin-upload"><i class="el-icon-upload" /> 添加文件</div>
+        <div slot="tip" class="el-upload__tip">可上传任意格式文件，且不超过100M</div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="text" @click="showupload = false">取消</el-button>
+        <el-button :loading="loading" type="primary" @click="confirmupload">确认</el-button>
+        <!-- <el-button v-else :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button> -->
+      </div>
+    </el-dialog>
     <!-- #region -->
     <!-- 分时方案弹窗 -->
     <timesAsingScheme
       :id="buycontractinfo.timeperiodofusecfgDTO"
-      @getPeriodList='getPeriodList'
       :show-dialog-form-visible="showDialogFormVisible"
+      @getPeriodList="getPeriodList"
     />
     <!-- 合同价格方案弹窗 -->
     <contractPrice
-      @changepricetimeofuseDTO='changepricetimeofuseDTO'
       :id="buycontractinfo.pricetimeofuseDTO"
       :contract-price-list="contractPriceList"
       :cfg-id="buycontractinfo.timeperiodofusecfgDTO"
       :items="items"
       :show-dialog-contract-price="showDialogContractPrice"
+      @changepricetimeofuseDTO="changepricetimeofuseDTO"
     />
     <!-- 固定价差方案弹窗 -->
     <fixPrice
-      @changepricetimeofuseDTO='changepricetimeofuseDTO'
       :id="buycontractinfo.fixPriceofUseDTO"
       :contract-price-list="contractPriceList"
       :cfg-id="buycontractinfo.timeperiodofusecfgDTO"
-      :fixPriceArr="fixPriceArr"
+      :fix-price-arr="fixPriceArr"
       :show-dialog-contract-price="showDialogFixPrice"
+      @changepricetimeofuseDTO="changepricetimeofuseDTO"
     />
     <yearToMouth
       :id="buycontractinfo.curveytomDTO"
@@ -543,8 +601,10 @@ import timesAsingScheme from './module/timesasingscheme'
 import yearToMouth from './module/yeartomouth'
 import mouthToDayBase from './module/mouthToDayBase'
 import dayToHourBase from './module/dayToHourBase'
+import { getToken } from '@/utils/auth'
+
 export default {
-  components: {fixPrice,
+  components: { fixPrice,
     contractPrice,
     timesAsingScheme,
     yearToMouth,
@@ -553,7 +613,22 @@ export default {
   },
   data() {
     return {
-      fixPriceArr:[],
+      domain: '',
+      mygetToken: null,
+      uploadParams: {
+        contractid: this.$route.query.id,
+        type: 1
+      },
+      showupload: false,
+      // fileList: [{ name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
+      loading: false,
+      headers: {
+        Authorization: getToken()
+      },
+      filename: '',
+      allUploadFiles: [],
+
+      fixPriceArr: [],
       items: [
         // { price: 101},{ price: 103},
       ],
@@ -633,7 +708,7 @@ export default {
           { required: true, message: '请选择起始时间', trigger: 'change' }
         ],
         timeofuseValid: [
-          {required: true, message: "请选择是否有分时比例",trigger: "change"},
+          { required: true, message: '请选择是否有分时比例', trigger: 'change' }
           // {validator: this.validateEmail,trigger: 'change'}
         ],
         curveValid: [
@@ -642,12 +717,20 @@ export default {
             message: '请选择是否有分解曲线',
             trigger: 'change'
           }
-        ],
-        
+        ]
+
       }
     }
   },
   async created() {
+    this.domain = document.domain
+    if (window.location.port) {
+      const newurl = `${document.domain}:${window.location.port}`
+      this.domain = newurl
+    } else {
+      this.domain = `${document.domain}`
+    }
+    this.mygetToken = await getToken()
     await this.getAgencyAll()
     await this.getGridList()
     await this.getPeriodList()
@@ -657,48 +740,122 @@ export default {
     await this.getPlanlist(1) // 月到日 下拉列表
     await this.getPlanlist(2) // 日到时 下拉列表
     await this.getPlanlist(3) // 获取月分解方案（ppt 第8页）
-    await this.getPricelist(this.buycontractinfo.timeperiodofusecfgDTO);
+    await this.getPricelist(this.buycontractinfo.timeperiodofusecfgDTO)
+    await this.getContractFiles() // 获取合同下的所有文件
     // 根据ID获取当前点击的合同的内容
     // 如果 this.$route.query.id 为空，则表示是新增详情页，不凋 getContractinDetail
-    if(this.$route.query.id){
-      await this.getContractinDetail();
+    if (this.$route.query.id) {
+      await this.getContractinDetail()
     }
   },
   methods: {
+    downFile(item) {
+      console.log(item.mark, 'domain', document.domain, window.location.port)
+      if (window.location.port) {
+        const newurl = `${document.domain}:${window.location.port}`
+        this.domain = newurl
+      } else {
+        this.domain = `${document.domain}`
+      }
+      request({
+        url: `http://${this.domain}/buy/materials/download?mark=${item.mark}`,
+        // url: `http://new.admin.com/buy/materials/download?mark=${item.mark}`,
+        method: 'get',
+        responseType: 'blob'
+      }).then((res) => {
+        console.log('downFile', res)
+        const fileName = item.name
+        this.download(res, fileName)
+      })
+    },
+    download(content, fileName) {
+      const blob = new Blob([content]) // 创建一个类文件对象：Blob对象表示一个不可变的、原始数据的类文件对象
+      const url = window.URL.createObjectURL(blob)// URL.createObjectURL(object)表示生成一个File对象或Blob对象
+      const dom = document.createElement('a')// 设置一个隐藏的a标签，href为输出流，设置download
+      dom.style.display = 'none'
+      dom.href = url
+      dom.setAttribute('download', fileName)// 指示浏览器下载url,而不是导航到它；因此将提示用户将其保存为本地文件
+      document.body.appendChild(dom)
+      dom.click()
+    },
+    getContractFiles() {
+      // 获取合同附件
+      request({
+        url: `/buy/materials?contractid=${this.$route.query.id}&type=1`,
+        method: 'get'
+      }).then((res) => {
+        console.log('获取合同附件')
+        this.allUploadFiles = res
+      })
+    },
+    confirmupload() {
+      this.upload()
+    },
+    // 上传文件
+    upload() {
+      this.$refs.upload.submit()
+    },
+    beforeUpload(file) {
+      let isLt2M = true
+      console.log('文件大小', file.size / 1024 / 1024)
+      isLt2M = file.size / 1024 / 1024 < 100
+      if (!isLt2M) {
+        this.loading = false
+        this.$message.error('上传文件大小不能超过 100MB!')
+      }
+      return isLt2M
+    },
+    handleSuccess(response, file, fileList) {
+      console.log(response, file, fileList)
+      this.showupload = false
+      this.filename = file.name
+      this.getContractFiles() // 获取合同下的所有文件
+      this.$refs.upload.clearFiles()
+    },
+    // 监听上传失败
+    handleError(e, file, fileList) {
+      const msg = JSON.parse(e.message)
+      this.$notify({
+        title: msg.message,
+        type: 'error',
+        duration: 2500
+      })
+      this.loading = false
+    },
     validateEmail(formName) {
       this.$refs['ruleForm'].validateField('pricetimeofuseDTO', emailError => {
-        console.log('emailError', emailError, this.buycontractinfo.timeofuseValid);
+        console.log('emailError', emailError, this.buycontractinfo.timeofuseValid)
         // if (this.buycontractinfo.timeofuseValid == 0) {
         if (!emailError) {
           console.log(22, emailError, '验证通过!')
           // alert('邮箱验证通过!');
         } else {
-          console.log('验证失败');
-          return false;
+          console.log('验证失败')
+          return false
         }
       })
       this.$refs['ruleForm'].validateField('fixPriceofUseDTO', emailError => {
-        console.log('emailError', emailError, this.buycontractinfo.timeofuseValid);
+        console.log('emailError', emailError, this.buycontractinfo.timeofuseValid)
         // if (this.buycontractinfo.timeofuseValid == 0) {
         if (!emailError) {
           console.log(22, emailError, '验证通过!')
           // alert('邮箱验证通过!');
         } else {
-          console.log('验证失败');
-          return false;
+          console.log('验证失败')
+          return false
         }
       })
     },
     getcontractTypeAllList() {
-      //获取合同类型下拉列表
+      // 获取合同类型下拉列表
       request({
-        url: "/buy/typelist",
-        method: "get",
+        url: '/buy/typelist',
+        method: 'get'
       }).then((res) => {
-        this.buycontractinfo.contracttypeinfoList = res;
-      });
+        this.buycontractinfo.contracttypeinfoList = res
+      })
     },
-    getDefaultParamIdList(){//获取默认参数组下拉选项
+    getDefaultParamIdList() { // 获取默认参数组下拉选项
       // /sell/params
       request({
         url: `/sell/params`,
@@ -707,7 +864,7 @@ export default {
         this.defaultParamIdList = res
       })
     },
-    selectfixPriceofUseDTO(event, item){
+    selectfixPriceofUseDTO(event, item) {
       console.log('修改固定价差方案选项id', event)
       if (event === 999) {
         this.showDialogFixPrice.toggle = true
@@ -715,21 +872,21 @@ export default {
       } else {
         this.showDialogFixPrice.add = false
         // console.log(666, this.contractPriceList);
-        let aa = this.contractPriceList.filter((val) => val.id === event)
+        const aa = this.contractPriceList.filter((val) => val.id === event)
         // console.log('aa:', aa, aa[0].priceList);
-        let arr = []
+        const arr = []
         aa[0].priceList.forEach((item) => {
           arr.push({ price: item })
         })
         this.fixPriceArr = arr
       }
     },
-    changepricetimeofuseDTO(id, type){
-      //修改buycontractinfo.pricetimeofuseDTO当前的选项
-      console.log('id:', id, type);
-      if(type == 'price-timeofuseDTO'){
+    changepricetimeofuseDTO(id, type) {
+      // 修改buycontractinfo.pricetimeofuseDTO当前的选项
+      console.log('id:', id, type)
+      if (type == 'price-timeofuseDTO') {
         this.buycontractinfo.pricetimeofuseDTO = id
-      }else if(type == 'fix-PriceofUseDTO'){
+      } else if (type == 'fix-PriceofUseDTO') {
         this.buycontractinfo.fixPriceofUseDTO = id
       }
       request({
@@ -737,9 +894,9 @@ export default {
         method: 'get'
       }).then((res) => {
         this.contractPriceList = res
-        if(type == 'price-timeofuseDTO'){
+        if (type == 'price-timeofuseDTO') {
           this.selectContractPrice(id)
-        }else if(type == 'fix-PriceofUseDTO'){
+        } else if (type == 'fix-PriceofUseDTO') {
           this.selectfixPriceofUseDTO(id)
         }
       })
@@ -755,33 +912,33 @@ export default {
       if (event == 999) {
         this.showDialogContractPrice.toggle = true
         this.showDialogContractPrice.add = true
-        let timeperiodofusecfgDTO = this.buycontractinfo.timeperiodofusecfgDTO
-        let periodNum = this.periodList.find(item => item.id == timeperiodofusecfgDTO).numPeriod
+        const timeperiodofusecfgDTO = this.buycontractinfo.timeperiodofusecfgDTO
+        const periodNum = this.periodList.find(item => item.id == timeperiodofusecfgDTO).numPeriod
         this.items = new Array(periodNum)
-        this.items.fill({'price': ''})
+        this.items.fill({ 'price': '' })
       } else {
         this.showDialogContractPrice.add = false
-        let aa = this.contractPriceList.filter((val) => val.id == event)
-        let arr = []
+        const aa = this.contractPriceList.filter((val) => val.id == event)
+        const arr = []
         aa[0].priceList.forEach((item) => {
           arr.push({ price: item })
         })
         this.items = arr
       }
     },
-    resetValidate(event){
-      this.$nextTick(()=>{
-        this.$refs['ruleForm'].validateField('pricetimeofuseDTO', ()=>{
+    resetValidate(event) {
+      this.$nextTick(() => {
+        this.$refs['ruleForm'].validateField('pricetimeofuseDTO', () => {
           // console.log('pricetimeofuseDTO:', this.buycontractinfo.timeperiodofusecfgDTO);
         })
-        this.$refs['ruleForm'].validateField('fixPriceofUseDTO', ()=>{
+        this.$refs['ruleForm'].validateField('fixPriceofUseDTO', () => {
           // console.log('fixPriceofUseDTO:', this.buycontractinfo.timeperiodofusecfgDTO);
         })
       })
     },
     // 修改分时方案选项
     selectTimeperiodofusecfgDTO(event, item) {
-      this.resetValidate(event) //修改分时方案时，重新校验 合同价格方案 选项，并根据当前选择的分时方案提示不同的校验信息
+      this.resetValidate(event) // 修改分时方案时，重新校验 合同价格方案 选项，并根据当前选择的分时方案提示不同的校验信息
       this.buycontractinfo.pricetimeofuseDTO = ''
       this.items = []
       this.buycontractinfo.fixPriceofUseDTO = ''
@@ -799,7 +956,7 @@ export default {
         method: 'get'
       }).then((res) => {
         this.contractPriceList = res
-        console.log('出发2');
+        console.log('出发2')
       })
     },
     submitForm(formName) {
@@ -811,7 +968,7 @@ export default {
           // copyItems.forEach((item) => arr.push(Number(item.price)));
           // this.buycontractinfo.priceList = arr;
           // console.log("buycontractinfo", copyItems, arr, this.buycontractinfo);
-          let saveData = JSON.parse(JSON.stringify(this.buycontractinfo))
+          const saveData = JSON.parse(JSON.stringify(this.buycontractinfo))
           saveData.typeID = saveData.contracttypeinfoDTO
           saveData.meterID = saveData.meterInfoDTO
           saveData.gridID = saveData.gridDTO
@@ -822,13 +979,13 @@ export default {
           saveData.priceTimeofUseId = saveData.pricetimeofuseDTO // 默认参数组ID 不能为空
           saveData.timeperiodofusecfgId = saveData.timeperiodofusecfgDTO
           saveData.totalElectricity = Number(saveData.totalElectricity)
-          console.log('gag', this.$store.state.user.user.id);
-          if(this.$route.query.id == ''){
+          console.log('gag', this.$store.state.user.user.id)
+          if (this.$route.query.id == '') {
             // saveData.userId = this.$store.state.user.user.id
             saveData.userId = 1003
           }
-          console.log('保存sellcontractinfo:', saveData);
-          this.saveContractinDetail(saveData);
+          console.log('保存sellcontractinfo:', saveData)
+          this.saveContractinDetail(saveData)
         } else {
           console.log('error submit!!')
           return false
@@ -943,8 +1100,8 @@ export default {
         ])
         this.buycontractinfo.timeperiodofusecfgDTO =
           ret.timeperiodofusecfgDTO.id // 合同名称
-        
-        let arr = [], fixPriceArr = []
+
+        const arr = []; const fixPriceArr = []
         ret.pricetimeofuseDTO.priceList.forEach((item) => {
           arr.push({ price: item })
         })
@@ -957,7 +1114,6 @@ export default {
         this.buycontractinfo.pricetimeofuseDTO = ret.pricetimeofuseDTO.id // 合同价格方案
         this.buycontractinfo.fixPriceofUseDTO = ret.fixPriceofUseDTO.id // 固定价差方案
         this.contractPriceList = ret.pricetimeofuseDTOList
-
       })
     },
     getAgencyAll() {
@@ -976,7 +1132,7 @@ export default {
         method: 'get'
       }).then((res) => {
         this.periodList = res
-        if(type == 'saveselected'){
+        if (type == 'saveselected') {
           this.buycontractinfo.timeperiodofusecfgDTO = id
         }
       })
@@ -997,6 +1153,9 @@ export default {
 }
 </script>
 <style lang="scss" scope>
+.bingooooo{
+  width: 350px;
+}
 .toubu {
   display: flex;
   justify-content: space-between;

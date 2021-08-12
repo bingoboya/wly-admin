@@ -7,8 +7,8 @@
       <div :class="{'fixed-header':fixedHeader}">
         <el-tabs v-model="activeName" class="bingo" style="margin-bottom: -14px;" @tab-click="handleClick">
           <el-tab-pane label="用户管理" name="7" />
-          <el-tab-pane label="配置管理" name="8" />
-          <el-tab-pane label="角色管理" name="9" />
+          <!-- <el-tab-pane label="配置管理" name="8" /> -->
+          <!-- <el-tab-pane label="角色管理" name="9" /> -->
         </el-tabs>
         <navbar />
         <tags-view v-if="needTagsView" />

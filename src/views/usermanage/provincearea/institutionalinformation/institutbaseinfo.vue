@@ -262,7 +262,10 @@ export default {
         })
       }
     },
-    userListgetBuyDataList() {
+    userListgetBuyDataList(val) {
+      if (val && val.page === 1) {
+        this.allQueryList.page = 1
+      }
       this.userListlistLoading = true
       this.listLoading = true
       this.allQueryList.agencyId = this.$route.query.agencyId
