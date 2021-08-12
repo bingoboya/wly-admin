@@ -335,7 +335,7 @@
             <div v-for="(item, index) in allUploadFiles" :key="index" class="bingooooo">
               <span
                 class="el-link--primary"
-                style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
+                style="cursor: pointer;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
                 @click="downFile(item)"
               >{{ item.name }}</span>
             </div>
