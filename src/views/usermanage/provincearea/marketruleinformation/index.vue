@@ -129,7 +129,7 @@ export default {
       // params为空时，为新增
       console.log(12, params)
       this.$router.push({
-        path: '/usermanage/marketruledetail',
+        path: `/usermanage/marketruledetail/${params.id || 'add'}`,
         query: {
           id: params.id || ''
         }

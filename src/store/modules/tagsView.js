@@ -38,6 +38,7 @@ const mutations = {
     if (state.cachedViews.includes(view.name)) return
     if (!view.meta.noCache) {
       state.cachedViews.push(view.name)
+      console.log('ADD_CACHED_VIEW-需要缓存的路由:', state.cachedViews)
     }
   },
 

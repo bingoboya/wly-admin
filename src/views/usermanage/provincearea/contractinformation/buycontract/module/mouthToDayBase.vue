@@ -722,11 +722,11 @@ export default {
     },
     getMouthToDayDetail(selectId, month) {
       // 获取月到日分解曲线方案详情页
-      const contractId = this.id
+      const contractId = this.$route.query.id
       this.month = month
       request({
         // id是在  /buy  接口处获取到的 /buy/{contractId}/{mtodId}/detail
-        url: `/buy/${contractId}/${selectId}/detail?month=${month}`,
+        url: `/buy/${contractId}/${selectId}/detail?month=${month}&type=0`,
         method: 'get'
       })
         .then((res) => {
@@ -755,10 +755,11 @@ export default {
       this.getMouthToDayBasic()
     },
     getMouthToDayBasic() {
+      const contractId = this.$route.query.id
       // 获取月到日分解曲线方案基本页
       request({
         // id是在  /buy  接口处获取到的
-        url: `/buy/mtod/${this.id}/basic`,
+        url: `/buy/${contractId}/mtod/${this.id}/basic?type=0`,
         method: 'get'
       }).then((res) => {
         console.log(5555, res)

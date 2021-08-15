@@ -112,24 +112,25 @@ export const loadMenus = (next, to) => {
             {
               path: 'buycontract',
               component: 'usermanage/provincearea/contractinformation/buycontract',
-              name: 'buycontract',
+              name: 'Bingobuycontract',
               meta: { activeName: 7, icon: 'menu', title: '购电合同' }
             },
             {
               // 购电-合同详情
-              path: 'contractindetail',
+              path: 'contractindetail/:contract_id',
               hidden: true,
               component: 'usermanage/provincearea/contractinformation/buycontract/contractindetail',
+              // name: 'Bingoboy',
               name: 'contractinformation-contractindetail',
-              meta: { activeName: 7, icon: 'menu', title: '合同详情' }
+              meta: { activeName: 7, needCache: true, icon: 'menu', title: '合同详情' }
             },
             {
               // 售电-合同详情
-              path: 'salecontractindetail',
+              path: 'salecontractindetail/:contract_id',
               hidden: true,
               component: 'usermanage/provincearea/contractinformation/salecontract/contractindetail',
               name: 'contractinformation-salecontractindetail',
-              meta: { activeName: 7, icon: 'menu', title: '合同详情' }
+              meta: { activeName: 7, needCache: true, icon: 'menu', title: '合同详情' }
             }
           ]
         },
@@ -141,18 +142,18 @@ export const loadMenus = (next, to) => {
           meta: { activeName: 7, icon: 'menu', title: '机构信息' }
         },
         {// 机构基本信息页面
-          path: 'institutbaseinfo',
+          path: 'institutbaseinfo/:institut_id',
           hidden: true,
           component: 'usermanage/provincearea/institutionalinformation/institutbaseinfo.vue',
           name: 'institut-baseinfo',
-          meta: { activeName: 7, noCache: true, icon: 'menu', title: '机构基本信息' }
+          meta: { activeName: 7, needCache: true, icon: 'menu', title: '机构基本信息' }
         },
         {// 户表基本信息页面
-          path: 'userlistbaseinfo',
+          path: 'userlistbaseinfo/:userlist_id',
           hidden: true,
           component: 'usermanage/provincearea/institutionalinformation/userlistbaseinfo.vue',
           name: 'userlist-baseinfo',
-          meta: { activeName: 7, noCache: true, icon: 'menu', title: '户表基本信息' }
+          meta: { activeName: 7, needCache: true, icon: 'menu', title: '户表基本信息' }
         },
         {
           path: 'marketruleinfo',
@@ -162,11 +163,11 @@ export const loadMenus = (next, to) => {
           meta: { activeName: 7, icon: 'menu', title: '市场规则信息' }
         },
         {
-          path: 'marketruledetail',
+          path: 'marketruledetail/:marketrule_id',
           hidden: true,
           component: 'usermanage/provincearea/marketruleinformation/marketruledetail.vue',
           name: 'marketrule-detail',
-          meta: { activeName: 7, icon: 'menu', title: '市场规则信息详情' }
+          meta: { activeName: 7, needCache: true, icon: 'menu', title: '市场规则信息详情' }
         },
         {
           path: 'intersogueinfo',
@@ -176,11 +177,11 @@ export const loadMenus = (next, to) => {
           meta: { activeName: 7, icon: 'menu', title: '居间人' }
         },
         {// 居间人基本信息
-          path: 'interbaseinfo',
+          path: 'interbaseinfo/:article_id',
           hidden: true,
           component: 'usermanage/provincearea/intersogueinformation/interbaseinfo.vue',
           name: 'inter-baseinfo',
-          meta: { activeName: 7, noCache: true, icon: 'menu', title: '居间人基本信息' }
+          meta: { activeName: 7, needCache: true, icon: 'menu', title: '居间人基本信息' }
         },
         {
           path: 'curvemanagement',

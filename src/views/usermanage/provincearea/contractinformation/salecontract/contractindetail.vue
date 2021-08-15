@@ -97,8 +97,8 @@
                 style="width: 220px"
                 placeholder="电压等级"
               >
-                <el-option label="110" :value="110" />
-                <el-option label="20" :value="20" />
+                <el-option label="110kv" :value="110" />
+                <el-option label="20kv" :value="20" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -250,10 +250,11 @@
               <!-- 新建时可编辑 -->
               <el-input
                 v-model="buycontractinfo.userSmallDTO"
-                :disabled="this.$route.query.id !== ''"
+                disabled
                 style="width: 220px"
                 placeholder="请输入填报人"
               />
+              <!-- :disabled="this.$route.query.id !== ''" -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -341,11 +342,11 @@
             <el-form-item
               v-if="buycontractinfo.timeofuseValid == 1"
               label="固定价差方案"
-              prop="fixPriceofUseDTO"
+              prop="fixPriceReducID"
               :rules="[{ required: buycontractinfo.timeofuseValid == 1, message: buycontractinfo.timeperiodofusecfgDTO == 999 ? `请选择分时方案` : `请选择合同价格方案`, trigger: 'change' }]"
             >
               <el-select
-                v-model="buycontractinfo.fixPriceofUseDTO"
+                v-model="buycontractinfo.fixPriceReducID"
                 :disabled="buycontractinfo.timeperiodofusecfgDTO == 999 || this.$route.query.id !== '' && isEdit || buycontractinfo.timeofuseValid == 0"
                 placeholder="固定价差方案"
                 style="width: 220px"
@@ -361,7 +362,7 @@
                 <el-option label="新增自定义方案" :value="999" />
               </el-select>
               <el-button
-                :disabled="this.$route.query.id !== '' && isEdit || !buycontractinfo.fixPriceofUseDTO || buycontractinfo.timeofuseValid == 0"
+                :disabled="this.$route.query.id !== '' && isEdit || !buycontractinfo.fixPriceReducID || buycontractinfo.timeofuseValid == 0"
                 type="primary"
                 @click="showDialogFixPrice.toggle = true"
               >查询/编辑/另存</el-button>
@@ -567,7 +568,7 @@
     />
     <!-- 固定价差方案弹窗 -->
     <fixPrice
-      :id="buycontractinfo.fixPriceofUseDTO"
+      :id="buycontractinfo.fixPriceReducID"
       :contract-price-list="contractPriceList"
       :cfg-id="buycontractinfo.timeperiodofusecfgDTO"
       :fix-price-arr="fixPriceArr"
@@ -647,7 +648,7 @@ export default {
         priceType: 0, // 价格类型
         timeperiodofusecfgDTO: 1, // 分时方案
         pricetimeofuseDTO: '', // 合同价格方案
-        fixPriceofUseDTO: '', // 固定价差方案
+        fixPriceReducID: '', // 固定价差方案
         priceList: [], // 合同价格列表
         createTime: new Date(), // 创建时间
         curveytomDTO: '', // 年到月分解方案
@@ -746,6 +747,8 @@ export default {
     // 如果 this.$route.query.id 为空，则表示是新增详情页，不凋 getContractinDetail
     if (this.$route.query.id) {
       await this.getContractinDetail()
+    } else {
+      this.buycontractinfo.userSmallDTO = this.$store.state.user.user.name
     }
   },
   methods: {
@@ -834,7 +837,7 @@ export default {
           return false
         }
       })
-      this.$refs['ruleForm'].validateField('fixPriceofUseDTO', emailError => {
+      this.$refs['ruleForm'].validateField('fixPriceReducID', emailError => {
         console.log('emailError', emailError, this.buycontractinfo.timeofuseValid)
         // if (this.buycontractinfo.timeofuseValid == 0) {
         if (!emailError) {
@@ -887,7 +890,7 @@ export default {
       if (type == 'price-timeofuseDTO') {
         this.buycontractinfo.pricetimeofuseDTO = id
       } else if (type == 'fix-PriceofUseDTO') {
-        this.buycontractinfo.fixPriceofUseDTO = id
+        this.buycontractinfo.fixPriceReducID = id
       }
       request({
         url: `/buy/tpfcg/${this.buycontractinfo.timeperiodofusecfgDTO}/pricelist`,
@@ -931,8 +934,8 @@ export default {
         this.$refs['ruleForm'].validateField('pricetimeofuseDTO', () => {
           // console.log('pricetimeofuseDTO:', this.buycontractinfo.timeperiodofusecfgDTO);
         })
-        this.$refs['ruleForm'].validateField('fixPriceofUseDTO', () => {
-          // console.log('fixPriceofUseDTO:', this.buycontractinfo.timeperiodofusecfgDTO);
+        this.$refs['ruleForm'].validateField('fixPriceReducID', () => {
+          // console.log('fixPriceReducID:', this.buycontractinfo.timeperiodofusecfgDTO);
         })
       })
     },
@@ -941,7 +944,7 @@ export default {
       this.resetValidate(event) // 修改分时方案时，重新校验 合同价格方案 选项，并根据当前选择的分时方案提示不同的校验信息
       this.buycontractinfo.pricetimeofuseDTO = ''
       this.items = []
-      this.buycontractinfo.fixPriceofUseDTO = ''
+      this.buycontractinfo.fixPriceReducID = ''
       this.fixPriceArr = []
       if (event === 999) {
         this.showDialogFormVisible.toggle = true
@@ -979,15 +982,15 @@ export default {
           saveData.priceTimeofUseId = saveData.pricetimeofuseDTO // 默认参数组ID 不能为空
           saveData.timeperiodofusecfgId = saveData.timeperiodofusecfgDTO
           saveData.totalElectricity = Number(saveData.totalElectricity)
+          // saveData.userId = this.$store.state.user.user.id
           console.log('gag', this.$store.state.user.user.id)
-          if (this.$route.query.id == '') {
-            // saveData.userId = this.$store.state.user.user.id
-            saveData.userId = 1003
+          if (this.$route.query.id === '') {
+            saveData.userId = this.$store.state.user.user.id
+            // saveData.userId = 1003
           }
-          console.log('保存sellcontractinfo:', saveData)
           this.saveContractinDetail(saveData)
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })
@@ -1105,14 +1108,14 @@ export default {
         ret.pricetimeofuseDTO.priceList.forEach((item) => {
           arr.push({ price: item })
         })
-        ret.fixPriceofUseDTO.priceList.forEach((item) => {
+        ret.fixPriceReducID.priceList.forEach((item) => {
           fixPriceArr.push({ price: item })
         })
         this.items = arr
         this.fixPriceArr = fixPriceArr
         // this.items = [{ price: 21},{ price: 1103}]
         this.buycontractinfo.pricetimeofuseDTO = ret.pricetimeofuseDTO.id // 合同价格方案
-        this.buycontractinfo.fixPriceofUseDTO = ret.fixPriceofUseDTO.id // 固定价差方案
+        this.buycontractinfo.fixPriceReducID = ret.fixPriceReducID.id // 固定价差方案
         this.contractPriceList = ret.pricetimeofuseDTOList
       })
     },

@@ -537,10 +537,11 @@ export default {
       this.getMouthToDayBasic()
     },
     getMouthToDayBasic() {
+      const contractId = this.$route.query.id
       // 获取机构名称列表
       request({
         // id是在  /buy  接口处获取到的
-        url: `/buy/dtop/${this.id}/basic`,
+        url: `/buy/${contractId}/dtop/${this.id}/basic?type=0`,
         method: 'get'
       }).then((res) => {
         console.log(5555, res)

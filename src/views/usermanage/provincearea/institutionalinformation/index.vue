@@ -352,9 +352,9 @@ export default {
     },
     gotoUserlistRouter(params) {
       // params为空时，为新增
-      console.log(12, params)
+      // console.log(12, params)
       this.$router.push({
-        path: '/usermanage/userlistbaseinfo',
+        path: `/usermanage/userlistbaseinfo/${params.meterId || 'add'}`,
         query: {
           meterId: params.meterId || ''
         }
@@ -362,9 +362,9 @@ export default {
     },
     gotoAgencyRouter(params) {
       // params为空时，为新增
-      console.log('gotoAgencyRouter', params)
+      // console.log('gotoAgencyRouter', params)
       this.$router.push({
-        path: '/usermanage/institutbaseinfo',
+        path: `/usermanage/institutbaseinfo/${params.agencyId || 'add'}`,
         query: {
           agencyId: params.agencyId || ''
         }

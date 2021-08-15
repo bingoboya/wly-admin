@@ -179,7 +179,7 @@ export default {
     gotoRouter(params) {
       console.log(12, params)
       this.$router.push({
-        path: '/usermanage/contractinformation/salecontractindetail',
+        path: `/usermanage/contractinformation/salecontractindetail/${params.id || 'add'}`,
         query: {
           id: params.id || ''
         }

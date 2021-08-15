@@ -179,9 +179,9 @@ export default {
   methods: {
     gotoRouter(params) {
       // params为空时，为新增
-      console.log(12, params)
+      // console.log(1211111, params)
       this.$router.push({
-        path: '/usermanage/interbaseinfo',
+        path: `/usermanage/interbaseinfo/${params.id || 'add'}`,
         query: {
           manid: params.id || ''
         }

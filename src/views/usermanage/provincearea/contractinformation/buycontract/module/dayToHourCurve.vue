@@ -19,6 +19,7 @@
           <el-form-item label="输入方式选择*">
             <el-switch
               v-model="dayToHourDivisionData.dataType"
+              disabled
               active-text="24点"
               inactive-text="96点"
               active-color="#409EFF"
@@ -80,8 +81,8 @@
       <!-- <el-button type="primary" @click="submitForm('ruleForm')">编辑</el-button> -->
       <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
       <el-button type="primary" @click="submitForm('ruleForm')">保存并选择</el-button>
-      <el-button type="primary" @click="dialogYearToMouth.toggle = false">取 消</el-button>
-      <!-- <el-button type="primary" @click="dialogYearToMouth.toggle = false"
+      <el-button type="primary" @click="dialogDayToHourCurve.toggle = false">取 消</el-button>
+      <!-- <el-button type="primary" @click="dialogDayToHourCurve.toggle = false"
           >确 定</el-button
         > -->
     </div>

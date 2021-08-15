@@ -13,7 +13,8 @@
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
-        {{ tag.title }}{{tag.query ? tag.query.id ? tag.query.id : '' : ''}}
+        {{ tag.title }}
+        <!-- {{ tag.title }}{{tag.query ? tag.query.id ? tag.query.id : '' : ''}} -->
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
       <!-- <router-link

@@ -141,10 +141,11 @@
             >
               <el-input
                 v-model="buycontractinfo.userSmallDTO"
-                :disabled="this.$route.query.id !== ''"
                 style="width: 220px"
+                disabled
                 placeholder="请输入填报人"
               />
+              <!-- :disabled="this.$route.query.id !== ''" -->
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -504,6 +505,7 @@ import mouthToDayBase from './module/mouthToDayBase'
 import dayToHourBase from './module/dayToHourBase'
 import { getToken } from '@/utils/auth'
 export default {
+  name: 'Bingoboy',
   components: {
     contractPrice,
     timesAsingScheme,
@@ -633,83 +635,11 @@ export default {
     // 如果 this.$route.query.id 为空，则表示是新增详情页，不凋 getContractinDetail
     if (this.$route.query.id) {
       await this.getContractinDetail()
+    } else {
+      this.buycontractinfo.userSmallDTO = this.$store.state.user.user.name
     }
   },
   methods: {
-    downFile(item) {
-      console.log(item.mark, 'domain', document.domain, window.location.port)
-      if (window.location.port) {
-        const newurl = `${document.domain}:${window.location.port}`
-        this.domain = newurl
-      } else {
-        this.domain = `${document.domain}`
-      }
-      request({
-        url: `http://${this.domain}/buy/materials/download?mark=${item.mark}`,
-        // url: `http://new.admin.com/buy/materials/download?mark=${item.mark}`,
-        method: 'get',
-        responseType: 'blob'
-      }).then((res) => {
-        console.log('downFile', res)
-        const fileName = item.name
-        this.download(res, fileName)
-      })
-    },
-    download(content, fileName) {
-      const blob = new Blob([content]) // 创建一个类文件对象：Blob对象表示一个不可变的、原始数据的类文件对象
-      const url = window.URL.createObjectURL(blob)// URL.createObjectURL(object)表示生成一个File对象或Blob对象
-      const dom = document.createElement('a')// 设置一个隐藏的a标签，href为输出流，设置download
-      dom.style.display = 'none'
-      dom.href = url
-      dom.setAttribute('download', fileName)// 指示浏览器下载url,而不是导航到它；因此将提示用户将其保存为本地文件
-      document.body.appendChild(dom)
-      dom.click()
-    },
-    getContractFiles() {
-      // 获取合同附件
-      request({
-        url: `/buy/materials?contractid=${this.$route.query.id}&type=0`,
-        method: 'get'
-      }).then((res) => {
-        console.log('获取合同附件')
-        this.allUploadFiles = res
-      })
-    },
-    confirmupload() {
-      this.upload()
-    },
-    // 上传文件
-    upload() {
-      this.$refs.upload.submit()
-    },
-    beforeUpload(file) {
-      let isLt2M = true
-      console.log('文件大小', file.size / 1024 / 1024)
-      isLt2M = file.size / 1024 / 1024 < 100
-      if (!isLt2M) {
-        this.loading = false
-        this.$message.error('上传文件大小不能超过 100MB!')
-      }
-      return isLt2M
-    },
-    handleSuccess(response, file, fileList) {
-      console.log(response, file, fileList)
-      this.showupload = false
-      this.filename = file.name
-      this.getContractFiles() // 获取合同下的所有文件
-      this.$refs.upload.clearFiles()
-    },
-    // 监听上传失败
-    handleError(e, file, fileList) {
-      const msg = JSON.parse(e.message)
-      this.$notify({
-        title: msg.message,
-        type: 'error',
-        duration: 2500
-      })
-      this.loading = false
-    },
-    // /////
     validateEmail(formName) {
       console.log('wocaao', formName)
       this.$refs['ruleForm'].validateField(
@@ -734,7 +664,7 @@ export default {
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        console.log(33, valid)
+        // console.log(33, valid)
         if (valid) {
           // let copyItems = JSON.parse(JSON.stringify(this.items));
           // let arr = [];
@@ -752,16 +682,15 @@ export default {
           saveData.priceTimeofUseId = saveData.pricetimeofuseDTO
           saveData.timeperiodofusecfgId = saveData.timeperiodofusecfgDTO
           saveData.totalElectricity = Number(saveData.totalElectricity)
+          // saveData.userId = this.$store.state.user.user.id
           console.log('gag', this.$store.state.user.user.id)
           if (this.$route.query.id == '') {
-            saveData.userId = 1003
-            // saveData.userId = this.$store.state.user.user.id
+            // saveData.userId = 1003
+            saveData.userId = this.$store.state.user.user.id
           }
-          console.log('保存buycontractinfo:', saveData)
           this.saveContractinDetail(saveData)
           // this.saveContractinDetail(this.buycontractinfo);
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -777,7 +706,6 @@ export default {
     },
     changepricetimeofuseDTO(id) {
       // 修改buycontractinfo.pricetimeofuseDTO当前的选项
-      console.log('id:', id)
       this.buycontractinfo.pricetimeofuseDTO = id
       request({
         url: `/buy/tpfcg/${this.buycontractinfo.timeperiodofusecfgDTO}/pricelist`,
@@ -788,13 +716,7 @@ export default {
       })
     },
     selectContractPrice(event, item) {
-      console.log('修改合同价格方案选项id', event)
-      console.log(
-        '修改合同价格方案选项2',
-        this.buycontractinfo.pricetimeofuseDTO,
-        this.buycontractinfo.timeperiodofusecfgDTO,
-        this.contractPriceList
-      )
+      // console.log('修改合同价格方案选项id', event)
       if (event == 999) {
         this.showDialogContractPrice.toggle = true
         this.showDialogContractPrice.add = true
@@ -932,12 +854,6 @@ export default {
         url: `/buy/${this.$route.query.id}/detail`,
         method: 'get'
       }).then((res) => {
-        // TODO 接口有问题--假数据
-        // let pricetimeofuseDTO = {id: 17, name: "浙江110kV用户目录电价（不含附加）", priceList: [180.6, 644.6, 819.6]}
-        // let mokeDate = pricetimeofuseDTO
-        // res.pricetimeofuseDTO = mokeDate
-        // TODO 接口有问题--假数据
-
         const ret = JSON.parse(JSON.stringify(res))
         this.buycontractinfo = ret
         // this.contracttypeinfoList = ret.contracttypeinfoList
@@ -957,7 +873,6 @@ export default {
         ])
         this.buycontractinfo.timeperiodofusecfgDTO =
           ret.timeperiodofusecfgDTO.id // 合同名称
-        // this.buycontractinfo.priceList = ret.pricetimeofuseDTO.priceList; //合同名称
         // this.buycontractinfo.priceList = [{ price: 21},{ price: 1103}] //合同名称
         const arr = []
         ret.pricetimeofuseDTO.priceList.forEach((item) => {
@@ -998,6 +913,80 @@ export default {
       }).then((res) => {
         this.gridList = res
       })
+    },
+    // 上传的逻辑
+    downFile(item) {
+      console.log(item.mark, 'domain', document.domain, window.location.port)
+      if (window.location.port) {
+        const newurl = `${document.domain}:${window.location.port}`
+        this.domain = newurl
+      } else {
+        this.domain = `${document.domain}`
+      }
+      request({
+        url: `http://${this.domain}/buy/materials/download?mark=${item.mark}`,
+        // url: `http://new.admin.com/buy/materials/download?mark=${item.mark}`,
+        method: 'get',
+        responseType: 'blob'
+      }).then((res) => {
+        console.log('downFile', res)
+        const fileName = item.name
+        this.download(res, fileName)
+      })
+    },
+    download(content, fileName) {
+      const blob = new Blob([content]) // 创建一个类文件对象：Blob对象表示一个不可变的、原始数据的类文件对象
+      const url = window.URL.createObjectURL(blob)// URL.createObjectURL(object)表示生成一个File对象或Blob对象
+      const dom = document.createElement('a')// 设置一个隐藏的a标签，href为输出流，设置download
+      dom.style.display = 'none'
+      dom.href = url
+      dom.setAttribute('download', fileName)// 指示浏览器下载url,而不是导航到它；因此将提示用户将其保存为本地文件
+      document.body.appendChild(dom)
+      dom.click()
+    },
+    getContractFiles() {
+      // 获取合同附件
+      request({
+        url: `/buy/materials?contractid=${this.$route.query.id}&type=0`,
+        method: 'get'
+      }).then((res) => {
+        console.log('获取合同附件')
+        this.allUploadFiles = res
+      })
+    },
+    confirmupload() {
+      this.upload()
+    },
+    // 上传文件
+    upload() {
+      this.$refs.upload.submit()
+    },
+    beforeUpload(file) {
+      let isLt2M = true
+      console.log('文件大小', file.size / 1024 / 1024)
+      isLt2M = file.size / 1024 / 1024 < 100
+      if (!isLt2M) {
+        this.loading = false
+        this.$message.error('上传文件大小不能超过 100MB!')
+      }
+      return isLt2M
+    },
+    handleSuccess(response, file, fileList) {
+      console.log(response, file, fileList)
+      this.showupload = false
+      this.filename = file.name
+      this.getContractFiles() // 获取合同下的所有文件
+      this.$refs.upload.clearFiles()
+    },
+    // 监听上传失败
+    handleError(e, file, fileList) {
+      const msg = JSON.parse(e.message)
+      this.$notify({
+        title: msg.message,
+        type: 'error',
+        duration: 2500
+      })
+      this.loading = false
     }
   }
 }

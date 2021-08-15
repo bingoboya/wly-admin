@@ -30,7 +30,7 @@
         <!-- #region -->
         <el-row :gutter="5">
           <el-col :span="12">
-            <el-form-item label="居间人姓名" prop="name">
+            <el-form-item label="居间人姓名1" prop="name">
               <el-input
                 v-model="buycontractinfo.name"
                 :disabled="this.$route.query.manid !== '' && isEdit"
@@ -39,24 +39,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="10">
-            <!-- <el-form-item label="机构名称" prop="agencyId">
-              <el-select
-                v-model="buycontractinfo.agencyId"
-                :disabled="this.$route.query.id !== '' && isEdit"
-                placeholder="机构名称"
-                style="width: 220px"
-              >
-                <el-option
-                  v-for="(item, index) in meterNameList"
-                  :key="`${item.id}${index}`"
-                  style="width: 220px"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item> -->
-          </el-col>
+          <el-col :span="10" />
         </el-row>
         <el-row :gutter="5">
           <el-col :span="12">
@@ -76,43 +59,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <!-- <el-form-item label="户表类型" prop="type">
-              <el-select
-                v-model="buycontractinfo.type"
-                :disabled="this.$route.query.manid !== '' && isEdit"
-                placeholder="户表类型"
-                style="width: 220px"
-              >
-                <el-option
-                  v-for="(item, index) in hubiaoTypeList"
-                  :key="`${item.id}${index}`"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item> -->
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="5">
-          <el-col :span="12">
-            <!-- <el-form-item label="联系人">
-              <el-select
-                v-model="buycontractinfo.contactId"
-                :disabled="this.$route.query.manid !== '' && isEdit"
-                placeholder="请选择联系人"
-                style="width: 220px"
-              >
-                <el-option
-                  v-for="(item, index) in userList"
-                  :key="`${item.id}${index}`"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item> -->
-          </el-col>
           <el-col :span="10">
             <el-form-item label="联系方式" prop="contactTel">
               <el-input
@@ -124,6 +70,7 @@
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row :gutter="5">
           <el-col :span="12">
             <el-form-item
@@ -168,7 +115,7 @@
         <!--表格渲染-->
         <el-table
           ref="table"
-          v-loading="listLoading"
+          v-loading="this.$route.query.manid ? listLoading : false"
           border
           :data="buyDataList"
           style="width: 100%;"
@@ -243,6 +190,7 @@ export default {
       hubiaoTypeList: [{ id: 0, name: '发电' }, { id: 1, name: '用户' }, { id: 2, name: '售电公司' }],
       // 表格分页相关
       buycontractinfo: {
+        name: '',
         presenter: '',
         createTime: new Date(), // 创建时间
         contracttypeinfoDTO: '', // 合同类型
@@ -273,31 +221,29 @@ export default {
     }
   },
   async created() {
-    await this.getBuyDataList()
     await this.getUserlist()
     await this.getAgencyAll()
     await this.getGridList()
     // 根据ID获取当前点击的合同的内容
     // 如果 this.$route.query.manid 为空，则表示是新增详情页，不凋 getContractinDetail
     if (this.$route.query.manid) {
-      // await this.getContractinDetail()
+      await this.getBuyDataList()
     }
   },
-
   methods: {
     gotoContractRouter(params) {
-      console.log('gotoContractRouter', params)
+      console.log('gotoContractRouterss', params)
       // type字段，0购电合同 1 售电合同
       if (params.type === 0) {
         this.$router.push({
-          path: '/usermanage/contractinformation/contractindetail',
+          path: `/usermanage/contractinformation/contractindetail/${params.id || 'add'}`,
           query: {
             id: params.id || ''
           }
         })
       } else if (params.type === 1) {
         this.$router.push({
-          path: '/usermanage/contractinformation/salecontractindetail',
+          path: `/usermanage/contractinformation/salecontractindetail/${params.id || 'add'}`,
           query: {
             id: params.id || ''
           }
@@ -332,11 +278,6 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           const saveData = JSON.parse(JSON.stringify(this.buycontractinfo))
-          //   saveData.userID = saveData.presenterId
-          //   saveData.agenManUserID = saveData.presenterId
-          //   saveData.id = saveData.presenterId
-          //   saveData.name = saveData.name
-          //   saveData.id = saveData.manid
           saveData.id = this.$route.query.manid
           console.log('gag', this.$store.state.user.user.id)
           console.log('保存buycontractinfo:', saveData)

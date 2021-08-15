@@ -248,14 +248,14 @@ export default {
       // type字段，0购电合同 1 售电合同
       if (params.type === 0) {
         this.$router.push({
-          path: '/usermanage/contractinformation/contractindetail',
+          path: `/usermanage/contractinformation/contractindetail/${params.id || 'add'}`,
           query: {
             id: params.id || ''
           }
         })
       } else if (params.type === 1) {
         this.$router.push({
-          path: '/usermanage/contractinformation/salecontractindetail',
+          path: `/usermanage/contractinformation/salecontractindetail/${params.id || 'add'}`,
           query: {
             id: params.id || ''
           }

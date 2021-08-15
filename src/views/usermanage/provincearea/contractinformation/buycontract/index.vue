@@ -94,7 +94,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import request from '@/utils/request'
 import qs from 'qs'
 export default {
-  name: 'Job',
+  name: 'Bingobuycontract',
   components: {
     Pagination
     // eHeader,
@@ -140,7 +140,7 @@ export default {
       // params为空时，为新增
       console.log(12, params)
       this.$router.push({
-        path: '/usermanage/contractinformation/contractindetail',
+        path: `/usermanage/contractinformation/contractindetail/${params.id || 'add'}`,
         query: {
           id: params.id || ''
         }

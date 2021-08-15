@@ -1,9 +1,19 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
+    <!-- :include这个属性缓存不起作用，没找到原因 -->
+    <!-- <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key" />
       </keep-alive>
+    </transition> -->
+    <!-- 改成用下面的缓存方式 关键字用 needCache，需要缓存的路由在路由中配置 needCache:true -->
+    <transition name="fade-transform" mode="out-in">
+      <keep-alive>
+        <router-view v-if="$route.meta.needCache" :key="key" />
+      </keep-alive>
+    </transition>
+    <transition name="fade-transform" mode="out-in">
+      <router-view v-if="!$route.meta.needCache" :key="key" />
     </transition>
     <div v-if="$store.state.settings.showFooter" id="el-main-footer">
       <span v-html="$store.state.settings.footerTxt" />
